@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Review Dataset TaniAdaptif</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">TaniAdaptif</p>
+        <h1>Review Dataset</h1>
+      </div>
+      <div class="header-progress" aria-live="polite">
+        <div class="progress-copy">
+          <strong id="reviewed-count">0 / 0</strong>
+          <span id="progress-label">Memuat kandidat...</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <span id="progress-bar"></span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a class="button secondary" href="/api/export" download>Ekspor CSV</a>
+        <button id="finalize-button" class="button finalize" type="button" disabled>
+          Finalisasi Review
+        </button>
+      </div>
+    </header>
+
+    <section class="filter-band" aria-label="Filter kandidat">
+      <label>
+        Batch
+        <select id="batch-filter">
+          <option value="all">Semua batch</option>
+          <option value="original_350">Original 350</option>
+          <option value="additional_batch_v1">Additional batch v1</option>
+          <option value="additional_batch_v2">Additional batch v2</option>
+        </select>
+      </label>
+      <label>
+        Kelas
+        <select id="class-filter">
+          <option value="all">Semua kelas</option>
+          <option value="padi">Padi</option>
+          <option value="jagung">Jagung</option>
+          <option value="cabai">Cabai</option>
+          <option value="kacang_tanah">Kacang tanah</option>
+        </select>
+      </label>
+      <label>
+        Sumber
+        <select id="source-filter">
+          <option value="all">Semua sumber</option>
+          <option value="public">Public</option>
+          <option value="local_aikmel">Local Aikmel</option>
+        </select>
+      </label>
+      <label>
+        Screening
+        <select id="proxy-filter">
+          <option value="all">Semua screening</option>
+          <option value="proxy_pass">Proxy pass</option>
+          <option value="proxy_review">Proxy review</option>
+        </select>
+      </label>
+      <label>
+        Keputusan
+        <select id="status-filter">
+          <option value="all">Semua keputusan</option>
+          <option value="pending">Belum diperiksa</option>
+          <option value="yes">Diterima</option>
+          <option value="no">Ditolak</option>
+          <option value="unsure">Ragu</option>
+        </select>
+      </label>
+      <form id="jump-form" class="jump-form">
+        <label for="jump-input">Nomor</label>
+        <input id="jump-input" type="number" min="1" max="350" inputmode="numeric" />
+        <button class="button secondary" type="submit">Lompat</button>
+      </form>
+      <p id="filtered-count" class="filtered-count">0 kandidat</p>
+      <p id="batch-summary" class="filtered-count"></p>
+    </section>
+
+    <main class="workspace">
+      <aside class="candidate-panel" aria-label="Daftar kandidat">
+        <div class="candidate-panel-heading">
+          <strong>Kandidat</strong>
+          <button id="reset-filter-button" class="text-button" type="button">Reset filter</button>
+        </div>
+        <div id="candidate-list" class="candidate-list"></div>
+      </aside>
+
+      <section class="review-panel" aria-live="polite">
+        <div id="loading-state" class="loading-state">Memuat dataset review...</div>
+        <div id="empty-state" class="empty-state" hidden>
+          Tidak ada kandidat yang cocok dengan filter ini.
+        </div>
+
+        <div id="review-content" hidden>
+          <div class="review-heading">
+            <div>
+              <p id="sequence-label" class="sequence-label">0 dari 0</p>
+              <h2 id="curated-name">-</h2>
+            </div>
+            <div id="candidate-badges" class="badges"></div>
+          </div>
+
+          <div class="image-frame">
+            <img id="candidate-image" alt="Kandidat dataset yang sedang direview" />
+            <p id="image-error" class="image-error" hidden>Gambar tidak dapat ditampilkan.</p>
+          </div>
+
+          <div class="navigation-row">
+            <button id="previous-button" class="button secondary" type="button">Kembali</button>
+            <span id="save-state" class="save-state">Tersimpan</span>
+            <button id="next-button" class="button secondary" type="button">Berikutnya</button>
+          </div>
+
+          <section class="metadata-section" aria-labelledby="metadata-title">
+            <h3 id="metadata-title">Informasi Kandidat</h3>
+            <dl id="metadata-grid" class="metadata-grid"></dl>
+          </section>
+
+          <details class="review-rules">
+            <summary>Aturan keputusan visual</summary>
+            <div class="rule-columns">
+              <div>
+                <h3>Terima</h3>
+                <p>
+                  Komoditas dan tanaman terlihat, bentuknya dapat dikenali, gambar cukup jelas,
+                  lingkungan tumbuh memberi variasi berguna, dan tidak didominasi produk pangan.
+                </p>
+              </div>
+              <div>
+                <h3>Tolak</h3>
+                <p>
+                  Tolak beras, biji, tongkol terpisah, hasil panen, makanan, pasar, kemasan,
+                  watermark besar, tanaman yang tidak dikenali, atau gambar sintetis yang jelas.
+                  Close-up hanya diterima terbatas bila tanaman tetap jelas.
+                </p>
+              </div>
+            </div>
+          </details>
+
+          <section class="reason-section" aria-labelledby="reason-title">
+            <div class="section-heading-inline">
+              <h3 id="reason-title">Alasan penolakan</h3>
+              <span>Pilih sebelum menolak bila sesuai.</span>
+            </div>
+            <div id="rejection-reasons" class="reason-grid"></div>
+          </section>
+
+          <label class="notes-field">
+            Catatan reviewer
+            <textarea id="reviewer-notes" rows="3" maxlength="2000"></textarea>
+          </label>
+
+          <div class="decision-bar">
+            <button id="reject-button" class="decision reject" type="button">Tolak</button>
+            <button id="unsure-button" class="decision unsure" type="button">Ragu</button>
+            <button id="accept-button" class="decision accept" type="button">Terima</button>
+            <button id="save-button" class="button secondary save-button" type="button">Simpan</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section id="finalization-panel" class="finalization-panel" hidden aria-live="polite">
+      <div>
+        <strong id="finalization-title">Finalisasi dataset</strong>
+        <p id="finalization-message"></p>
+      </div>
+      <span id="finalization-state" class="status-chip">-</span>
+    </section>
+    <div id="toast" class="toast" hidden role="status"></div>
+  </body>
+</html>

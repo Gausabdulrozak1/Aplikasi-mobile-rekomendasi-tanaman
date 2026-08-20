@@ -1,0 +1,14 @@
+{
+  "name": "taniadaptif-workspace-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dataset-review": "node tools/dataset_review_ui/src/server.mjs",
+    "dataset-review:validate": "node tools/dataset_review_ui/src/cli.mjs validate",
+    "dataset-review:test": "node --test --test-concurrency=1 tools/dataset_review_ui/test/*.test.mjs",
+    "lora-review": "node tools/lora_review_ui/src/server.mjs",
+    "lora-review:validate": "node tools/lora_review_ui/src/cli.mjs",
+    "lora-review:test": "node --test --test-concurrency=1 tools/lora_review_ui/test/*.test.mjs"
+  }
+}

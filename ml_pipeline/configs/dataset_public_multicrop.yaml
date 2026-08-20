@@ -1,0 +1,89 @@
+project_name: rotasi_tanam_aikmel
+experiment_name: multisource_multicrop_lora
+seed: 42
+
+classes:
+  - id: padi
+    display_name: Padi
+    trigger_token: taniadaptif_padi
+    crop_name_en: rice plants
+    sources:
+      - type: public
+        directory: ml_pipeline/data/raw/padi/public
+        required: true
+      - type: local_aikmel
+        directory: ml_pipeline/data/raw/padi/local_aikmel
+        required: false
+    target_minimum_images: 80
+    target_maximum_images: 100
+
+  - id: jagung
+    display_name: Jagung
+    trigger_token: taniadaptif_jagung
+    crop_name_en: maize plants
+    sources:
+      - type: public
+        directory: ml_pipeline/data/raw/jagung/publik
+        required: true
+    target_minimum_images: 80
+    target_maximum_images: 100
+
+  - id: cabai
+    display_name: Cabai
+    trigger_token: taniadaptif_cabai
+    crop_name_en: chili plants
+    sources:
+      - type: public
+        directory: ml_pipeline/data/raw/cabai/publik
+        required: true
+    target_minimum_images: 80
+    target_maximum_images: 100
+
+  - id: kacang_tanah
+    display_name: Kacang Tanah
+    trigger_token: taniadaptif_kacang_tanah
+    crop_name_en: peanut plants
+    sources:
+      - type: public
+        directory: ml_pipeline/data/raw/kacang_tanah/publik
+        required: true
+    target_minimum_images: 80
+    target_maximum_images: 100
+
+dataset:
+  source_manifest: ml_pipeline/data/dataset_source_manifest.csv
+  processed_directory: ml_pipeline/data/processed
+  reports_directory: ml_pipeline/data/reports
+  review_directory: artifacts/dataset_review
+  review_candidates_directory: artifacts/dataset_review/candidates
+  packages_directory: artifacts/dataset_packages
+  package_version: dataset_multicrop_v1
+  dataset_card: docs/DATASET_CARD.md
+  package_manifest_document: docs/DATASET_PACKAGE_MANIFEST.md
+  package_configs:
+    - ml_pipeline/configs/dataset_public_multicrop.yaml
+    - ml_pipeline/configs/additional_public_sources.yaml
+    - ml_pipeline/configs/training_public_multicrop.yaml
+    - ml_pipeline/configs/evaluation_public_multicrop.yaml
+  review_sample_per_class: 20
+  train_ratio: 0.8
+  validation_ratio: 0.2
+  minimum_width: 512
+  minimum_height: 512
+  duplicate_threshold: 5
+  allowed_extensions:
+    - .jpg
+    - .jpeg
+    - .png
+    - .webp
+  allowed_image_formats:
+    - JPEG
+    - PNG
+    - WEBP
+
+caption:
+  language: en
+  include_trigger_token: true
+  default_style: realistic agricultural photograph
+  default_environment: rural agricultural environment
+  default_lighting: natural lighting

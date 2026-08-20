@@ -1,0 +1,115 @@
+# Node.js
+node_modules/
+npm-debug.log
+.env
+.env.*
+!.env.example
+deployment/runpod/runtime.env
+
+# Python
+venv/
+.venv/
+.venv-ml-local/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+mobile-flutter/tani_adaptif/config/*.local.json
+
+# Database
+*.db
+*.sqlite
+
+# Dataset, archives, and generated artifacts
+dataset/raw/
+dataset/processed/
+dataset/**/*.jpg
+dataset/**/*.jpeg
+dataset/**/*.png
+dataset/**/*.webp
+ml_pipeline/data/raw/**
+ml_pipeline/data/processed/**
+ml_pipeline/data/reports/**
+ml_pipeline/data/downloads/
+ml_pipeline/data/**/*.jpg
+ml_pipeline/data/**/*.jpeg
+ml_pipeline/data/**/*.png
+ml_pipeline/data/**/*.webp
+!ml_pipeline/data/raw/
+!ml_pipeline/data/raw/**/
+!ml_pipeline/data/raw/**/.gitkeep
+!ml_pipeline/data/processed/
+!ml_pipeline/data/processed/**/
+!ml_pipeline/data/processed/**/.gitkeep
+!ml_pipeline/data/reports/
+!ml_pipeline/data/reports/.gitkeep
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Credentials and secrets
+*kaggle.json
+*service-account*.json
+*credentials*.json
+*client_secret*.json
+*.pem
+*.key
+
+# AI models and checkpoints
+*.safetensors
+*.ckpt
+*.pt
+*.bin
+checkpoint-*/
+**/checkpoint-*/
+models/base_model/
+huggingface_cache/
+.cache/huggingface/
+hf_cache/
+artifacts/local_ml/hf_cache/
+artifacts/local_ml/dxdiag_raw.txt
+
+# Generated Images
+outputs/generated_images/
+backend-python/static/generated/
+inference_api/generated/
+artifacts/samples/generated/
+artifacts/evaluation/generated/
+artifacts/model_evaluation/kaggle_run_*/generated/
+artifacts/model_evaluation/kaggle_run_*/human_review_backups/
+artifacts/model_evaluation/kaggle_run_*/human_review_ui_progress.json
+artifacts/dataset_review/*.jpg
+artifacts/dataset_review/candidates/
+artifacts/dataset_review/backups/
+artifacts/dataset_review/exports/
+artifacts/dataset_review/finalization_logs/
+artifacts/dataset_review/review_progress.json
+artifacts/lora_review_ui_qa/
+artifacts/dataset_review/finalization_status.json
+artifacts/dataset_review/finalization_*_result.json
+artifacts/dataset_packages/
+artifacts/colab_upload/
+artifacts/apk/*.apk
+validation_images/
+generated_images/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log

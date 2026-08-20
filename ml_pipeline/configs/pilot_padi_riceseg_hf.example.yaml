@@ -1,0 +1,60 @@
+project_name: tani_adaptif
+experiment_name: pilot_padi_riceseg_sd15_lora_public
+base_model: stable-diffusion-v1-5/stable-diffusion-v1-5
+
+dataset:
+  source_type: huggingface_dataset
+  dataset_id: PheniX-Lab/RiceSEG
+  archive_path: ""
+  image_directory: ""
+  selected_classes:
+    - padi
+  output_directory: ml_pipeline/data/processed/pilot_padi_riceseg
+  train_ratio: 0.8
+  validation_ratio: 0.2
+  minimum_width: 512
+  minimum_height: 512
+  duplicate_threshold: 4
+  max_images_per_class: 100
+  max_images_total: 100
+  allowed_extensions:
+    - .jpg
+    - .jpeg
+    - .png
+    - .webp
+
+caption:
+  trigger_token: gaus_padi_public
+  crop_name: rice plant
+  language: en
+  template: "a realistic agricultural photograph of {trigger_token}, {crop_name} growing in an agricultural environment, natural lighting"
+
+training:
+  resolution: 512
+  seed: 42
+  rank: 8
+  learning_rate: 0.0001
+  text_encoder_learning_rate: 0.00005
+  batch_size: 1
+  gradient_accumulation_steps: 4
+  dataloader_num_workers: 0
+  max_train_steps: 800
+  checkpointing_steps: 200
+  checkpoints_total_limit: 4
+  mixed_precision: fp16
+  gradient_checkpointing: true
+  use_8bit_adam: true
+  output_directory: /content/drive/MyDrive/TaniAdaptif/lora_outputs/pilot_padi_riceseg
+
+validation:
+  prompts:
+    - "a realistic agricultural photograph of gaus_padi_public, rice plants growing in an agricultural environment, natural lighting"
+    - "gaus_padi_public, rice plants in an agricultural environment, natural lighting, clear crop view"
+  negative_prompt: "cartoon, illustration, blurry, low quality, deformed plant, watermark, text, logo, human, animal"
+  seeds:
+    - 42
+    - 123
+  inference_steps: 25
+  guidance_scale: 7.5
+  width: 512
+  height: 512

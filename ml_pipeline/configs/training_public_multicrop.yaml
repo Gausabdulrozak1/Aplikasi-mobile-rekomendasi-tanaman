@@ -1,0 +1,29 @@
+experiment_name: multisource_multicrop_lora_sd15
+dataset_config: ml_pipeline/configs/dataset_public_multicrop.yaml
+base_model: stable-diffusion-v1-5/stable-diffusion-v1-5
+
+training:
+  resolution: 512
+  seed: 42
+  rank: 8
+  learning_rate: 0.0001
+  train_batch_size: 1
+  gradient_accumulation_steps: 4
+  max_train_steps: 1600
+  checkpointing_steps: 200
+  checkpoints_total_limit: 4
+  mixed_precision: fp16
+  gradient_checkpointing: true
+  use_8bit_adam: true
+  dataloader_num_workers: 0
+
+smoke_test:
+  max_train_steps: 100
+  checkpointing_steps: 50
+  checkpoints_total_limit: 2
+  google_drive_directory: /content/drive/MyDrive/skripsi_lora/outputs/smoke_test
+  lora_filename: multisource_multicrop_smoke_lora.safetensors
+
+output:
+  google_drive_directory: /content/drive/MyDrive/skripsi_lora/outputs/multicrop_v1
+  lora_filename: multisource_multicrop_lora.safetensors

@@ -1,0 +1,9 @@
+response_id,respondent_code,date,user_role,consent_recorded,item_id,statement,score_1_to_5,comment
+,,,,,UAT-01,Weather information is easy to understand,,
+,,,,,UAT-02,Land information form is easy to use,,
+,,,,,UAT-03,Recommendation order and reason are clear,,
+,,,,,UAT-04,Four-week calendar is easy to follow,,
+,,,,,UAT-05,Data source and timestamp are clear,,
+,,,,,UAT-06,Offline and error messages support recovery,,
+,,,,,UAT-07,Visual simulation is not mistaken for crop selection,,
+,,,,,UAT-08,The application is generally usable,,

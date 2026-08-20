@@ -1,0 +1,2 @@
+evaluation_id,evaluator_code,date,sample_id,crop,prompt_id,seed,steps,guidance_scale,resolution,variant,class_match_1_to_5,plant_realism_1_to_5,environment_1_to_5,distortion_control_1_to_5,overall_1_to_5,predicted_visual_class,preferred_variant,notes
+,,,,,,,,,,,,,,,,,,

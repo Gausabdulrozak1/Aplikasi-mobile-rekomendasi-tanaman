@@ -1,0 +1,2842 @@
+# Kaggle Notebook Cell by Cell
+
+Dokumen ini dihasilkan dari source yang sama dengan notebook final. Setiap cell
+memuat kontrak eksekusi dan source lengkap, tanpa state hasil training.
+
+## Cell 00 - TaniAdaptif Kaggle LoRA Pipeline
+
+- Type: Markdown
+- Tujuan: Menjelaskan tujuan, batas klaim, dan urutan pipeline standalone.
+- Input: Dataset ZIP Kaggle fixed sebagai Kaggle Input.
+- Expected output: Dokumentasi notebook terlihat sebelum eksekusi.
+- Stop condition: Tidak ada; cell Markdown.
+
+```markdown
+# TaniAdaptif - Stable Diffusion 1.5 Multicrop LoRA on Kaggle
+
+Notebook standalone ini memvalidasi dataset final, menjalankan smoke training
+100 langkah, main training 1600 langkah, sanity inference, evaluasi otomatis,
+dan export artefak. Stable Diffusion hanya menghasilkan visualisasi; keputusan
+rekomendasi tanaman tetap berasal dari rule-based engine TaniAdaptif.
+
+Status sukses hanya sah jika cell terakhir selesai tanpa exception dan state
+akhir berstatus `success`. Metrik otomatis adalah proxy. Template evaluasi
+manusia sengaja dibiarkan kosong.
+```
+
+## Cell 01 - Run Identity and Basic Imports
+
+- Type: Code
+- Tujuan: Mengimpor standard library dan membuat RUN_ID unik untuk seluruh path runtime.
+- Input: Clock dan environment process Kaggle.
+- Expected output: RUN_ID dan waktu mulai tercetak.
+- Stop condition: STOP jika standard library tidak dapat diimpor.
+
+```python
+import csv
+import gc
+import hashlib
+import importlib.metadata
+import json
+import math
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+import urllib.request
+import zipfile
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
+
+RUN_ID = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+NOTEBOOK_STARTED_AT = time.time()
+RUN_EVENTS = []
+
+
+def utc_now():
+    return datetime.now(UTC).isoformat()
+
+
+def record_event(stage, status, details=None):
+    event = {"stage": stage, "status": status, "timestamp": utc_now()}
+    if details is not None:
+        event["details"] = details
+    RUN_EVENTS.append(event)
+    print(f"[{stage}] {status}")
+    return event
+
+
+print("RUN_ID:", RUN_ID)
+print("Started at:", utc_now())
+```
+
+## Cell 02 - Kaggle Environment and Internet Gate
+
+- Type: Code
+- Tujuan: Memastikan notebook berjalan di Kaggle dan internet aktif sebelum akses dependency/model.
+- Input: /kaggle/input, /kaggle/working, dan koneksi HTTPS Hugging Face.
+- Expected output: Path Kaggle dan status internet PASS.
+- Stop condition: STOP: Kaggle environment unavailable atau Enable Kaggle Internet and rerun.
+
+```python
+INPUT_ROOT = Path("/kaggle/input")
+WORKING_ROOT = Path("/kaggle/working")
+if not INPUT_ROOT.is_dir() or not WORKING_ROOT.is_dir():
+    raise SystemExit("STOP: Kaggle environment unavailable")
+
+try:
+    request = urllib.request.Request(
+        "https://huggingface.co", headers={"User-Agent": "TaniAdaptif-Kaggle/1.0"}
+    )
+    with urllib.request.urlopen(request, timeout=15) as response:
+        INTERNET_OK = 200 <= response.status < 500
+except Exception:
+    INTERNET_OK = False
+if not INTERNET_OK:
+    raise SystemExit("Enable Kaggle Internet and rerun.")
+
+print("Kaggle input:", INPUT_ROOT)
+print("Kaggle working:", WORKING_ROOT)
+print("Internet: PASS")
+record_event("environment", "pass", {"internet": True})
+```
+
+## Cell 03 - GPU and CUDA Gate
+
+- Type: Code
+- Tujuan: Mencegah training CPU dan mencatat hardware aktual tanpa mengasumsikan T4.
+- Input: PyTorch bawaan Kaggle dan accelerator yang dipilih user.
+- Expected output: GPU name, count, VRAM, Torch, dan CUDA tercetak.
+- Stop condition: STOP: CUDA unavailable.
+
+```python
+import torch
+
+if not torch.cuda.is_available():
+    raise SystemExit("STOP: CUDA unavailable")
+GPU_COUNT = torch.cuda.device_count()
+GPU_NAME = torch.cuda.get_device_name(0)
+GPU_VRAM_GB = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+GPU_REPORT = {
+    "name": GPU_NAME,
+    "count": GPU_COUNT,
+    "vram_gb": round(GPU_VRAM_GB, 2),
+    "torch_version": torch.__version__,
+    "cuda_version": torch.version.cuda,
+}
+print(json.dumps(GPU_REPORT, indent=2))
+record_event("cuda", "pass", GPU_REPORT)
+```
+
+## Cell 04 - Single Source of Truth Configuration
+
+- Type: Code
+- Tujuan: Mendefinisikan seluruh dataset, model, training, evaluation, dan output configuration.
+- Input: SHA paket Kaggle hasil build lokal yang tervalidasi.
+- Expected output: Konfigurasi final tercetak dan direktori kerja dibuat.
+- Stop condition: STOP jika konfigurasi internal tidak konsisten.
+
+```python
+CONFIG = {
+    "dataset": {
+        "preferred_filename": "dataset_multicrop_v1_kaggle_fixed.zip",
+        "fallback_filename": "dataset_multicrop_v1.zip",
+        "sha256": "e232f79d2f8ae20b4fb765efb38435ce05e929406e88faba6b02aaaafd1ad42d",
+        "extracted_content_anchors": {
+            "manifests/kaggle_file_mapping.csv": "1cd808a5da2b548d3d3a5b47c6e1cb3f599105589a1ff1cfc3b063419f07b971",
+            "train/metadata.jsonl": "1f1806e98bfbdf9707a4b4ea9e8561604b303829870a703b06b887ee37a6a30d",
+            "validation/metadata.jsonl": "3fb0a0e3e9d1053a182e0faa2337909c4fb2444e311aa849ff8347ddd96f0dae",
+        },
+        "train_count": 312,
+        "validation_count": 77,
+        "total_count": 389,
+        "class_counts": {"padi": 95, "jagung": 100, "cabai": 97, "kacang_tanah": 97},
+        "triggers": {
+            "padi": "taniadaptif_padi",
+            "jagung": "taniadaptif_jagung",
+            "cabai": "taniadaptif_cabai",
+            "kacang_tanah": "taniadaptif_kacang_tanah",
+        },
+    },
+    "model": {
+        "base_model": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+        "diffusers_commit": "0f252be0ed42006c125ef4429156cb13ae6c1d60",
+        "canonical_lora_filename": "multisource_multicrop_lora.safetensors",
+        "default_lora_filename": "pytorch_lora_weights.safetensors",
+    },
+    "training": {
+        "resolution": 512,
+        "rank": 8,
+        "train_batch_size": 1,
+        "gradient_accumulation_steps": 4,
+        "learning_rate": 0.0001,
+        "lr_scheduler": "constant",
+        "lr_warmup_steps": 0,
+        "seed": 42,
+        "mixed_precision": "fp16",
+        "dataloader_num_workers": 0,
+        "smoke_steps": 100,
+        "smoke_checkpointing_steps": 50,
+        "smoke_checkpoint_limit": 2,
+        "main_steps": 1600,
+        "main_checkpointing_steps": 200,
+        "main_checkpoint_limit": 3,
+    },
+    "versions": {
+        "accelerate": "1.14.0",
+        "bitsandbytes": "0.50.1",
+        "datasets": "4.8.5",
+        "huggingface-hub": "0.36.2",
+        "peft": "0.20.0",
+        "safetensors": "0.8.0",
+        "transformers": "4.57.6",
+    },
+    "evaluation": {
+        "seeds": [42, 123, 2026],
+        "inference_steps": 25,
+        "guidance_scale": 7.5,
+        "max_runtime_seconds": 11 * 60 * 60,
+        "min_remaining_seconds_for_full_evaluation": 75 * 60,
+    },
+}
+
+RUNTIME_ROOT = WORKING_ROOT / "taniadaptif_runtime" / RUN_ID
+EXTRACT_ROOT = RUNTIME_ROOT / "dataset"
+HF_CACHE_ROOT = RUNTIME_ROOT / "hf_cache"
+LORA_ROOT = WORKING_ROOT / "taniadaptif_lora"
+OUTPUTS_ROOT = LORA_ROOT / "outputs"
+SMOKE_OUTPUT = OUTPUTS_ROOT / "smoke_test"
+MAIN_OUTPUT = OUTPUTS_ROOT / "multicrop_v1"
+LOGS_ROOT = LORA_ROOT / "logs"
+SANITY_ROOT = LORA_ROOT / "sanity"
+EVALUATION_ROOT = LORA_ROOT / "evaluation"
+EXPORT_ROOT = WORKING_ROOT / "EXPORT_TANIADAPTIF"
+ARTIFACT_ZIP = WORKING_ROOT / "taniadaptif_lora_artifacts.zip"
+for directory in (
+    RUNTIME_ROOT,
+    SMOKE_OUTPUT,
+    MAIN_OUTPUT,
+    LOGS_ROOT,
+    SANITY_ROOT,
+    EVALUATION_ROOT,
+):
+    directory.mkdir(parents=True, exist_ok=True)
+print(json.dumps(CONFIG, indent=2))
+```
+
+## Cell 05 - Discover Kaggle Dataset Input
+
+- Type: Code
+- Tujuan: Menemukan ZIP fixed atau folder fixed yang diekstrak Kaggle tanpa hardcode username.
+- Input: Semua file dan folder di /kaggle/input.
+- Expected output: Satu DATASET_INPUT_PATH terpilih dalam mode ZIP atau extracted.
+- Stop condition: STOP jika input tidak ditemukan, tidak lengkap, atau ambigu.
+
+```python
+preferred_matches = sorted(
+    path for path in INPUT_ROOT.rglob(CONFIG["dataset"]["preferred_filename"]) if path.is_file()
+)
+if len(preferred_matches) > 1:
+    raise SystemExit(f"STOP: multiple fixed dataset packages found: {preferred_matches}")
+DATASET_ZIP = None
+EXTRACTED_INPUT_ROOT = None
+if preferred_matches:
+    DATASET_ZIP = preferred_matches[0]
+    DATASET_DISCOVERY_MODE = "preferred"
+else:
+    fallback_matches = sorted(
+        path for path in INPUT_ROOT.rglob(CONFIG["dataset"]["fallback_filename"]) if path.is_file()
+    )
+    if len(fallback_matches) > 1:
+        raise SystemExit(f"STOP: multiple fallback dataset packages found: {fallback_matches}")
+    if fallback_matches:
+        DATASET_ZIP = fallback_matches[0]
+        DATASET_DISCOVERY_MODE = "fallback_filename_requires_fixed_sha"
+    else:
+        extracted_candidates = []
+        for train_metadata in INPUT_ROOT.rglob("train/metadata.jsonl"):
+            candidate = train_metadata.parent.parent
+            required = (
+                candidate / "validation/metadata.jsonl",
+                candidate / "manifests/kaggle_file_mapping.csv",
+                candidate / "DATASET_CARD.md",
+            )
+            if all(path.is_file() for path in required) and candidate not in extracted_candidates:
+                extracted_candidates.append(candidate)
+        if len(extracted_candidates) > 1:
+            raise SystemExit(
+                f"STOP: multiple extracted fixed dataset roots found: {extracted_candidates}"
+            )
+        if extracted_candidates:
+            EXTRACTED_INPUT_ROOT = extracted_candidates[0]
+            DATASET_DISCOVERY_MODE = "kaggle_extracted_content"
+        else:
+            attached_roots = sorted(path.name for path in INPUT_ROOT.iterdir())
+            sample_files = sorted(
+                path.relative_to(INPUT_ROOT).as_posix()
+                for path in INPUT_ROOT.rglob("*")
+                if path.is_file()
+            )[:30]
+            raise SystemExit(
+                "STOP: fixed dataset input not found. Use Add Input and attach the Kaggle "
+                "dataset containing either dataset_multicrop_v1_kaggle_fixed.zip or "
+                "train/metadata.jsonl + validation/metadata.jsonl. "
+                f"Attached roots={attached_roots}, sample_files={sample_files}"
+            )
+DATASET_INPUT_PATH = DATASET_ZIP if DATASET_ZIP is not None else EXTRACTED_INPUT_ROOT
+print("Dataset input:", DATASET_INPUT_PATH)
+print("Discovery mode:", DATASET_DISCOVERY_MODE)
+```
+
+## Cell 06 - Validate Dataset Identity
+
+- Type: Code
+- Tujuan: Membuktikan ZIP atau folder extracted identik dengan paket fixed yang diuji lokal.
+- Input: Expected package SHA atau anchored mapping/metadata SHA dari CONFIG.
+- Expected output: Package checksum PASS atau 389 image hashes + anchors PASS.
+- Stop condition: STOP jika checksum, anchor, mapping, ukuran, atau image hash berbeda.
+
+```python
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+DATASET_PACKAGE_SHA256 = CONFIG["dataset"]["sha256"]
+if DATASET_ZIP is not None:
+    DATASET_INPUT_ACTUAL_SHA256 = sha256_file(DATASET_ZIP)
+    if DATASET_INPUT_ACTUAL_SHA256 != DATASET_PACKAGE_SHA256:
+        raise SystemExit(
+            "STOP: dataset package checksum mismatch: "
+            f"expected={DATASET_PACKAGE_SHA256}, actual={DATASET_INPUT_ACTUAL_SHA256}"
+        )
+    DATASET_IDENTITY_REPORT = {
+        "status": "pass",
+        "mode": "zip_sha256",
+        "package_sha256": DATASET_PACKAGE_SHA256,
+        "input_sha256": DATASET_INPUT_ACTUAL_SHA256,
+    }
+else:
+    if EXTRACTED_INPUT_ROOT is None:
+        raise SystemExit("STOP: internal dataset discovery state is empty")
+    anchor_results = {}
+    for relative_name, expected_sha in CONFIG["dataset"]["extracted_content_anchors"].items():
+        anchor_path = EXTRACTED_INPUT_ROOT / relative_name
+        if not anchor_path.is_file():
+            raise SystemExit(f"STOP: extracted dataset anchor missing: {relative_name}")
+        actual_sha = sha256_file(anchor_path)
+        if actual_sha != expected_sha:
+            raise SystemExit(
+                f"STOP: extracted dataset anchor checksum mismatch: {relative_name}, "
+                f"expected={expected_sha}, actual={actual_sha}"
+            )
+        anchor_results[relative_name] = actual_sha
+    mapping_path = EXTRACTED_INPUT_ROOT / "manifests/kaggle_file_mapping.csv"
+    with mapping_path.open("r", encoding="utf-8", newline="") as handle:
+        mapping_rows = list(csv.DictReader(handle))
+    if len(mapping_rows) != CONFIG["dataset"]["total_count"]:
+        raise SystemExit(f"STOP: extracted mapping row count {len(mapping_rows)} != 389")
+    required_mapping_fields = {
+        "split",
+        "row_index",
+        "target_file_name",
+        "source_sha256",
+        "target_sha256",
+        "byte_size",
+    }
+    if not mapping_rows or not required_mapping_fields.issubset(mapping_rows[0]):
+        raise SystemExit("STOP: extracted mapping schema is incomplete")
+    extracted_targets = set()
+    extracted_hashes_validated = 0
+    mapping_split_counts = {"train": 0, "validation": 0}
+    for mapping in mapping_rows:
+        split = mapping["split"]
+        target_name = mapping["target_file_name"]
+        if split not in {"train", "validation"}:
+            raise SystemExit(f"STOP: invalid mapping split: {split}")
+        target_relative = PurePosixPath(target_name)
+        if (
+            target_relative.is_absolute()
+            or ".." in target_relative.parts
+            or len(target_relative.parts) != 1
+        ):
+            raise SystemExit(f"STOP: unsafe extracted mapping target: {target_name}")
+        target_key = (split, target_name)
+        if target_key in extracted_targets:
+            raise SystemExit(f"STOP: duplicate extracted mapping target: {target_key}")
+        extracted_targets.add(target_key)
+        expected_image_sha = mapping["target_sha256"]
+        if expected_image_sha != mapping["source_sha256"]:
+            raise SystemExit(f"STOP: source-target SHA evidence mismatch: {target_key}")
+        image_path = EXTRACTED_INPUT_ROOT / split / target_name
+        if not image_path.is_file() or image_path.stat().st_size != int(mapping["byte_size"]):
+            raise SystemExit(f"STOP: extracted image missing or size mismatch: {target_key}")
+        actual_image_sha = sha256_file(image_path)
+        if actual_image_sha != expected_image_sha:
+            raise SystemExit(
+                f"STOP: extracted image SHA mismatch: {target_key}, "
+                f"expected={expected_image_sha}, actual={actual_image_sha}"
+            )
+        extracted_hashes_validated += 1
+        mapping_split_counts[split] += 1
+    expected_mapping_counts = {
+        "train": CONFIG["dataset"]["train_count"],
+        "validation": CONFIG["dataset"]["validation_count"],
+    }
+    if mapping_split_counts != expected_mapping_counts:
+        raise SystemExit(
+            f"STOP: extracted mapping split counts {mapping_split_counts} != {expected_mapping_counts}"
+        )
+    DATASET_INPUT_ACTUAL_SHA256 = None
+    DATASET_IDENTITY_REPORT = {
+        "status": "pass",
+        "mode": "anchored_extracted_content",
+        "logical_package_sha256": DATASET_PACKAGE_SHA256,
+        "anchors": anchor_results,
+        "mapping_rows": len(mapping_rows),
+        "mapping_split_counts": mapping_split_counts,
+        "image_hashes_validated": extracted_hashes_validated,
+    }
+print("Dataset package identity SHA-256:", DATASET_PACKAGE_SHA256)
+print(json.dumps(DATASET_IDENTITY_REPORT, indent=2))
+record_event("dataset_identity", "pass", DATASET_IDENTITY_REPORT)
+```
+
+## Cell 07 - Prepare Dataset Scan Root
+
+- Type: Code
+- Tujuan: Mengekstrak ZIP secara aman atau memakai folder Kaggle tervalidasi secara langsung.
+- Input: DATASET_ZIP optional, EXTRACTED_INPUT_ROOT optional, dan EXTRACT_ROOT runtime.
+- Expected output: DATASET_SCAN_ROOT siap dibaca oleh semua cell berikutnya.
+- Stop condition: STOP jika ZIP korup, path traversal, atau discovery state tidak valid.
+
+```python
+if DATASET_ZIP is not None:
+    if EXTRACT_ROOT.exists():
+        shutil.rmtree(EXTRACT_ROOT)
+    EXTRACT_ROOT.mkdir(parents=True)
+    with zipfile.ZipFile(DATASET_ZIP) as archive:
+        corrupt_member = archive.testzip()
+        if corrupt_member:
+            raise SystemExit(f"STOP: corrupt dataset ZIP member: {corrupt_member}")
+        resolved_extract_root = EXTRACT_ROOT.resolve()
+        for member in archive.infolist():
+            target = (EXTRACT_ROOT / member.filename).resolve()
+            if target != resolved_extract_root and not target.is_relative_to(resolved_extract_root):
+                raise SystemExit(f"STOP: unsafe ZIP path: {member.filename}")
+        archive.extractall(EXTRACT_ROOT)
+    DATASET_SCAN_ROOT = EXTRACT_ROOT
+    print("Extracted ZIP to:", DATASET_SCAN_ROOT)
+elif EXTRACTED_INPUT_ROOT is not None:
+    DATASET_SCAN_ROOT = EXTRACTED_INPUT_ROOT
+    print("Using checksum-anchored Kaggle extracted dataset:", DATASET_SCAN_ROOT)
+else:
+    raise SystemExit("STOP: no dataset scan root available")
+```
+
+## Cell 08 - Discover Dataset Root
+
+- Type: Code
+- Tujuan: Menemukan root yang langsung memiliki train dan validation metadata.
+- Input: DATASET_SCAN_ROOT dari ZIP extraction atau Kaggle extracted input.
+- Expected output: DATASET_ROOT unik dengan struktur sederhana.
+- Stop condition: STOP jika root tidak unik atau struktur nested tidak sesuai.
+
+```python
+root_candidates = []
+if (DATASET_SCAN_ROOT / "train/metadata.jsonl").is_file() and (
+    DATASET_SCAN_ROOT / "validation/metadata.jsonl"
+).is_file():
+    root_candidates.append(DATASET_SCAN_ROOT)
+for train_metadata in DATASET_SCAN_ROOT.rglob("train/metadata.jsonl"):
+    candidate = train_metadata.parent.parent
+    if (candidate / "validation/metadata.jsonl").is_file() and candidate not in root_candidates:
+        root_candidates.append(candidate)
+if len(root_candidates) != 1:
+    raise SystemExit(f"STOP: extracted dataset root is not unique: {root_candidates}")
+DATASET_ROOT = root_candidates[0]
+TRAIN_DATA_DIR = DATASET_ROOT / "train"
+VALIDATION_DATA_DIR = DATASET_ROOT / "validation"
+print("Dataset root:", DATASET_ROOT)
+```
+
+## Cell 09 - Validate Metadata Counts
+
+- Type: Code
+- Tujuan: Membaca metadata train/validation dan mengunci split 312/77.
+- Input: train/metadata.jsonl dan validation/metadata.jsonl.
+- Expected output: Metadata count dan total sesuai source-of-truth.
+- Stop condition: STOP jika JSON invalid, row bukan object, atau count berubah.
+
+```python
+def read_jsonl(path):
+    rows = []
+    for line_number, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise SystemExit(f"STOP: invalid JSON at {path}:{line_number}: {exc}") from exc
+        if not isinstance(row, dict):
+            raise SystemExit(f"STOP: metadata row is not an object at {path}:{line_number}")
+        rows.append(row)
+    return rows
+
+
+TRAIN_ROWS = read_jsonl(TRAIN_DATA_DIR / "metadata.jsonl")
+VALIDATION_ROWS = read_jsonl(VALIDATION_DATA_DIR / "metadata.jsonl")
+if len(TRAIN_ROWS) != CONFIG["dataset"]["train_count"]:
+    raise SystemExit(f"STOP: train metadata count {len(TRAIN_ROWS)} != 312")
+if len(VALIDATION_ROWS) != CONFIG["dataset"]["validation_count"]:
+    raise SystemExit(f"STOP: validation metadata count {len(VALIDATION_ROWS)} != 77")
+if len(TRAIN_ROWS) + len(VALIDATION_ROWS) != CONFIG["dataset"]["total_count"]:
+    raise SystemExit("STOP: total metadata count changed")
+print("Train metadata:", len(TRAIN_ROWS))
+print("Validation metadata:", len(VALIDATION_ROWS))
+```
+
+## Cell 10 - Full Physical Image Validation
+
+- Type: Code
+- Tujuan: Memastikan setiap file metadata ada, nonzero, PIL verify, dan PIL load.
+- Input: 389 metadata rows dan file langsung di folder split.
+- Expected output: Missing 0 dan decode failures 0 untuk train/validation.
+- Stop condition: STOP jika satu file hilang, kosong, nested, atau gagal decode.
+
+```python
+from PIL import Image
+
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def validate_physical_split(split_root, rows, expected_count):
+    failures = []
+    metadata_names = []
+    for index, row in enumerate(rows):
+        file_name = str(row.get("file_name", "")).strip().replace("\\", "/")
+        relative = PurePosixPath(file_name)
+        if (
+            not file_name
+            or relative.is_absolute()
+            or ".." in relative.parts
+            or len(relative.parts) != 1
+        ):
+            failures.append({"index": index, "file_name": file_name, "error": "unsafe_or_nested"})
+            continue
+        image_path = split_root / file_name
+        metadata_names.append(file_name)
+        if not image_path.is_file() or image_path.stat().st_size <= 0:
+            failures.append({"index": index, "file_name": file_name, "error": "missing_or_empty"})
+            continue
+        try:
+            with Image.open(image_path) as image:
+                image.verify()
+            with Image.open(image_path) as image:
+                image.load()
+        except Exception as exc:
+            failures.append({"index": index, "file_name": file_name, "error": repr(exc)})
+    physical_names = {
+        path.name
+        for path in split_root.iterdir()
+        if path.is_file() and path.suffix.casefold() in ALLOWED_IMAGE_EXTENSIONS
+    }
+    if len(rows) != expected_count or len(metadata_names) != len(set(metadata_names)):
+        failures.append({"error": "count_or_duplicate_metadata_name"})
+    if set(metadata_names) != physical_names:
+        failures.append(
+            {
+                "error": "metadata_physical_set_mismatch",
+                "missing": sorted(set(metadata_names) - physical_names),
+                "unlisted": sorted(physical_names - set(metadata_names)),
+            }
+        )
+    if failures:
+        raise SystemExit(f"STOP: physical validation failed for {split_root.name}: {failures[:10]}")
+    return {"status": "pass", "rows": len(rows), "decoded": len(rows), "failures": 0}
+
+
+PHYSICAL_VALIDATION = {
+    "train": validate_physical_split(TRAIN_DATA_DIR, TRAIN_ROWS, 312),
+    "validation": validate_physical_split(VALIDATION_DATA_DIR, VALIDATION_ROWS, 77),
+}
+print(json.dumps(PHYSICAL_VALIDATION, indent=2))
+```
+
+## Cell 11 - Caption and Trigger Validation
+
+- Type: Code
+- Tujuan: Menjaga caption nonempty, trigger sesuai class, tanpa trigger silang atau media path tambahan.
+- Input: 389 metadata rows dan trigger CONFIG.
+- Expected output: Class counts 95/100/97/97 dan trigger validation PASS.
+- Stop condition: STOP jika caption, class, trigger, atau reserved media column tidak valid.
+
+```python
+from collections import Counter
+
+
+def validate_caption_rows(rows, split):
+    counts = Counter()
+    errors = []
+    triggers = CONFIG["dataset"]["triggers"]
+    for index, row in enumerate(rows):
+        class_id = str(row.get("class_id", "")).strip()
+        text = str(row.get("text", "")).strip()
+        trigger_token = str(row.get("trigger_token", "")).strip()
+        expected_trigger = triggers.get(class_id)
+        reserved_columns = [
+            key for key in row if key != "file_name" and str(key).endswith("_file_name")
+        ]
+        if not text:
+            errors.append(f"{split}:{index}: empty text")
+        if (
+            not expected_trigger
+            or trigger_token != expected_trigger
+            or expected_trigger not in text
+        ):
+            errors.append(f"{split}:{index}: class/trigger mismatch")
+        wrong = [value for key, value in triggers.items() if key != class_id and value in text]
+        if wrong:
+            errors.append(f"{split}:{index}: cross trigger {wrong}")
+        if reserved_columns:
+            errors.append(f"{split}:{index}: reserved media columns {reserved_columns}")
+        counts[class_id] += 1
+    if errors:
+        raise SystemExit(f"STOP: caption and trigger validation failed: {errors[:10]}")
+    return counts
+
+
+CLASS_COUNTS = validate_caption_rows(TRAIN_ROWS, "train")
+CLASS_COUNTS.update(validate_caption_rows(VALIDATION_ROWS, "validation"))
+if dict(CLASS_COUNTS) != CONFIG["dataset"]["class_counts"]:
+    raise SystemExit(
+        f"STOP: class counts changed: {dict(CLASS_COUNTS)} != {CONFIG['dataset']['class_counts']}"
+    )
+print("Caption and trigger validation: PASS")
+print("Class counts:", dict(CLASS_COUNTS))
+```
+
+## Cell 12 - Fresh Hugging Face Cache and Probe Helper
+
+- Type: Code
+- Tujuan: Membuat cache RUN_ID baru dan helper subprocess ImageFolder tanpa mengotori kernel.
+- Input: CONFIG datasets version, DATASET_ROOT, dan RUNTIME_ROOT.
+- Expected output: HF cache kosong dan probe helper tersedia.
+- Stop condition: STOP jika dependency ImageFolder tidak dapat dipasang atau cache path tidak aman.
+
+```python
+def installed_version(distribution):
+    try:
+        return importlib.metadata.version(distribution)
+    except importlib.metadata.PackageNotFoundError:
+        return None
+
+
+bootstrap_requirements = []
+if installed_version("datasets") is None:
+    bootstrap_requirements.append(f"datasets=={CONFIG['versions']['datasets']}")
+if installed_version("Pillow") is None:
+    bootstrap_requirements.append("Pillow>=10,<13")
+if bootstrap_requirements:
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--upgrade", *bootstrap_requirements],
+        check=True,
+    )
+resolved_runtime_root = RUNTIME_ROOT.resolve()
+resolved_cache_root = HF_CACHE_ROOT.resolve()
+if resolved_cache_root == resolved_runtime_root or not resolved_cache_root.is_relative_to(
+    resolved_runtime_root
+):
+    raise SystemExit(f"STOP: unsafe Hugging Face cache path: {resolved_cache_root}")
+if HF_CACHE_ROOT.exists():
+    shutil.rmtree(HF_CACHE_ROOT)
+HF_CACHE_ROOT.mkdir(parents=True)
+
+IMAGEFOLDER_PROBE_SCRIPT = r"""
+import json
+import os
+import sys
+from pathlib import Path
+from datasets import load_dataset
+
+split_root = Path(sys.argv[1])
+split_name = sys.argv[2]
+expected_count = int(sys.argv[3])
+cache_root = Path(sys.argv[4])
+mode = sys.argv[5]
+data_files = {split_name: os.path.join(str(split_root), "**")}
+dataset = load_dataset(
+    "imagefolder",
+    data_files=data_files,
+    cache_dir=str(cache_root),
+)[split_name]
+if len(dataset) != expected_count:
+    raise SystemExit(f"count mismatch: {len(dataset)} != {expected_count}")
+decoded = 0
+batches = 0
+if mode == "full":
+    for index in range(len(dataset)):
+        image = dataset[index]["image"]
+        image.load()
+        image.close()
+        decoded += 1
+elif mode == "batch":
+    batch_size = 4
+    for start in range(0, len(dataset), batch_size):
+        indexes = list(range(start, min(start + batch_size, len(dataset))))
+        batch = dataset[indexes]
+        if len(batch["image"]) != len(indexes) or len(batch["text"]) != len(indexes):
+            raise SystemExit(f"batch mismatch at {start}")
+        for image, text in zip(batch["image"], batch["text"], strict=True):
+            if not str(text).strip():
+                raise SystemExit(f"empty caption at batch {start}")
+            image.load()
+            image.close()
+            decoded += 1
+        batches += 1
+else:
+    raise SystemExit(f"unknown mode: {mode}")
+print(json.dumps({
+    "status": "pass",
+    "split": split_name,
+    "mode": mode,
+    "rows": len(dataset),
+    "decoded": decoded,
+    "batches": batches,
+    "columns": dataset.column_names,
+}, sort_keys=True))
+"""
+
+
+def run_imagefolder_probe(split_root, split_name, expected_count, mode):
+    environment = os.environ.copy()
+    environment["HF_DATASETS_CACHE"] = str(HF_CACHE_ROOT)
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            IMAGEFOLDER_PROBE_SCRIPT,
+            str(split_root),
+            split_name,
+            str(expected_count),
+            str(HF_CACHE_ROOT),
+            mode,
+        ],
+        env=environment,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        message = (result.stderr or result.stdout).strip().splitlines()[-20:]
+        raise SystemExit(f"STOP: ImageFolder {split_name} {mode} decode failed: {message}")
+    report = json.loads(result.stdout.strip().splitlines()[-1])
+    if report.get("decoded") != expected_count:
+        raise SystemExit(f"STOP: ImageFolder {split_name} full decode failed")
+    return report
+
+
+print("Fresh HF cache:", HF_CACHE_ROOT)
+```
+
+## Cell 13 - Full ImageFolder Train Decode
+
+- Type: Code
+- Tujuan: Membuka image feature 312/312 memakai Hugging Face ImageFolder subprocess.
+- Input: TRAIN_DATA_DIR dan fresh HF cache.
+- Expected output: IMAGEFOLDER_TRAIN_FULL_DECODE = PASS.
+- Stop condition: STOP: ImageFolder train full decode failed.
+
+```python
+IMAGEFOLDER_TRAIN_REPORT = run_imagefolder_probe(
+    TRAIN_DATA_DIR, "train", CONFIG["dataset"]["train_count"], "full"
+)
+print("IMAGEFOLDER_TRAIN_FULL_DECODE = PASS")
+print(json.dumps(IMAGEFOLDER_TRAIN_REPORT, indent=2))
+```
+
+## Cell 14 - Full ImageFolder Validation Decode
+
+- Type: Code
+- Tujuan: Membuka image feature 77/77 memakai Hugging Face ImageFolder subprocess.
+- Input: VALIDATION_DATA_DIR dan fresh HF cache.
+- Expected output: IMAGEFOLDER_VALIDATION_FULL_DECODE = PASS.
+- Stop condition: STOP: ImageFolder validation full decode failed.
+
+```python
+IMAGEFOLDER_VALIDATION_REPORT = run_imagefolder_probe(
+    VALIDATION_DATA_DIR,
+    "validation",
+    CONFIG["dataset"]["validation_count"],
+    "full",
+)
+print("IMAGEFOLDER_VALIDATION_FULL_DECODE = PASS")
+print(json.dumps(IMAGEFOLDER_VALIDATION_REPORT, indent=2))
+```
+
+## Cell 15 - Diffusers-Equivalent Batched Loader Probe
+
+- Type: Code
+- Tujuan: Meniru load_dataset imagefolder dan batched __getitems__ yang dipakai DataLoader training.
+- Input: TRAIN_DATA_DIR, caption text, dan cache yang sama dengan training.
+- Expected output: 312 images decoded dalam 78 batch.
+- Stop condition: STOP jika batch decode atau caption gagal.
+
+```python
+DIFFUSERS_LOADER_REPORT = run_imagefolder_probe(
+    TRAIN_DATA_DIR, "train", CONFIG["dataset"]["train_count"], "batch"
+)
+if DIFFUSERS_LOADER_REPORT.get("batches") != 78:
+    raise SystemExit(f"STOP: Diffusers loader batch count mismatch: {DIFFUSERS_LOADER_REPORT}")
+print("DIFFUSERS_LOADER_PROBE = PASS")
+print(json.dumps(DIFFUSERS_LOADER_REPORT, indent=2))
+```
+
+## Cell 16 - Dependency Audit
+
+- Type: Code
+- Tujuan: Mencatat Python, Torch, CUDA, dan versi dependency sebelum perubahan minimal.
+- Input: Kaggle Python environment dan CONFIG versions.
+- Expected output: Dependency audit JSON tersimpan.
+- Stop condition: STOP jika Torch CUDA berubah atau Python environment tidak dapat diaudit.
+
+```python
+DEPENDENCY_DISTRIBUTIONS = (
+    "accelerate",
+    "bitsandbytes",
+    "datasets",
+    "diffusers",
+    "huggingface-hub",
+    "peft",
+    "safetensors",
+    "transformers",
+    "torch",
+    "torchvision",
+)
+DEPENDENCY_AUDIT_BEFORE = {
+    "python": sys.version,
+    "executable": sys.executable,
+    "torch": torch.__version__,
+    "cuda": torch.version.cuda,
+    "packages": {name: installed_version(name) for name in DEPENDENCY_DISTRIBUTIONS},
+}
+(LOGS_ROOT / "dependency_audit_before.json").write_text(
+    json.dumps(DEPENDENCY_AUDIT_BEFORE, indent=2), encoding="utf-8"
+)
+print(json.dumps(DEPENDENCY_AUDIT_BEFORE, indent=2))
+```
+
+## Cell 17 - Install Required ML Dependencies
+
+- Type: Code
+- Tujuan: Memasang hanya dependency non-Torch yang hilang atau tidak cocok dengan kombinasi terbukti.
+- Input: CONFIG version pins dan hasil dependency audit.
+- Expected output: Pinned dependency PASS dan pip check PASS.
+- Stop condition: STOP jika pip install, import environment, atau pip check gagal.
+
+```python
+PINNED_REQUIREMENTS = {
+    "accelerate": CONFIG["versions"]["accelerate"],
+    "bitsandbytes": CONFIG["versions"]["bitsandbytes"],
+    "datasets": CONFIG["versions"]["datasets"],
+    "huggingface-hub": CONFIG["versions"]["huggingface-hub"],
+    "peft": CONFIG["versions"]["peft"],
+    "safetensors": CONFIG["versions"]["safetensors"],
+    "transformers": CONFIG["versions"]["transformers"],
+}
+requirements_to_install = [
+    f"{name}=={target}"
+    for name, target in PINNED_REQUIREMENTS.items()
+    if installed_version(name) != target
+]
+for requirement in ("tensorboard>=2.16,<3", "ftfy>=6,<7", "Jinja2>=3.1,<4"):
+    distribution = requirement.split(">", 1)[0].split("=", 1)[0]
+    if installed_version(distribution) is None:
+        requirements_to_install.append(requirement)
+if requirements_to_install:
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--upgrade", *requirements_to_install],
+        check=True,
+    )
+unused_optional = [name for name in ("torchao", "wandb") if installed_version(name)]
+if unused_optional:
+    subprocess.run(
+        [sys.executable, "-m", "pip", "uninstall", "--yes", *unused_optional],
+        check=True,
+    )
+pip_check = subprocess.run([sys.executable, "-m", "pip", "check"], capture_output=True, text=True)
+pip_check_output = "\n".join(
+    part.strip() for part in (pip_check.stdout, pip_check.stderr) if part.strip()
+)
+(LOGS_ROOT / "pip_check.log").write_text(pip_check_output + "\n", encoding="utf-8")
+core_conflict_tokens = {
+    "accelerate",
+    "bitsandbytes",
+    "datasets",
+    "diffusers",
+    "huggingface-hub",
+    "huggingface_hub",
+    "peft",
+    "safetensors",
+    "transformers",
+    "torch",
+    "torchvision",
+}
+pip_conflict_lines = [line for line in pip_check_output.splitlines() if line.strip()]
+core_pip_conflicts = [
+    line
+    for line in pip_conflict_lines
+    if line.casefold().split(maxsplit=1)[0].rstrip(":") in core_conflict_tokens
+]
+if pip_check.returncode != 0 and core_pip_conflicts:
+    raise SystemExit("STOP: core ML dependency conflict:\n" + "\n".join(core_pip_conflicts))
+if pip_check.returncode != 0:
+    print(
+        "pip check reported unrelated Kaggle package conflicts; import gates remain authoritative."
+    )
+    print(pip_check_output)
+DEPENDENCY_AUDIT_AFTER = {
+    "torch_unchanged": torch.__version__ == DEPENDENCY_AUDIT_BEFORE["torch"],
+    "packages": {name: installed_version(name) for name in DEPENDENCY_DISTRIBUTIONS},
+    "removed_unused_optional": unused_optional,
+    "pip_check_return_code": pip_check.returncode,
+    "pip_check_core_conflicts": core_pip_conflicts,
+}
+if not DEPENDENCY_AUDIT_AFTER["torch_unchanged"]:
+    raise SystemExit("STOP: PyTorch changed unexpectedly")
+for name, target in PINNED_REQUIREMENTS.items():
+    if DEPENDENCY_AUDIT_AFTER["packages"].get(name) != target:
+        raise SystemExit(f"STOP: dependency version mismatch: {name}")
+(LOGS_ROOT / "dependency_audit_after.json").write_text(
+    json.dumps(DEPENDENCY_AUDIT_AFTER, indent=2), encoding="utf-8"
+)
+print(json.dumps(DEPENDENCY_AUDIT_AFTER, indent=2))
+```
+
+## Cell 18 - Acquire Exact Diffusers Source
+
+- Type: Code
+- Tujuan: Checkout commit Diffusers terbukti, install editable, dan aktifkan source pada kernel Jupyter yang sedang berjalan.
+- Input: Internet, git, exact commit CONFIG, dan sys.path kernel.
+- Expected output: git rev-parse cocok serta StableDiffusionPipeline dapat diimpor dari source exact pada current kernel.
+- Stop condition: STOP jika clone, checkout, install, commit verification, atau current-kernel import gagal.
+
+```python
+DIFFUSERS_SOURCE = WORKING_ROOT / "taniadaptif_diffusers"
+if DIFFUSERS_SOURCE.exists() and not (DIFFUSERS_SOURCE / ".git").is_dir():
+    resolved_source = DIFFUSERS_SOURCE.resolve()
+    if resolved_source != (WORKING_ROOT / "taniadaptif_diffusers").resolve():
+        raise SystemExit(f"STOP: unsafe Diffusers source path: {resolved_source}")
+    shutil.rmtree(DIFFUSERS_SOURCE)
+if not DIFFUSERS_SOURCE.exists():
+    subprocess.run(
+        [
+            "git",
+            "clone",
+            "--filter=blob:none",
+            "https://github.com/huggingface/diffusers.git",
+            str(DIFFUSERS_SOURCE),
+        ],
+        check=True,
+    )
+subprocess.run(
+    [
+        "git",
+        "-C",
+        str(DIFFUSERS_SOURCE),
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        CONFIG["model"]["diffusers_commit"],
+    ],
+    check=True,
+)
+subprocess.run(
+    [
+        "git",
+        "-C",
+        str(DIFFUSERS_SOURCE),
+        "checkout",
+        "--detach",
+        CONFIG["model"]["diffusers_commit"],
+    ],
+    check=True,
+)
+ACTUAL_DIFFUSERS_COMMIT = subprocess.check_output(
+    ["git", "-C", str(DIFFUSERS_SOURCE), "rev-parse", "HEAD"], text=True
+).strip()
+if ACTUAL_DIFFUSERS_COMMIT != CONFIG["model"]["diffusers_commit"]:
+    raise SystemExit(f"STOP: Diffusers commit mismatch: {ACTUAL_DIFFUSERS_COMMIT}")
+subprocess.run(
+    [sys.executable, "-m", "pip", "install", "--no-deps", "-e", str(DIFFUSERS_SOURCE)],
+    check=True,
+)
+DIFFUSERS_SRC = (DIFFUSERS_SOURCE / "src").resolve()
+if not (DIFFUSERS_SRC / "diffusers" / "__init__.py").is_file():
+    raise SystemExit(f"STOP: Diffusers src package missing: {DIFFUSERS_SRC}")
+
+# Editable-install .pth files are processed only when Python starts. The Kaggle
+# notebook kernel predates pip install, so activate the exact checkout explicitly.
+diffusers_src_text = str(DIFFUSERS_SRC)
+if diffusers_src_text in sys.path:
+    sys.path.remove(diffusers_src_text)
+sys.path.insert(0, diffusers_src_text)
+importlib.invalidate_caches()
+CURRENT_KERNEL_DIFFUSERS = importlib.import_module("diffusers")
+CURRENT_KERNEL_DIFFUSERS_PATH = Path(CURRENT_KERNEL_DIFFUSERS.__file__).resolve()
+if DIFFUSERS_SRC not in CURRENT_KERNEL_DIFFUSERS_PATH.parents:
+    raise SystemExit(
+        "STOP: current kernel loaded Diffusers outside exact checkout: "
+        f"{CURRENT_KERNEL_DIFFUSERS_PATH}"
+    )
+CURRENT_KERNEL_STABLE_DIFFUSION_PIPELINE = getattr(
+    CURRENT_KERNEL_DIFFUSERS, "StableDiffusionPipeline", None
+)
+if CURRENT_KERNEL_STABLE_DIFFUSION_PIPELINE is None:
+    raise SystemExit("STOP: StableDiffusionPipeline unavailable in current kernel")
+CURRENT_KERNEL_DIFFUSERS_VERSION = str(
+    getattr(CURRENT_KERNEL_DIFFUSERS, "__version__", "")
+).strip()
+CURRENT_KERNEL_DIFFUSERS_DISTRIBUTION_VERSION = installed_version("diffusers")
+if not CURRENT_KERNEL_DIFFUSERS_VERSION:
+    raise SystemExit("STOP: current-kernel Diffusers version is unavailable")
+if CURRENT_KERNEL_DIFFUSERS_DISTRIBUTION_VERSION != CURRENT_KERNEL_DIFFUSERS_VERSION:
+    raise SystemExit(
+        "STOP: Diffusers source/distribution version mismatch: "
+        f"{CURRENT_KERNEL_DIFFUSERS_VERSION} != "
+        f"{CURRENT_KERNEL_DIFFUSERS_DISTRIBUTION_VERSION}"
+    )
+DIFFUSERS_RUNTIME_REPORT = {
+    "version": CURRENT_KERNEL_DIFFUSERS_VERSION,
+    "distribution_version": CURRENT_KERNEL_DIFFUSERS_DISTRIBUTION_VERSION,
+    "commit": ACTUAL_DIFFUSERS_COMMIT,
+    "module_path": str(CURRENT_KERNEL_DIFFUSERS_PATH),
+    "source_root": str(DIFFUSERS_SOURCE.resolve()),
+    "current_kernel_exact_source": True,
+}
+(LOGS_ROOT / "diffusers_runtime_report.json").write_text(
+    json.dumps(DIFFUSERS_RUNTIME_REPORT, indent=2), encoding="utf-8"
+)
+print("Diffusers commit:", ACTUAL_DIFFUSERS_COMMIT)
+print("Current-kernel Diffusers:", CURRENT_KERNEL_DIFFUSERS_PATH)
+print(json.dumps(DIFFUSERS_RUNTIME_REPORT, indent=2))
+```
+
+## Cell 19 - Validate Training Entrypoint Imports
+
+- Type: Code
+- Tujuan: Menjalankan import probe fresh process untuk Diffusers, PEFT, Transformers, dan training script.
+- Input: Exact Diffusers source dan dependency pinned.
+- Expected output: Entrypoint --help dan adapter probe PASS.
+- Stop condition: STOP jika fresh subprocess import gagal.
+
+```python
+TRAINING_SCRIPT = DIFFUSERS_SOURCE / "examples/text_to_image/train_text_to_image_lora.py"
+if not TRAINING_SCRIPT.is_file():
+    raise SystemExit(f"STOP: training entrypoint missing: {TRAINING_SCRIPT}")
+entrypoint_probe = subprocess.run(
+    [sys.executable, str(TRAINING_SCRIPT), "--help"],
+    capture_output=True,
+    text=True,
+)
+(LOGS_ROOT / "training_entrypoint_probe.log").write_text(
+    entrypoint_probe.stdout + entrypoint_probe.stderr, encoding="utf-8"
+)
+if entrypoint_probe.returncode != 0:
+    raise SystemExit(
+        "STOP: training entrypoint import failed: "
+        + "\n".join((entrypoint_probe.stderr or entrypoint_probe.stdout).splitlines()[-20:])
+    )
+adapter_probe_source = """
+import json
+import accelerate
+import diffusers
+import peft
+import safetensors
+import transformers
+from diffusers import UNet2DConditionModel
+print(json.dumps({
+    "accelerate": accelerate.__version__,
+    "diffusers": diffusers.__version__,
+    "peft": peft.__version__,
+    "safetensors": safetensors.__version__,
+    "transformers": transformers.__version__,
+    "unet_has_add_adapter": hasattr(UNet2DConditionModel, "add_adapter"),
+}, sort_keys=True))
+"""
+adapter_probe = subprocess.run(
+    [sys.executable, "-c", adapter_probe_source], capture_output=True, text=True
+)
+if adapter_probe.returncode != 0:
+    raise SystemExit(
+        "STOP: PEFT adapter import failed: "
+        + "\n".join((adapter_probe.stderr or adapter_probe.stdout).splitlines()[-20:])
+    )
+ENTRYPOINT_IMPORT_REPORT = json.loads(adapter_probe.stdout.strip().splitlines()[-1])
+if ENTRYPOINT_IMPORT_REPORT.get("unet_has_add_adapter") is not True:
+    raise SystemExit("STOP: Diffusers UNet add_adapter unavailable")
+print("Training entrypoint imports: PASS")
+print(json.dumps(ENTRYPOINT_IMPORT_REPORT, indent=2))
+
+# Rebuild the run-scoped Arrow cache under the exact dependency set used by training.
+if HF_CACHE_ROOT.exists():
+    shutil.rmtree(HF_CACHE_ROOT)
+HF_CACHE_ROOT.mkdir(parents=True)
+IMAGEFOLDER_TRAIN_REPORT = run_imagefolder_probe(
+    TRAIN_DATA_DIR, "train", CONFIG["dataset"]["train_count"], "full"
+)
+IMAGEFOLDER_VALIDATION_REPORT = run_imagefolder_probe(
+    VALIDATION_DATA_DIR,
+    "validation",
+    CONFIG["dataset"]["validation_count"],
+    "full",
+)
+DIFFUSERS_LOADER_REPORT = run_imagefolder_probe(
+    TRAIN_DATA_DIR, "train", CONFIG["dataset"]["train_count"], "batch"
+)
+if DIFFUSERS_LOADER_REPORT.get("batches") != 78:
+    raise SystemExit("STOP: exact-environment Diffusers loader probe failed")
+print("Exact dependency ImageFolder and batched loader revalidation: PASS")
+```
+
+## Cell 20 - Create Accelerate Configuration
+
+- Type: Code
+- Tujuan: Membuat config single-GPU fp16 noninteractive untuk Kaggle.
+- Input: RUNTIME_ROOT dan mixed precision CONFIG.
+- Expected output: accelerate_kaggle.yaml tercetak.
+- Stop condition: STOP jika file config tidak dapat dibuat.
+
+```python
+ACCELERATE_CONFIG = RUNTIME_ROOT / "accelerate_kaggle.yaml"
+ACCELERATE_CONFIG.write_text(
+    """compute_environment: LOCAL_MACHINE
+distributed_type: 'NO'
+downcast_bf16: 'no'
+gpu_ids: all
+machine_rank: 0
+main_training_function: main
+mixed_precision: fp16
+num_machines: 1
+num_processes: 1
+rdzv_backend: static
+same_network: true
+tpu_env: []
+tpu_use_cluster: false
+tpu_use_sudo: false
+use_cpu: false
+""",
+    encoding="utf-8",
+)
+print(ACCELERATE_CONFIG.read_text(encoding="utf-8"))
+```
+
+## Cell 21 - Bitsandbytes Probe and Optimizer Fallback
+
+- Type: Code
+- Tujuan: Menguji AdamW8bit nyata di CUDA dan memilih fallback AdamW Torch bila gagal.
+- Input: GPU, bitsandbytes pinned, dan Torch yang tidak diubah.
+- Expected output: OPTIMIZER_ACTUAL bernilai adamw_8bit atau adamw_torch.
+- Stop condition: Tidak berhenti karena bitsandbytes; fallback otomatis wajib tersedia.
+
+```python
+bnb_probe_source = """
+import json
+import torch
+report = {"cuda": torch.cuda.is_available(), "status": "failed"}
+try:
+    import bitsandbytes as bnb
+    parameter = torch.nn.Parameter(torch.ones(8, device="cuda"))
+    optimizer = bnb.optim.AdamW8bit([parameter], lr=1e-4)
+    loss = (parameter.square()).mean()
+    loss.backward()
+    optimizer.step()
+    report.update({"status": "pass", "bitsandbytes": bnb.__version__})
+except Exception as exc:
+    report["error"] = repr(exc)
+print(json.dumps(report, sort_keys=True))
+raise SystemExit(0 if report["status"] == "pass" else 1)
+"""
+bnb_probe = subprocess.run([sys.executable, "-c", bnb_probe_source], capture_output=True, text=True)
+bnb_output = "\n".join(
+    part.strip() for part in (bnb_probe.stdout, bnb_probe.stderr) if part.strip()
+)
+(LOGS_ROOT / "bitsandbytes_probe.log").write_text(bnb_output + "\n", encoding="utf-8")
+if bnb_probe.stdout.strip():
+    try:
+        BITSANDBYTES_REPORT = json.loads(bnb_probe.stdout.strip().splitlines()[-1])
+    except json.JSONDecodeError:
+        BITSANDBYTES_REPORT = {"status": "failed", "raw_output": bnb_output}
+else:
+    BITSANDBYTES_REPORT = {"status": "failed", "raw_output": bnb_output}
+USE_8BIT_ADAM = bnb_probe.returncode == 0 and BITSANDBYTES_REPORT.get("status") == "pass"
+OPTIMIZER_ACTUAL = "adamw_8bit" if USE_8BIT_ADAM else "adamw_torch"
+TRAIN_ENV = os.environ.copy()
+TRAIN_ENV["HF_DATASETS_CACHE"] = str(HF_CACHE_ROOT)
+TRAIN_ENV["HF_HOME"] = str(HF_CACHE_ROOT)
+TRAIN_ENV["HF_HUB_CACHE"] = str(HF_CACHE_ROOT / "hub")
+TRAIN_ENV["TOKENIZERS_PARALLELISM"] = "false"
+TRAIN_ENV["WANDB_DISABLED"] = "true"
+print("Optimizer actual:", OPTIMIZER_ACTUAL)
+print(json.dumps(BITSANDBYTES_REPORT, indent=2))
+```
+
+## Cell 22 - Prepare Smoke Output and Inspect Prior Artifact
+
+- Type: Code
+- Tujuan: Mendeteksi smoke final valid atau checkpoint resume yang kompatibel tanpa memakai checkpoint main.
+- Input: SMOKE_OUTPUT, dataset SHA, config, dan optimizer actual.
+- Expected output: SMOKE_SKIP dan SMOKE_RESUME ditentukan aman.
+- Stop condition: STOP jika artefak mengaku valid tetapi struktur checkpoint atau SafeTensors rusak.
+
+```python
+from safetensors import safe_open
+
+CHECKPOINT_PATTERN = re.compile(r"^checkpoint-(\d+)$")
+LOSS_PATTERN = re.compile(r"(?:step_)?loss[=:]\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)")
+DEFAULT_LORA_FILENAME = CONFIG["model"]["default_lora_filename"]
+SMOKE_CANONICAL_FILENAME = "multisource_multicrop_smoke_lora.safetensors"
+SMOKE_MANIFEST_PATH = SMOKE_OUTPUT / "training_manifest.json"
+SMOKE_LOG_PATH = LOGS_ROOT / "smoke_training.log"
+
+
+def checkpoint_step(path):
+    match = CHECKPOINT_PATTERN.fullmatch(Path(path).name)
+    return int(match.group(1)) if match else None
+
+
+def checkpoint_is_valid(path):
+    path = Path(path)
+    if checkpoint_step(path) is None or not path.is_dir():
+        return False
+    files = [item for item in path.rglob("*") if item.is_file() and item.stat().st_size > 0]
+    names = {item.name for item in files}
+    structure_valid = bool(files) and all(
+        any(name.startswith(prefix) for name in names)
+        for prefix in ("optimizer", "scheduler", "random_states")
+    )
+    checkpoint_lora = path / DEFAULT_LORA_FILENAME
+    if (
+        not structure_valid
+        or not checkpoint_lora.is_file()
+        or checkpoint_lora.stat().st_size < 1024
+    ):
+        return False
+    try:
+        with safe_open(checkpoint_lora, framework="pt", device="cpu") as handle:
+            return bool(list(handle.keys()))
+    except Exception:
+        return False
+
+
+def inspect_lora(path):
+    path = Path(path)
+    report = {
+        "path": str(path),
+        "exists": path.exists(),
+        "is_file": path.is_file(),
+        "size_bytes": path.stat().st_size if path.is_file() else 0,
+        "tensor_keys": 0,
+        "valid": False,
+        "errors": [],
+    }
+    if not path.is_file():
+        report["errors"].append("file missing or directory")
+        return report
+    if path.stat().st_size < 1024:
+        report["errors"].append("file too small")
+        return report
+    try:
+        with safe_open(path, framework="pt", device="cpu") as handle:
+            keys = list(handle.keys())
+        if not keys:
+            raise ValueError("no tensor keys")
+        report["tensor_keys"] = len(keys)
+        report["valid"] = True
+    except Exception as exc:
+        report["errors"].append(repr(exc))
+    return report
+
+
+def run_compatibility(run_mode):
+    return {
+        "run_mode": run_mode,
+        "dataset_package_sha256": DATASET_PACKAGE_SHA256,
+        "base_model": CONFIG["model"]["base_model"],
+        "resolution": CONFIG["training"]["resolution"],
+        "rank": CONFIG["training"]["rank"],
+        "seed": CONFIG["training"]["seed"],
+        "learning_rate": CONFIG["training"]["learning_rate"],
+        "optimizer": OPTIMIZER_ACTUAL,
+        "train_count": CONFIG["dataset"]["train_count"],
+    }
+
+
+def manifest_is_compatible(manifest, expected):
+    errors = []
+    for key, value in expected.items():
+        if manifest.get(key) != value:
+            errors.append(f"{key}: {manifest.get(key)!r} != {value!r}")
+    return not errors, errors
+
+
+def checkpoint_manifest(path):
+    path = Path(path)
+    for parent in (path.parent, path.parent.parent):
+        candidate = parent / "training_manifest.json"
+        if candidate.is_file():
+            try:
+                return candidate, json.loads(candidate.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                return candidate, {}
+    return None, {}
+
+
+def checkpoint_file_manifest(path):
+    root = Path(path)
+    records = []
+    for item in sorted(candidate for candidate in root.rglob("*") if candidate.is_file()):
+        if item.is_symlink():
+            raise SystemExit(f"STOP: checkpoint contains symlink: {item}")
+        records.append(
+            {
+                "path": item.relative_to(root).as_posix(),
+                "size_bytes": item.stat().st_size,
+                "sha256": sha256_file(item),
+            }
+        )
+    return records
+
+
+def materialize_checkpoint(source, output_dir, run_mode):
+    source = Path(source)
+    output_dir = Path(output_dir)
+    if source.parent.resolve() == output_dir.resolve():
+        return source, "already_in_output_dir"
+    resolved_output = output_dir.resolve()
+    if resolved_output != (OUTPUTS_ROOT / output_dir.name).resolve():
+        raise SystemExit(f"STOP: unsafe checkpoint output directory: {resolved_output}")
+    source_manifest = checkpoint_file_manifest(source)
+    required_bytes = sum(record["size_bytes"] for record in source_manifest)
+    if (
+        not source_manifest
+        or shutil.disk_usage(output_dir).free < required_bytes + 512 * 1024 * 1024
+    ):
+        raise SystemExit("STOP: insufficient Kaggle working storage for checkpoint resume")
+    target = output_dir / source.name
+    if target.exists():
+        if checkpoint_is_valid(target) and checkpoint_file_manifest(target) == source_manifest:
+            return target, "verified_existing_copy"
+        archive = LOGS_ROOT / f"stale_{run_mode}_{source.name}_{RUN_ID}"
+        if archive.exists():
+            shutil.rmtree(archive)
+        shutil.move(str(target), archive)
+    temporary = output_dir / f".{source.name}.copy-{RUN_ID}"
+    if temporary.exists():
+        shutil.rmtree(temporary)
+    try:
+        shutil.copytree(source, temporary)
+        if checkpoint_file_manifest(temporary) != source_manifest:
+            raise SystemExit("STOP: checkpoint copy integrity mismatch")
+        os.replace(temporary, target)
+    finally:
+        if temporary.exists():
+            shutil.rmtree(temporary)
+    if not checkpoint_is_valid(target):
+        raise SystemExit("STOP: materialized checkpoint is structurally invalid")
+    return target, "copied_and_sha256_verified_from_kaggle_input"
+
+
+def select_highest_checkpoint(records, run_mode):
+    if not records:
+        return None
+    highest_step = max(checkpoint_step(record["path"]) or -1 for record in records)
+    highest = [record for record in records if checkpoint_step(record["path"]) == highest_step]
+    if len(highest) > 1:
+        reference_manifest = checkpoint_file_manifest(highest[0]["path"])
+        conflicting = [
+            str(record["path"])
+            for record in highest[1:]
+            if checkpoint_file_manifest(record["path"]) != reference_manifest
+        ]
+        if conflicting:
+            raise SystemExit(
+                f"STOP: ambiguous {run_mode} checkpoint-{highest_step} contents: {conflicting}"
+            )
+    return highest[0]
+
+
+SMOKE_EXPECTED = run_compatibility("smoke")
+if SMOKE_MANIFEST_PATH.is_file():
+    SMOKE_PRIOR_MANIFEST = json.loads(SMOKE_MANIFEST_PATH.read_text(encoding="utf-8"))
+else:
+    SMOKE_PRIOR_MANIFEST = {}
+smoke_compatible, smoke_compatibility_errors = manifest_is_compatible(
+    SMOKE_PRIOR_MANIFEST, SMOKE_EXPECTED
+)
+SMOKE_CANONICAL_PATH = SMOKE_OUTPUT / SMOKE_CANONICAL_FILENAME
+SMOKE_CHECKPOINT_100 = SMOKE_OUTPUT / "checkpoint-100"
+SMOKE_SKIP = (
+    smoke_compatible
+    and SMOKE_PRIOR_MANIFEST.get("status") == "success"
+    and checkpoint_is_valid(SMOKE_CHECKPOINT_100)
+    and inspect_lora(SMOKE_CANONICAL_PATH)["valid"]
+)
+if not SMOKE_SKIP and not smoke_compatible and SMOKE_PRIOR_MANIFEST:
+    archive = LOGS_ROOT / f"incompatible_smoke_{RUN_ID}"
+    if archive.exists():
+        shutil.rmtree(archive)
+    shutil.move(str(SMOKE_OUTPUT), archive)
+    SMOKE_OUTPUT.mkdir(parents=True)
+    SMOKE_CANONICAL_PATH = SMOKE_OUTPUT / SMOKE_CANONICAL_FILENAME
+    SMOKE_CHECKPOINT_100 = SMOKE_OUTPUT / "checkpoint-100"
+    SMOKE_PRIOR_MANIFEST = {}
+    print("Archived incompatible smoke output:", archive)
+SMOKE_CHECKPOINT_CANDIDATES = []
+if not SMOKE_SKIP:
+    candidate_paths = list(SMOKE_OUTPUT.glob("checkpoint-*"))
+    candidate_paths.extend(INPUT_ROOT.rglob("checkpoint-*"))
+    seen_checkpoints = set()
+    for candidate in candidate_paths:
+        resolved_candidate = str(candidate.resolve())
+        if resolved_candidate in seen_checkpoints or not checkpoint_is_valid(candidate):
+            continue
+        seen_checkpoints.add(resolved_candidate)
+        manifest_path, manifest = checkpoint_manifest(candidate)
+        compatible, errors = manifest_is_compatible(manifest, SMOKE_EXPECTED)
+        step = checkpoint_step(candidate)
+        if compatible and step is not None and step <= CONFIG["training"]["smoke_steps"]:
+            SMOKE_CHECKPOINT_CANDIDATES.append(
+                {"path": candidate, "manifest_path": manifest_path, "manifest": manifest}
+            )
+SMOKE_RESUME_RECORD = select_highest_checkpoint(SMOKE_CHECKPOINT_CANDIDATES, "smoke")
+SMOKE_RESUME = None
+SMOKE_RESUME_ACTION = "fresh"
+SMOKE_PRIOR_ELAPSED_SECONDS = 0.0
+if SMOKE_RESUME_RECORD:
+    SMOKE_RESUME, SMOKE_RESUME_ACTION = materialize_checkpoint(
+        SMOKE_RESUME_RECORD["path"], SMOKE_OUTPUT, "smoke"
+    )
+    SMOKE_PRIOR_ELAPSED_SECONDS = float(SMOKE_RESUME_RECORD["manifest"].get("elapsed_seconds", 0.0))
+for stale_lora in (
+    SMOKE_OUTPUT / DEFAULT_LORA_FILENAME,
+    SMOKE_OUTPUT / SMOKE_CANONICAL_FILENAME,
+):
+    if stale_lora.exists() and not inspect_lora(stale_lora)["valid"]:
+        stale_lora.unlink()
+print("Smoke skip:", SMOKE_SKIP)
+print("Smoke resume:", SMOKE_RESUME or "fresh")
+print("Smoke resume action:", SMOKE_RESUME_ACTION)
+if smoke_compatibility_errors:
+    print("Prior smoke incompatibilities:", smoke_compatibility_errors)
+```
+
+## Cell 23 - Build Smoke Training Command
+
+- Type: Code
+- Tujuan: Membuat command 100-step dengan checkpoint 50 dan optimizer hasil probe.
+- Input: CONFIG, TRAIN_DATA_DIR, Accelerate config, dan optional smoke resume.
+- Expected output: Command dan actual smoke config tersimpan.
+- Stop condition: STOP jika executable Accelerate tidak ditemukan atau command config tidak tepat.
+
+```python
+ACCELERATE_EXECUTABLE = shutil.which("accelerate")
+if not ACCELERATE_EXECUTABLE:
+    raise SystemExit("STOP: accelerate executable not found")
+SMOKE_ACTUAL_CONFIG = {
+    **SMOKE_EXPECTED,
+    "max_train_steps": CONFIG["training"]["smoke_steps"],
+    "checkpointing_steps": CONFIG["training"]["smoke_checkpointing_steps"],
+    "checkpoints_total_limit": CONFIG["training"]["smoke_checkpoint_limit"],
+    "gradient_accumulation_steps": CONFIG["training"]["gradient_accumulation_steps"],
+    "mixed_precision": CONFIG["training"]["mixed_precision"],
+    "diffusers_commit": ACTUAL_DIFFUSERS_COMMIT,
+    "resume_from_checkpoint": str(SMOKE_RESUME) if SMOKE_RESUME else None,
+    "output_dir": str(SMOKE_OUTPUT),
+}
+(SMOKE_OUTPUT / "actual_training_config.json").write_text(
+    json.dumps(SMOKE_ACTUAL_CONFIG, indent=2), encoding="utf-8"
+)
+SMOKE_COMMAND = []
+if not SMOKE_SKIP:
+    SMOKE_COMMAND = [
+        ACCELERATE_EXECUTABLE,
+        "launch",
+        "--config_file",
+        str(ACCELERATE_CONFIG),
+        str(TRAINING_SCRIPT),
+        "--pretrained_model_name_or_path",
+        CONFIG["model"]["base_model"],
+        "--train_data_dir",
+        str(TRAIN_DATA_DIR),
+        "--cache_dir",
+        str(HF_CACHE_ROOT),
+        "--caption_column",
+        "text",
+        "--resolution",
+        str(CONFIG["training"]["resolution"]),
+        "--random_flip",
+        "--train_batch_size",
+        str(CONFIG["training"]["train_batch_size"]),
+        "--gradient_accumulation_steps",
+        str(CONFIG["training"]["gradient_accumulation_steps"]),
+        "--max_train_steps",
+        str(CONFIG["training"]["smoke_steps"]),
+        "--checkpointing_steps",
+        str(CONFIG["training"]["smoke_checkpointing_steps"]),
+        "--checkpoints_total_limit",
+        str(CONFIG["training"]["smoke_checkpoint_limit"]),
+        "--learning_rate",
+        str(CONFIG["training"]["learning_rate"]),
+        "--lr_scheduler",
+        CONFIG["training"]["lr_scheduler"],
+        "--lr_warmup_steps",
+        str(CONFIG["training"]["lr_warmup_steps"]),
+        "--seed",
+        str(CONFIG["training"]["seed"]),
+        "--rank",
+        str(CONFIG["training"]["rank"]),
+        "--dataloader_num_workers",
+        str(CONFIG["training"]["dataloader_num_workers"]),
+        "--output_dir",
+        str(SMOKE_OUTPUT),
+        "--report_to",
+        "tensorboard",
+        "--logging_dir",
+        "tensorboard",
+        "--mixed_precision",
+        CONFIG["training"]["mixed_precision"],
+        "--gradient_checkpointing",
+    ]
+    if USE_8BIT_ADAM:
+        SMOKE_COMMAND.append("--use_8bit_adam")
+    if SMOKE_RESUME:
+        SMOKE_COMMAND.extend(["--resume_from_checkpoint", str(SMOKE_RESUME)])
+    SMOKE_MANIFEST_PATH.write_text(
+        json.dumps({"status": "started", **SMOKE_ACTUAL_CONFIG}, indent=2), encoding="utf-8"
+    )
+print("Smoke command:", " ".join(SMOKE_COMMAND) if SMOKE_COMMAND else "SKIPPED_VALID")
+```
+
+## Cell 24 - Run Smoke Training 100 Steps
+
+- Type: Code
+- Tujuan: Menjalankan subprocess real-time, menyimpan log, dan berhenti langsung pada error.
+- Input: SMOKE_COMMAND dan TRAIN_ENV.
+- Expected output: Return code 0 dan elapsed seconds tercatat.
+- Stop condition: STOP: smoke training failed.
+
+```python
+def first_training_error(log_text):
+    lines = log_text.replace("\r", "\n").splitlines()
+    starts = [index for index, line in enumerate(lines) if "Traceback (" in line]
+    if starts:
+        blocks = []
+        for position, start in enumerate(starts):
+            end = starts[position + 1] if position + 1 < len(starts) else len(lines)
+            blocks.append("\n".join(lines[start : min(end, start + 80)]))
+        child_blocks = [
+            block
+            for block in blocks
+            if not (
+                "subprocess.CalledProcessError" in block
+                and "accelerate/commands/launch.py" in block
+            )
+        ]
+        return (child_blocks or blocks)[0]
+    markers = (
+        "RuntimeError:",
+        "ValueError:",
+        "FileNotFoundError:",
+        "ModuleNotFoundError:",
+        "ImportError:",
+        "CUDA out of memory",
+        "HTTPError:",
+    )
+    indexes = [
+        index for index, line in enumerate(lines) if any(marker in line for marker in markers)
+    ]
+    start = max(0, indexes[0] - 10) if indexes else max(0, len(lines) - 80)
+    return "\n".join(lines[start : start + 80])
+
+
+def classify_training_failure(log_text):
+    lowered = log_text.casefold()
+    signatures = (
+        ("cuda_out_of_memory", ("cuda out of memory", "outofmemoryerror")),
+        ("dataset_image_missing", ("filenotfounderror", "no such file or directory")),
+        ("bitsandbytes", ("bitsandbytes", "adamw8bit")),
+        ("dependency_import", ("modulenotfounderror", "importerror")),
+        ("model_download", ("huggingface_hub", "httperror", "connectionerror")),
+    )
+    for category, markers in signatures:
+        if any(marker in lowered for marker in markers):
+            return category
+    return "unclassified_see_full_log"
+
+
+def run_realtime(command, log_path, environment, append=False):
+    mode = "a" if append else "w"
+    started = time.time()
+    with Path(log_path).open(mode, encoding="utf-8") as log_handle:
+        if append:
+            log_handle.write(f"\n===== RESUME {utc_now()} =====\n")
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+            env=environment,
+        )
+        if process.stdout is None:
+            raise SystemExit("STOP: training log stream unavailable")
+        for line in process.stdout:
+            print(line, end="")
+            log_handle.write(line)
+            log_handle.flush()
+        return_code = process.wait()
+    return return_code, round(time.time() - started, 2)
+
+
+if SMOKE_SKIP:
+    SMOKE_RETURN_CODE = 0
+    SMOKE_ELAPSED_SECONDS = float(SMOKE_PRIOR_MANIFEST.get("elapsed_seconds", 0.0))
+    print("Smoke training skipped because prior artifact is fully valid.")
+else:
+    SMOKE_RETURN_CODE, SMOKE_ATTEMPT_ELAPSED_SECONDS = run_realtime(
+        SMOKE_COMMAND, SMOKE_LOG_PATH, TRAIN_ENV, append=SMOKE_RESUME is not None
+    )
+    SMOKE_ELAPSED_SECONDS = SMOKE_PRIOR_ELAPSED_SECONDS + SMOKE_ATTEMPT_ELAPSED_SECONDS
+    if SMOKE_RETURN_CODE != 0:
+        log_text = SMOKE_LOG_PATH.read_text(encoding="utf-8", errors="replace")
+        failure = {
+            "status": "failed",
+            **SMOKE_ACTUAL_CONFIG,
+            "return_code": SMOKE_RETURN_CODE,
+            "elapsed_seconds": SMOKE_ELAPSED_SECONDS,
+            "attempt_elapsed_seconds": SMOKE_ATTEMPT_ELAPSED_SECONDS,
+            "root_error": first_training_error(log_text),
+            "failure_category": classify_training_failure(log_text),
+            "full_log": str(SMOKE_LOG_PATH),
+        }
+        SMOKE_MANIFEST_PATH.write_text(json.dumps(failure, indent=2), encoding="utf-8")
+        raise SystemExit("STOP: smoke training failed\n" + failure["root_error"])
+print("Smoke return code:", SMOKE_RETURN_CODE)
+print("Smoke elapsed seconds:", SMOKE_ELAPSED_SECONDS)
+```
+
+## Cell 25 - Validate Smoke Checkpoint and LoRA
+
+- Type: Code
+- Tujuan: Membuktikan step 100, loss finite, checkpoint state, dan SafeTensors aktual sebelum main.
+- Input: Smoke log, checkpoint-100, default LoRA, dan canonical smoke filename.
+- Expected output: SMOKE_VALIDATION status pass dan manifest success.
+- Stop condition: STOP jika satu smoke gate gagal.
+
+```python
+def canonicalize_lora(output_dir, canonical_filename, prefer_source=False):
+    source = Path(output_dir) / DEFAULT_LORA_FILENAME
+    canonical = Path(output_dir) / canonical_filename
+    canonical_report = inspect_lora(canonical)
+    if canonical_report["valid"] and not prefer_source:
+        return canonical, canonical_report, "already_valid"
+    source_report = inspect_lora(source)
+    if not source_report["valid"]:
+        raise SystemExit(f"STOP: final LoRA invalid: {source_report}")
+    temporary = canonical.with_suffix(canonical.suffix + ".tmp")
+    if temporary.exists():
+        temporary.unlink()
+    shutil.copy2(source, temporary)
+    temporary_report = inspect_lora(temporary)
+    if not temporary_report["valid"]:
+        temporary.unlink(missing_ok=True)
+        raise SystemExit(f"STOP: canonical LoRA temporary copy invalid: {temporary_report}")
+    os.replace(temporary, canonical)
+    final_report = inspect_lora(canonical)
+    if not final_report["valid"]:
+        raise SystemExit(f"STOP: canonical LoRA invalid after replace: {final_report}")
+    action = (
+        "refreshed_from_diffusers_default"
+        if canonical_report["valid"]
+        else "copied_from_diffusers_default"
+    )
+    return canonical, final_report, action
+
+
+SMOKE_CANONICAL_PATH, SMOKE_LORA_REPORT, SMOKE_LORA_ACTION = canonicalize_lora(
+    SMOKE_OUTPUT, SMOKE_CANONICAL_FILENAME, prefer_source=not SMOKE_SKIP
+)
+if not checkpoint_is_valid(SMOKE_CHECKPOINT_100):
+    raise SystemExit("STOP: smoke checkpoint-100 missing or invalid")
+if not SMOKE_LOG_PATH.is_file() and not SMOKE_SKIP:
+    raise SystemExit("STOP: smoke log missing")
+smoke_log_text = (
+    SMOKE_LOG_PATH.read_text(encoding="utf-8", errors="replace") if SMOKE_LOG_PATH.is_file() else ""
+)
+SMOKE_LOSSES = [float(value) for value in LOSS_PATTERN.findall(smoke_log_text)]
+if not SMOKE_LOSSES and SMOKE_SKIP:
+    SMOKE_LOSSES = [float(value) for value in SMOKE_PRIOR_MANIFEST.get("loss_values", [])]
+if not SMOKE_LOSSES or not all(math.isfinite(value) for value in SMOKE_LOSSES):
+    raise SystemExit("STOP: smoke loss evidence missing or non-finite")
+SMOKE_ACTUAL_STEP = checkpoint_step(SMOKE_CHECKPOINT_100)
+if SMOKE_ACTUAL_STEP != CONFIG["training"]["smoke_steps"]:
+    raise SystemExit(f"STOP: smoke actual step {SMOKE_ACTUAL_STEP} != 100")
+SMOKE_LOSS_PATH = SMOKE_OUTPUT / "loss_history.csv"
+with SMOKE_LOSS_PATH.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.writer(handle)
+    writer.writerow(["observation", "loss"])
+    writer.writerows(enumerate(SMOKE_LOSSES, 1))
+SMOKE_VALIDATION = {
+    "status": "pass",
+    **SMOKE_ACTUAL_CONFIG,
+    "return_code": SMOKE_RETURN_CODE,
+    "actual_step": SMOKE_ACTUAL_STEP,
+    "elapsed_seconds": SMOKE_ELAPSED_SECONDS,
+    "checkpoint_50_valid": checkpoint_is_valid(SMOKE_OUTPUT / "checkpoint-50"),
+    "checkpoint_100_valid": True,
+    "lora_path": str(SMOKE_CANONICAL_PATH),
+    "lora_validation": SMOKE_LORA_REPORT,
+    "lora_action": SMOKE_LORA_ACTION,
+    "loss_values": SMOKE_LOSSES,
+    "loss_count": len(SMOKE_LOSSES),
+    "loss_finite": True,
+    "loss_history": str(SMOKE_LOSS_PATH),
+}
+if SMOKE_VALIDATION["checkpoint_50_valid"] is not True:
+    raise SystemExit("STOP: smoke checkpoint-50 missing or invalid")
+SMOKE_MANIFEST_PATH.write_text(
+    json.dumps({"status": "success", **SMOKE_VALIDATION}, indent=2), encoding="utf-8"
+)
+print("SMOKE TRAINING: PASS")
+print(json.dumps(SMOKE_VALIDATION, indent=2))
+```
+
+## Cell 26 - Calculate Smoke Performance
+
+- Type: Code
+- Tujuan: Menghitung elapsed dan seconds per optimization step dari run nyata.
+- Input: SMOKE_ELAPSED_SECONDS dan actual step 100.
+- Expected output: SMOKE_SECONDS_PER_STEP finite positif.
+- Stop condition: STOP jika durasi tidak dapat dihitung.
+
+```python
+SMOKE_SECONDS_PER_STEP = SMOKE_ELAPSED_SECONDS / SMOKE_ACTUAL_STEP
+if not math.isfinite(SMOKE_SECONDS_PER_STEP) or SMOKE_SECONDS_PER_STEP <= 0:
+    raise SystemExit(f"STOP: invalid smoke seconds per step: {SMOKE_SECONDS_PER_STEP}")
+SMOKE_PERFORMANCE = {
+    "elapsed_seconds": SMOKE_ELAPSED_SECONDS,
+    "actual_steps": SMOKE_ACTUAL_STEP,
+    "seconds_per_step": SMOKE_SECONDS_PER_STEP,
+}
+print(json.dumps(SMOKE_PERFORMANCE, indent=2))
+```
+
+## Cell 27 - Estimate Main Runtime Conservatively
+
+- Type: Code
+- Tujuan: Mengestimasi durasi 1600 langkah dengan buffer 25 persen berdasarkan smoke nyata.
+- Input: SMOKE_SECONDS_PER_STEP dan main_steps.
+- Expected output: Estimasi detik dan jam untuk keputusan waktu.
+- Stop condition: STOP jika estimasi non-finite.
+
+```python
+MAIN_ESTIMATED_SECONDS = SMOKE_SECONDS_PER_STEP * CONFIG["training"]["main_steps"] * 1.25
+if not math.isfinite(MAIN_ESTIMATED_SECONDS):
+    raise SystemExit("STOP: main runtime estimate is not finite")
+MAIN_RUNTIME_ESTIMATE = {
+    "basis_seconds_per_step": SMOKE_SECONDS_PER_STEP,
+    "buffer_multiplier": 1.25,
+    "estimated_seconds": round(MAIN_ESTIMATED_SECONDS, 2),
+    "estimated_hours": round(MAIN_ESTIMATED_SECONDS / 3600, 2),
+}
+print(json.dumps(MAIN_RUNTIME_ESTIMATE, indent=2))
+```
+
+## Cell 28 - Inspect Main Checkpoints
+
+- Type: Code
+- Tujuan: Menemukan checkpoint main numerik di working atau Kaggle Input tanpa mencampur smoke.
+- Input: MAIN_OUTPUT dan semua checkpoint-* di /kaggle/input.
+- Expected output: Daftar kandidat main checkpoint beserta manifest parent.
+- Stop condition: Tidak berhenti bila tidak ada checkpoint; main dimulai fresh.
+
+```python
+MAIN_MANIFEST_PATH = MAIN_OUTPUT / "training_manifest.json"
+MAIN_LOG_PATH = LOGS_ROOT / "main_training.log"
+MAIN_CANONICAL_PATH = MAIN_OUTPUT / CONFIG["model"]["canonical_lora_filename"]
+
+
+MAIN_CHECKPOINT_CANDIDATES = []
+for candidate in MAIN_OUTPUT.glob("checkpoint-*"):
+    if checkpoint_is_valid(candidate):
+        manifest_path, manifest = checkpoint_manifest(candidate)
+        MAIN_CHECKPOINT_CANDIDATES.append(
+            {"path": candidate, "manifest_path": manifest_path, "manifest": manifest}
+        )
+for candidate in INPUT_ROOT.rglob("checkpoint-*"):
+    if checkpoint_is_valid(candidate):
+        manifest_path, manifest = checkpoint_manifest(candidate)
+        if manifest.get("run_mode") == "main":
+            MAIN_CHECKPOINT_CANDIDATES.append(
+                {"path": candidate, "manifest_path": manifest_path, "manifest": manifest}
+            )
+print(
+    json.dumps(
+        [
+            {
+                "path": str(item["path"]),
+                "step": checkpoint_step(item["path"]),
+                "manifest": str(item["manifest_path"]) if item["manifest_path"] else None,
+                "run_mode": item["manifest"].get("run_mode"),
+            }
+            for item in MAIN_CHECKPOINT_CANDIDATES
+        ],
+        indent=2,
+    )
+)
+```
+
+## Cell 29 - Validate Main Resume Compatibility
+
+- Type: Code
+- Tujuan: Memilih checkpoint tertinggi hanya bila delapan field manifest dan run_mode main cocok.
+- Input: Kandidat checkpoint, dataset SHA, model, config, optimizer, dan train count.
+- Expected output: MAIN_RESUME aman atau fresh; MAIN_SKIP hanya untuk final lokal lengkap.
+- Stop condition: Checkpoint incompatible diabaikan; STOP hanya jika final lokal mengaku success tetapi invalid.
+
+```python
+MAIN_EXPECTED = run_compatibility("main")
+MAIN_PRIOR_MANIFEST = (
+    json.loads(MAIN_MANIFEST_PATH.read_text(encoding="utf-8"))
+    if MAIN_MANIFEST_PATH.is_file()
+    else {}
+)
+main_local_compatible, main_local_errors = manifest_is_compatible(
+    MAIN_PRIOR_MANIFEST, MAIN_EXPECTED
+)
+MAIN_LOCAL_CHECKPOINT_1600 = MAIN_OUTPUT / "checkpoint-1600"
+MAIN_SKIP = (
+    main_local_compatible
+    and MAIN_PRIOR_MANIFEST.get("status") == "success"
+    and checkpoint_is_valid(MAIN_LOCAL_CHECKPOINT_1600)
+    and inspect_lora(MAIN_CANONICAL_PATH)["valid"]
+)
+compatible_candidates = []
+rejected_candidates = []
+for candidate in MAIN_CHECKPOINT_CANDIDATES:
+    manifest = candidate["manifest"]
+    compatible, errors = manifest_is_compatible(manifest, MAIN_EXPECTED)
+    if compatible and checkpoint_step(candidate["path"]) <= CONFIG["training"]["main_steps"]:
+        compatible_candidates.append(candidate)
+    else:
+        rejected_candidates.append({"path": str(candidate["path"]), "errors": errors})
+MAIN_RESUME_RECORD = select_highest_checkpoint(compatible_candidates, "main")
+if MAIN_PRIOR_MANIFEST and not main_local_compatible and not MAIN_SKIP:
+    archive = LOGS_ROOT / f"incompatible_main_{RUN_ID}"
+    if archive.exists():
+        shutil.rmtree(archive)
+    shutil.move(str(MAIN_OUTPUT), archive)
+    MAIN_OUTPUT.mkdir(parents=True)
+    MAIN_MANIFEST_PATH = MAIN_OUTPUT / "training_manifest.json"
+    MAIN_CANONICAL_PATH = MAIN_OUTPUT / CONFIG["model"]["canonical_lora_filename"]
+    MAIN_LOCAL_CHECKPOINT_1600 = MAIN_OUTPUT / "checkpoint-1600"
+MAIN_RESUME = None
+MAIN_RESUME_ACTION = "fresh"
+MAIN_PRIOR_ELAPSED_SECONDS = 0.0
+if MAIN_RESUME_RECORD and not MAIN_SKIP:
+    MAIN_RESUME, MAIN_RESUME_ACTION = materialize_checkpoint(
+        MAIN_RESUME_RECORD["path"], MAIN_OUTPUT, "main"
+    )
+    MAIN_PRIOR_ELAPSED_SECONDS = float(MAIN_RESUME_RECORD["manifest"].get("elapsed_seconds", 0.0))
+print("Main skip:", MAIN_SKIP)
+print("Main resume:", MAIN_RESUME or "fresh")
+print("Main resume action:", MAIN_RESUME_ACTION)
+print("Rejected checkpoint candidates:", json.dumps(rejected_candidates, indent=2))
+```
+
+## Cell 30 - Build Main 1600-Step Command
+
+- Type: Code
+- Tujuan: Membuat command main dengan checkpoint 200, limit 3, dan resume compatible saja.
+- Input: MAIN_EXPECTED, MAIN_RESUME, optimizer, dan exact training script.
+- Expected output: Main command dan manifest started tersimpan.
+- Stop condition: STOP jika smoke tidak PASS atau config command berubah dari baseline.
+
+```python
+if SMOKE_VALIDATION.get("status") != "pass":
+    raise SystemExit("STOP: main training blocked because smoke did not pass")
+MAIN_ACTUAL_CONFIG = {
+    **MAIN_EXPECTED,
+    "max_train_steps": CONFIG["training"]["main_steps"],
+    "checkpointing_steps": CONFIG["training"]["main_checkpointing_steps"],
+    "checkpoints_total_limit": CONFIG["training"]["main_checkpoint_limit"],
+    "gradient_accumulation_steps": CONFIG["training"]["gradient_accumulation_steps"],
+    "mixed_precision": CONFIG["training"]["mixed_precision"],
+    "diffusers_commit": ACTUAL_DIFFUSERS_COMMIT,
+    "resume_from_checkpoint": str(MAIN_RESUME) if MAIN_RESUME else None,
+    "output_dir": str(MAIN_OUTPUT),
+}
+(MAIN_OUTPUT / "actual_training_config.json").write_text(
+    json.dumps(MAIN_ACTUAL_CONFIG, indent=2), encoding="utf-8"
+)
+MAIN_COMMAND = []
+if not MAIN_SKIP:
+    MAIN_COMMAND = [
+        ACCELERATE_EXECUTABLE,
+        "launch",
+        "--config_file",
+        str(ACCELERATE_CONFIG),
+        str(TRAINING_SCRIPT),
+        "--pretrained_model_name_or_path",
+        CONFIG["model"]["base_model"],
+        "--train_data_dir",
+        str(TRAIN_DATA_DIR),
+        "--cache_dir",
+        str(HF_CACHE_ROOT),
+        "--caption_column",
+        "text",
+        "--resolution",
+        str(CONFIG["training"]["resolution"]),
+        "--random_flip",
+        "--train_batch_size",
+        str(CONFIG["training"]["train_batch_size"]),
+        "--gradient_accumulation_steps",
+        str(CONFIG["training"]["gradient_accumulation_steps"]),
+        "--max_train_steps",
+        str(CONFIG["training"]["main_steps"]),
+        "--checkpointing_steps",
+        str(CONFIG["training"]["main_checkpointing_steps"]),
+        "--checkpoints_total_limit",
+        str(CONFIG["training"]["main_checkpoint_limit"]),
+        "--learning_rate",
+        str(CONFIG["training"]["learning_rate"]),
+        "--lr_scheduler",
+        CONFIG["training"]["lr_scheduler"],
+        "--lr_warmup_steps",
+        str(CONFIG["training"]["lr_warmup_steps"]),
+        "--seed",
+        str(CONFIG["training"]["seed"]),
+        "--rank",
+        str(CONFIG["training"]["rank"]),
+        "--dataloader_num_workers",
+        str(CONFIG["training"]["dataloader_num_workers"]),
+        "--output_dir",
+        str(MAIN_OUTPUT),
+        "--report_to",
+        "tensorboard",
+        "--logging_dir",
+        "tensorboard",
+        "--mixed_precision",
+        CONFIG["training"]["mixed_precision"],
+        "--gradient_checkpointing",
+    ]
+    if USE_8BIT_ADAM:
+        MAIN_COMMAND.append("--use_8bit_adam")
+    if MAIN_RESUME:
+        MAIN_COMMAND.extend(["--resume_from_checkpoint", str(MAIN_RESUME)])
+    MAIN_MANIFEST_PATH.write_text(
+        json.dumps({"status": "started", **MAIN_ACTUAL_CONFIG}, indent=2), encoding="utf-8"
+    )
+print("Main command:", " ".join(MAIN_COMMAND) if MAIN_COMMAND else "SKIPPED_VALID")
+```
+
+## Cell 31 - Run Main Training
+
+- Type: Code
+- Tujuan: Menjalankan 1600-step training real-time dan merekam root traceback pada kegagalan.
+- Input: MAIN_COMMAND dan TRAIN_ENV.
+- Expected output: Return code 0 dan elapsed main tercatat.
+- Stop condition: STOP: main training failed.
+
+```python
+if MAIN_SKIP:
+    MAIN_RETURN_CODE = 0
+    MAIN_ELAPSED_SECONDS = float(MAIN_PRIOR_MANIFEST.get("elapsed_seconds", 0.0))
+    print("Main training skipped because prior local artifact is fully valid.")
+else:
+    MAIN_RETURN_CODE, MAIN_ATTEMPT_ELAPSED_SECONDS = run_realtime(
+        MAIN_COMMAND, MAIN_LOG_PATH, TRAIN_ENV, append=MAIN_RESUME is not None
+    )
+    MAIN_ELAPSED_SECONDS = MAIN_PRIOR_ELAPSED_SECONDS + MAIN_ATTEMPT_ELAPSED_SECONDS
+    if MAIN_RETURN_CODE != 0:
+        log_text = MAIN_LOG_PATH.read_text(encoding="utf-8", errors="replace")
+        failure = {
+            "status": "failed",
+            **MAIN_ACTUAL_CONFIG,
+            "return_code": MAIN_RETURN_CODE,
+            "elapsed_seconds": MAIN_ELAPSED_SECONDS,
+            "attempt_elapsed_seconds": MAIN_ATTEMPT_ELAPSED_SECONDS,
+            "root_error": first_training_error(log_text),
+            "failure_category": classify_training_failure(log_text),
+            "full_log": str(MAIN_LOG_PATH),
+        }
+        MAIN_MANIFEST_PATH.write_text(json.dumps(failure, indent=2), encoding="utf-8")
+        raise SystemExit("STOP: main training failed\n" + failure["root_error"])
+print("Main return code:", MAIN_RETURN_CODE)
+print("Main elapsed seconds:", MAIN_ELAPSED_SECONDS)
+```
+
+## Cell 32 - Validate Final Training Output
+
+- Type: Code
+- Tujuan: Membuktikan step 1600, checkpoint state, finite loss, dan LoRA Diffusers aktual.
+- Input: Main log, checkpoint-1600 atau compatible resume, dan default/final LoRA.
+- Expected output: MAIN_VALIDATION trained dengan seluruh gate benar.
+- Stop condition: STOP jika final LoRA, checkpoint, step, atau loss invalid.
+
+```python
+MAIN_DEFAULT_LORA_PATH = MAIN_OUTPUT / DEFAULT_LORA_FILENAME
+if MAIN_SKIP:
+    MAIN_TRAINED_LORA_PATH = MAIN_CANONICAL_PATH
+else:
+    MAIN_TRAINED_LORA_PATH = MAIN_DEFAULT_LORA_PATH
+MAIN_TRAINED_LORA_REPORT = inspect_lora(MAIN_TRAINED_LORA_PATH)
+if not MAIN_TRAINED_LORA_REPORT["valid"]:
+    raise SystemExit(f"STOP: final LoRA invalid: {MAIN_TRAINED_LORA_REPORT}")
+if checkpoint_is_valid(MAIN_LOCAL_CHECKPOINT_1600):
+    MAIN_FINAL_CHECKPOINT = MAIN_LOCAL_CHECKPOINT_1600
+elif MAIN_RESUME and checkpoint_step(MAIN_RESUME) == 1600 and checkpoint_is_valid(MAIN_RESUME):
+    MAIN_FINAL_CHECKPOINT = MAIN_RESUME
+else:
+    raise SystemExit("STOP: main checkpoint-1600 missing or invalid")
+MAIN_ACTUAL_STEP = checkpoint_step(MAIN_FINAL_CHECKPOINT)
+if MAIN_ACTUAL_STEP != CONFIG["training"]["main_steps"]:
+    raise SystemExit(f"STOP: main actual step {MAIN_ACTUAL_STEP} != 1600")
+main_log_text = (
+    MAIN_LOG_PATH.read_text(encoding="utf-8", errors="replace") if MAIN_LOG_PATH.is_file() else ""
+)
+MAIN_LOSSES = [float(value) for value in LOSS_PATTERN.findall(main_log_text)]
+if not MAIN_LOSSES and MAIN_SKIP:
+    MAIN_LOSSES = [float(value) for value in MAIN_PRIOR_MANIFEST.get("loss_values", [])]
+if not MAIN_LOSSES and MAIN_RESUME_RECORD:
+    MAIN_LOSSES = [float(value) for value in MAIN_RESUME_RECORD["manifest"].get("loss_values", [])]
+if not MAIN_LOSSES or not all(math.isfinite(value) for value in MAIN_LOSSES):
+    raise SystemExit("STOP: main loss evidence missing or non-finite")
+MAIN_LOSS_PATH = MAIN_OUTPUT / "loss_history.csv"
+with MAIN_LOSS_PATH.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.writer(handle)
+    writer.writerow(["observation", "loss"])
+    writer.writerows(enumerate(MAIN_LOSSES, 1))
+MAIN_VALIDATION = {
+    "status": "trained",
+    **MAIN_ACTUAL_CONFIG,
+    "return_code": MAIN_RETURN_CODE,
+    "actual_step": MAIN_ACTUAL_STEP,
+    "elapsed_seconds": MAIN_ELAPSED_SECONDS,
+    "checkpoint_path": str(MAIN_FINAL_CHECKPOINT),
+    "checkpoint_valid": True,
+    "trained_lora_path": str(MAIN_TRAINED_LORA_PATH),
+    "trained_lora_validation": MAIN_TRAINED_LORA_REPORT,
+    "loss_values": MAIN_LOSSES,
+    "loss_count": len(MAIN_LOSSES),
+    "loss_finite": True,
+    "loss_history": str(MAIN_LOSS_PATH),
+}
+MAIN_MANIFEST_PATH.write_text(json.dumps(MAIN_VALIDATION, indent=2), encoding="utf-8")
+print(json.dumps(MAIN_VALIDATION, indent=2))
+```
+
+## Cell 33 - Create Canonical Final LoRA
+
+- Type: Code
+- Tujuan: Menyalin default Diffusers secara atomik ke nama canonical tanpa menghapus default.
+- Input: pytorch_lora_weights.safetensors atau canonical prior yang valid.
+- Expected output: multisource_multicrop_lora.safetensors valid dan default tetap ada bila dihasilkan.
+- Stop condition: STOP jika copy temporary atau canonical SafeTensors invalid.
+
+```python
+MAIN_CANONICAL_PATH, MAIN_CANONICAL_REPORT, MAIN_CANONICAL_ACTION = canonicalize_lora(
+    MAIN_OUTPUT,
+    CONFIG["model"]["canonical_lora_filename"],
+    prefer_source=not MAIN_SKIP,
+)
+if (
+    MAIN_CANONICAL_ACTION
+    in {
+        "copied_from_diffusers_default",
+        "refreshed_from_diffusers_default",
+    }
+    and not MAIN_DEFAULT_LORA_PATH.is_file()
+):
+    raise SystemExit("STOP: Diffusers default LoRA disappeared after canonical copy")
+MAIN_VALIDATION.update(
+    {
+        "status": "success",
+        "canonical_lora_path": str(MAIN_CANONICAL_PATH),
+        "canonical_lora_validation": MAIN_CANONICAL_REPORT,
+        "canonical_lora_action": MAIN_CANONICAL_ACTION,
+        "default_lora_preserved": MAIN_DEFAULT_LORA_PATH.is_file(),
+    }
+)
+MAIN_MANIFEST_PATH.write_text(json.dumps(MAIN_VALIDATION, indent=2), encoding="utf-8")
+print("MAIN TRAINING: PASS")
+print(json.dumps(MAIN_CANONICAL_REPORT, indent=2))
+```
+
+## Cell 34 - SHA-256 Final Model
+
+- Type: Code
+- Tujuan: Menghitung identitas final LoRA dan menulis checksum file.
+- Input: Canonical final LoRA.
+- Expected output: multisource_multicrop_lora.sha256 dengan hash aktual.
+- Stop condition: STOP jika model berubah antara validasi dan hashing.
+
+```python
+FINAL_LORA_SHA256 = sha256_file(MAIN_CANONICAL_PATH)
+FINAL_LORA_SHA_PATH = MAIN_OUTPUT / "multisource_multicrop_lora.sha256"
+FINAL_LORA_SHA_PATH.write_text(
+    f"{FINAL_LORA_SHA256}  {MAIN_CANONICAL_PATH.name}\n", encoding="ascii"
+)
+if sha256_file(MAIN_CANONICAL_PATH) != FINAL_LORA_SHA256:
+    raise SystemExit("STOP: final LoRA changed during SHA validation")
+MAIN_VALIDATION["canonical_lora_sha256"] = FINAL_LORA_SHA256
+MAIN_MANIFEST_PATH.write_text(json.dumps(MAIN_VALIDATION, indent=2), encoding="utf-8")
+print("Final LoRA SHA-256:", FINAL_LORA_SHA256)
+```
+
+## Cell 35 - Load Final Adapter for Sanity Inference
+
+- Type: Code
+- Tujuan: Memuat SD1.5 dan canonical LoRA tervalidasi di GPU untuk sanity-only inference.
+- Input: Base model public dan MAIN_CANONICAL_PATH.
+- Expected output: Pipeline CUDA siap dan adapter loaded.
+- Stop condition: STOP jika base model atau LoRA tidak dapat dimuat.
+
+```python
+from diffusers import StableDiffusionPipeline
+
+
+def load_inference_pipeline(with_lora):
+    pipeline = StableDiffusionPipeline.from_pretrained(
+        CONFIG["model"]["base_model"],
+        torch_dtype=torch.float16,
+        safety_checker=None,
+        requires_safety_checker=False,
+        cache_dir=str(RUNTIME_ROOT / "model_cache"),
+    )
+    pipeline = pipeline.to("cuda")
+    pipeline.enable_attention_slicing()
+    pipeline.enable_vae_slicing()
+    if with_lora:
+        pipeline.load_lora_weights(
+            str(MAIN_CANONICAL_PATH.parent), weight_name=MAIN_CANONICAL_PATH.name
+        )
+    try:
+        pipeline.enable_xformers_memory_efficient_attention()
+    except Exception as exc:
+        print("xFormers not enabled; attention slicing remains active:", repr(exc))
+    pipeline.set_progress_bar_config(disable=False)
+    return pipeline
+
+
+SANITY_PIPELINE = load_inference_pipeline(with_lora=True)
+SANITY_RESULTS = []
+
+
+def generate_sanity_image(class_id, prompt, seed):
+    generator = torch.Generator(device="cuda").manual_seed(seed)
+    image = SANITY_PIPELINE(
+        prompt=prompt,
+        negative_prompt="illustration, drawing, text, watermark, deformed plants, blurry",
+        num_inference_steps=CONFIG["evaluation"]["inference_steps"],
+        guidance_scale=CONFIG["evaluation"]["guidance_scale"],
+        generator=generator,
+        height=512,
+        width=512,
+    ).images[0]
+    output_path = SANITY_ROOT / f"sanity_{class_id}.png"
+    image.save(output_path)
+    record = {
+        "class_id": class_id,
+        "prompt": prompt,
+        "seed": seed,
+        "path": str(output_path),
+        "sha256": sha256_file(output_path),
+    }
+    SANITY_RESULTS.append(record)
+    print(json.dumps(record, indent=2))
+    return output_path
+
+
+print("Final adapter loaded for sanity inference.")
+```
+
+## Cell 36 - Generate Padi Sanity Image
+
+- Type: Code
+- Tujuan: Menguji trigger padi dengan seed tetap tanpa klaim evaluasi manusia.
+- Input: SANITY_PIPELINE, taniadaptif_padi, dan seed 4201.
+- Expected output: sanity_padi.png nonempty.
+- Stop condition: STOP jika inference atau image save gagal.
+
+```python
+PADI_SANITY_PATH = generate_sanity_image(
+    "padi",
+    "a realistic agricultural photograph of taniadaptif_padi, healthy rice plants growing in a field, natural lighting",
+    4201,
+)
+```
+
+## Cell 37 - Generate Jagung Sanity Image
+
+- Type: Code
+- Tujuan: Menguji trigger jagung dengan seed tetap tanpa klaim evaluasi manusia.
+- Input: SANITY_PIPELINE, taniadaptif_jagung, dan seed 4202.
+- Expected output: sanity_jagung.png nonempty.
+- Stop condition: STOP jika inference atau image save gagal.
+
+```python
+JAGUNG_SANITY_PATH = generate_sanity_image(
+    "jagung",
+    "a realistic agricultural photograph of taniadaptif_jagung, healthy maize plants growing in a field, natural lighting",
+    4202,
+)
+```
+
+## Cell 38 - Generate Cabai Sanity Image
+
+- Type: Code
+- Tujuan: Menguji trigger cabai dengan seed tetap tanpa klaim evaluasi manusia.
+- Input: SANITY_PIPELINE, taniadaptif_cabai, dan seed 4203.
+- Expected output: sanity_cabai.png nonempty.
+- Stop condition: STOP jika inference atau image save gagal.
+
+```python
+CABAI_SANITY_PATH = generate_sanity_image(
+    "cabai",
+    "a realistic agricultural photograph of taniadaptif_cabai, healthy chili plants growing in a field, natural lighting",
+    4203,
+)
+```
+
+## Cell 39 - Generate Kacang Tanah Sanity Image
+
+- Type: Code
+- Tujuan: Menguji trigger kacang tanah dengan seed tetap tanpa klaim evaluasi manusia.
+- Input: SANITY_PIPELINE, taniadaptif_kacang_tanah, dan seed 4204.
+- Expected output: sanity_kacang_tanah.png nonempty.
+- Stop condition: STOP jika inference atau image save gagal.
+
+```python
+KACANG_SANITY_PATH = generate_sanity_image(
+    "kacang_tanah",
+    "a realistic agricultural photograph of taniadaptif_kacang_tanah, healthy peanut plants growing in a field, natural lighting",
+    4204,
+)
+```
+
+## Cell 40 - Validate Four Sanity Outputs
+
+- Type: Code
+- Tujuan: Memverifikasi empat PNG dan membuat priority artifact sebelum evaluasi panjang.
+- Input: SANITY_RESULTS, final LoRA, SHA, dan training manifests.
+- Expected output: 4/4 sanity PASS serta taniadaptif_lora_artifacts.zip minimum tersedia.
+- Stop condition: STOP jika sanity image atau priority export invalid.
+
+```python
+if len(SANITY_RESULTS) != 4 or {row["class_id"] for row in SANITY_RESULTS} != set(
+    CONFIG["dataset"]["triggers"]
+):
+    raise SystemExit("STOP: sanity inference did not produce four classes")
+for record in SANITY_RESULTS:
+    path = Path(record["path"])
+    if not path.is_file() or path.stat().st_size <= 0:
+        raise SystemExit(f"STOP: sanity output missing or empty: {path}")
+    with Image.open(path) as image:
+        image.verify()
+(SANITY_ROOT / "sanity_manifest.json").write_text(
+    json.dumps(SANITY_RESULTS, indent=2), encoding="utf-8"
+)
+
+PRIORITY_EXPORT_ROOT = RUNTIME_ROOT / "priority_export"
+if PRIORITY_EXPORT_ROOT.exists():
+    shutil.rmtree(PRIORITY_EXPORT_ROOT)
+PRIORITY_EXPORT_ROOT.mkdir(parents=True)
+shutil.copy2(MAIN_CANONICAL_PATH, PRIORITY_EXPORT_ROOT / MAIN_CANONICAL_PATH.name)
+shutil.copy2(FINAL_LORA_SHA_PATH, PRIORITY_EXPORT_ROOT / FINAL_LORA_SHA_PATH.name)
+shutil.copy2(SMOKE_MANIFEST_PATH, PRIORITY_EXPORT_ROOT / "smoke_validation.json")
+shutil.copy2(MAIN_MANIFEST_PATH, PRIORITY_EXPORT_ROOT / "main_validation.json")
+shutil.copytree(SANITY_ROOT, PRIORITY_EXPORT_ROOT / "sanity")
+priority_zip_base = ARTIFACT_ZIP.with_suffix("")
+shutil.make_archive(str(priority_zip_base), "zip", PRIORITY_EXPORT_ROOT)
+if not ARTIFACT_ZIP.is_file() or ARTIFACT_ZIP.stat().st_size <= 0:
+    raise SystemExit("STOP: priority artifact ZIP was not created")
+SANITY_VALIDATION = {"status": "pass", "images": 4, "priority_artifact": str(ARTIFACT_ZIP)}
+print(json.dumps(SANITY_VALIDATION, indent=2))
+```
+
+## Cell 41 - Define Evaluation Prompts and Seeds
+
+- Type: Code
+- Tujuan: Membuat 36 kondisi tetap: 4 class x 3 prompt x 3 seed dan mengecek waktu tersisa.
+- Input: Trigger class, seeds CONFIG, dan notebook elapsed time.
+- Expected output: 36 evaluation conditions dan keputusan full evaluation.
+- Stop condition: STOP jika jumlah kondisi bukan 36.
+
+```python
+EVALUATION_PROMPTS = {
+    "padi": [
+        "a realistic agricultural photograph of taniadaptif_padi, rice plants across a cultivated field, natural daylight",
+        "a realistic agricultural photograph of taniadaptif_padi, healthy rice crop in a rural growing environment",
+        "a realistic agricultural photograph of taniadaptif_padi, multiple rice plants with visible field context",
+    ],
+    "jagung": [
+        "a realistic agricultural photograph of taniadaptif_jagung, maize plants across a cultivated field, natural daylight",
+        "a realistic agricultural photograph of taniadaptif_jagung, healthy maize crop in a rural growing environment",
+        "a realistic agricultural photograph of taniadaptif_jagung, multiple maize plants with visible field context",
+    ],
+    "cabai": [
+        "a realistic agricultural photograph of taniadaptif_cabai, chili plants across a cultivated field, natural daylight",
+        "a realistic agricultural photograph of taniadaptif_cabai, healthy chili crop in a rural growing environment",
+        "a realistic agricultural photograph of taniadaptif_cabai, multiple chili plants with visible field context",
+    ],
+    "kacang_tanah": [
+        "a realistic agricultural photograph of taniadaptif_kacang_tanah, peanut plants across a cultivated field, natural daylight",
+        "a realistic agricultural photograph of taniadaptif_kacang_tanah, healthy peanut crop in a rural growing environment",
+        "a realistic agricultural photograph of taniadaptif_kacang_tanah, multiple peanut plants with visible field context",
+    ],
+}
+EVALUATION_CONDITIONS = []
+for class_id, prompts in EVALUATION_PROMPTS.items():
+    for prompt_index, prompt in enumerate(prompts, 1):
+        for seed in CONFIG["evaluation"]["seeds"]:
+            EVALUATION_CONDITIONS.append(
+                {
+                    "condition_id": f"{class_id}_p{prompt_index}_s{seed}",
+                    "class_id": class_id,
+                    "prompt_index": prompt_index,
+                    "prompt": prompt,
+                    "seed": seed,
+                }
+            )
+if len(EVALUATION_CONDITIONS) != 36:
+    raise SystemExit(f"STOP: evaluation condition count {len(EVALUATION_CONDITIONS)} != 36")
+elapsed = time.time() - NOTEBOOK_STARTED_AT
+remaining_budget = CONFIG["evaluation"]["max_runtime_seconds"] - elapsed
+FULL_EVALUATION_ENABLED = (
+    remaining_budget >= CONFIG["evaluation"]["min_remaining_seconds_for_full_evaluation"]
+)
+EVALUATION_RECORDS = []
+print("Evaluation conditions:", len(EVALUATION_CONDITIONS))
+print("Estimated remaining seconds:", round(remaining_budget, 2))
+print("Full evaluation enabled:", FULL_EVALUATION_ENABLED)
+```
+
+## Cell 42 - Generate Base Evaluation Images
+
+- Type: Code
+- Tujuan: Menghasilkan 36 base SD1.5 images bila time gate memungkinkan.
+- Input: 36 conditions, base model, seeds, dan inference config.
+- Expected output: 36 PNG base atau explicit skipped status.
+- Stop condition: STOP jika full evaluation dipilih tetapi jumlah base bukan 36.
+
+```python
+def generate_evaluation_variant(pipeline, variant, output_root):
+    output_root.mkdir(parents=True, exist_ok=True)
+    records = []
+    for condition in EVALUATION_CONDITIONS:
+        generator = torch.Generator(device="cuda").manual_seed(condition["seed"])
+        image = pipeline(
+            prompt=condition["prompt"],
+            negative_prompt="illustration, drawing, text, watermark, deformed plants, blurry",
+            num_inference_steps=CONFIG["evaluation"]["inference_steps"],
+            guidance_scale=CONFIG["evaluation"]["guidance_scale"],
+            generator=generator,
+            height=512,
+            width=512,
+        ).images[0]
+        output_path = output_root / f"{condition['condition_id']}_{variant}.png"
+        image.save(output_path)
+        records.append(
+            {
+                **condition,
+                "variant": variant,
+                "image_path": str(output_path),
+                "image_sha256": sha256_file(output_path),
+            }
+        )
+    return records
+
+
+BASE_EVALUATION_RECORDS = []
+if FULL_EVALUATION_ENABLED:
+    del SANITY_PIPELINE
+    gc.collect()
+    torch.cuda.empty_cache()
+    BASE_PIPELINE = load_inference_pipeline(with_lora=False)
+    BASE_EVALUATION_RECORDS = generate_evaluation_variant(
+        BASE_PIPELINE, "base", EVALUATION_ROOT / "base"
+    )
+    if len(BASE_EVALUATION_RECORDS) != 36:
+        raise SystemExit("STOP: base evaluation did not produce 36 images")
+    print("Base evaluation images: 36")
+else:
+    print("Base evaluation skipped to protect final model and export before runtime limit.")
+```
+
+## Cell 43 - Generate LoRA Evaluation Images
+
+- Type: Code
+- Tujuan: Menghasilkan 36 LoRA images dengan kondisi identik bila time gate memungkinkan.
+- Input: 36 conditions, final adapter, seeds, dan inference config.
+- Expected output: 36 PNG LoRA atau explicit skipped status.
+- Stop condition: STOP jika full evaluation dipilih tetapi jumlah LoRA bukan 36.
+
+```python
+LORA_EVALUATION_RECORDS = []
+if FULL_EVALUATION_ENABLED:
+    del BASE_PIPELINE
+    gc.collect()
+    torch.cuda.empty_cache()
+    LORA_EVALUATION_PIPELINE = load_inference_pipeline(with_lora=True)
+    LORA_EVALUATION_RECORDS = generate_evaluation_variant(
+        LORA_EVALUATION_PIPELINE, "lora", EVALUATION_ROOT / "lora"
+    )
+    if len(LORA_EVALUATION_RECORDS) != 36:
+        raise SystemExit("STOP: LoRA evaluation did not produce 36 images")
+    del LORA_EVALUATION_PIPELINE
+    gc.collect()
+    torch.cuda.empty_cache()
+    print("LoRA evaluation images: 36")
+else:
+    print("LoRA evaluation skipped to protect final model and export before runtime limit.")
+```
+
+## Cell 44 - Create Evaluation Manifest
+
+- Type: Code
+- Tujuan: Mencatat setiap base/LoRA output tanpa mengubahnya menjadi klaim penilaian manusia.
+- Input: Base dan LoRA evaluation records.
+- Expected output: evaluation_manifest.csv/json berisi 72 rows atau skipped reason.
+- Stop condition: STOP jika full evaluation aktif tetapi manifest bukan 72 rows.
+
+```python
+EVALUATION_RECORDS = BASE_EVALUATION_RECORDS + LORA_EVALUATION_RECORDS
+if FULL_EVALUATION_ENABLED and len(EVALUATION_RECORDS) != 72:
+    raise SystemExit(f"STOP: evaluation manifest rows {len(EVALUATION_RECORDS)} != 72")
+EVALUATION_MANIFEST_CSV = EVALUATION_ROOT / "evaluation_manifest.csv"
+evaluation_fields = [
+    "condition_id",
+    "variant",
+    "class_id",
+    "prompt_index",
+    "prompt",
+    "seed",
+    "image_path",
+    "image_sha256",
+]
+with EVALUATION_MANIFEST_CSV.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=evaluation_fields)
+    writer.writeheader()
+    writer.writerows(EVALUATION_RECORDS)
+EVALUATION_STATUS = "complete" if len(EVALUATION_RECORDS) == 72 else "deferred_time_guard"
+EVALUATION_MANIFEST_JSON = EVALUATION_ROOT / "evaluation_manifest.json"
+EVALUATION_MANIFEST_JSON.write_text(
+    json.dumps(
+        {
+            "status": EVALUATION_STATUS,
+            "conditions": 36,
+            "expected_images": 72,
+            "generated_images": len(EVALUATION_RECORDS),
+            "records": EVALUATION_RECORDS,
+        },
+        indent=2,
+    ),
+    encoding="utf-8",
+)
+print("Evaluation status:", EVALUATION_STATUS)
+```
+
+## Cell 45 - Automated Proxy Metrics
+
+- Type: Code
+- Tujuan: Menghitung statistik gambar sederhana sebagai proxy, bukan skor kualitas manusia.
+- Input: Evaluation images bila tersedia.
+- Expected output: automated_proxy_metrics.csv dan status complete/skipped.
+- Stop condition: STOP hanya jika image yang sudah tercatat tidak dapat dibaca.
+
+```python
+from PIL import ImageStat
+
+AUTOMATED_METRICS_PATH = EVALUATION_ROOT / "automated_proxy_metrics.csv"
+AUTOMATED_METRIC_ROWS = []
+for record in EVALUATION_RECORDS:
+    image_path = Path(record["image_path"])
+    with Image.open(image_path) as image:
+        rgb = image.convert("RGB")
+        statistics = ImageStat.Stat(rgb)
+        brightness = sum(statistics.mean) / 3
+        contrast = sum(statistics.stddev) / 3
+        entropy = rgb.entropy()
+    AUTOMATED_METRIC_ROWS.append(
+        {
+            "condition_id": record["condition_id"],
+            "variant": record["variant"],
+            "class_id": record["class_id"],
+            "seed": record["seed"],
+            "brightness_proxy": round(brightness, 6),
+            "contrast_proxy": round(contrast, 6),
+            "entropy_proxy": round(entropy, 6),
+            "human_quality_claim": "",
+        }
+    )
+metric_fields = [
+    "condition_id",
+    "variant",
+    "class_id",
+    "seed",
+    "brightness_proxy",
+    "contrast_proxy",
+    "entropy_proxy",
+    "human_quality_claim",
+]
+with AUTOMATED_METRICS_PATH.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=metric_fields)
+    writer.writeheader()
+    writer.writerows(AUTOMATED_METRIC_ROWS)
+AUTOMATED_METRICS_STATUS = "complete_proxy_only" if AUTOMATED_METRIC_ROWS else "skipped_no_images"
+print("Automated metrics:", AUTOMATED_METRICS_STATUS)
+```
+
+## Cell 46 - Create Empty Human Evaluation Template
+
+- Type: Code
+- Tujuan: Membuat 72 baris penilaian manusia tanpa mengarang satu pun skor.
+- Input: 36 conditions x base/LoRA variants.
+- Expected output: human_evaluation_template.csv dengan semua assessment fields kosong.
+- Stop condition: STOP jika jumlah bukan 72 atau ada assessment value terisi.
+
+```python
+HUMAN_TEMPLATE_PATH = EVALUATION_ROOT / "human_evaluation_template.csv"
+human_fields = [
+    "condition_id",
+    "variant",
+    "class_id",
+    "prompt",
+    "seed",
+    "expected_image_path",
+    "crop_correct",
+    "field_context_quality",
+    "visual_realism_score",
+    "class_confusion",
+    "reviewer_role",
+    "reviewer_notes",
+]
+HUMAN_TEMPLATE_ROWS = []
+for condition in EVALUATION_CONDITIONS:
+    for variant in ("base", "lora"):
+        HUMAN_TEMPLATE_ROWS.append(
+            {
+                "condition_id": condition["condition_id"],
+                "variant": variant,
+                "class_id": condition["class_id"],
+                "prompt": condition["prompt"],
+                "seed": condition["seed"],
+                "expected_image_path": str(
+                    EVALUATION_ROOT / variant / f"{condition['condition_id']}_{variant}.png"
+                ),
+                "crop_correct": "",
+                "field_context_quality": "",
+                "visual_realism_score": "",
+                "class_confusion": "",
+                "reviewer_role": "",
+                "reviewer_notes": "",
+            }
+        )
+assessment_fields = human_fields[6:]
+if len(HUMAN_TEMPLATE_ROWS) != 72 or any(
+    row[field] != "" for row in HUMAN_TEMPLATE_ROWS for field in assessment_fields
+):
+    raise SystemExit("STOP: human evaluation template is not blank 72-row evidence")
+with HUMAN_TEMPLATE_PATH.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=human_fields)
+    writer.writeheader()
+    writer.writerows(HUMAN_TEMPLATE_ROWS)
+print("Human evaluation template: 72 blank assessment rows")
+```
+
+## Cell 47 - Create Final Training Report
+
+- Type: Code
+- Tujuan: Merangkum bukti dataset, environment, smoke, main, sanity, dan evaluation tanpa klaim manusia.
+- Input: Seluruh validation reports dan RUN_EVENTS.
+- Expected output: final_training_report.json dan Markdown.
+- Stop condition: STOP jika smoke/main/sanity bukan PASS.
+
+```python
+if (
+    SMOKE_VALIDATION.get("status") != "pass"
+    or MAIN_VALIDATION.get("status") != "success"
+    or SANITY_VALIDATION.get("status") != "pass"
+):
+    raise SystemExit("STOP: final report blocked by incomplete training or sanity validation")
+FINAL_TRAINING_REPORT = {
+    "schema_version": 1,
+    "created_at": utc_now(),
+    "run_id": RUN_ID,
+    "status": "training_and_sanity_success",
+    "dataset_input_path": str(DATASET_INPUT_PATH),
+    "dataset_input_mode": DATASET_DISCOVERY_MODE,
+    "dataset_identity": DATASET_IDENTITY_REPORT,
+    "dataset_package": CONFIG["dataset"]["preferred_filename"],
+    "dataset_package_sha256": DATASET_PACKAGE_SHA256,
+    "dataset_counts": {
+        "train": len(TRAIN_ROWS),
+        "validation": len(VALIDATION_ROWS),
+        "total": len(TRAIN_ROWS) + len(VALIDATION_ROWS),
+        "classes": dict(CLASS_COUNTS),
+    },
+    "physical_validation": PHYSICAL_VALIDATION,
+    "imagefolder_train": IMAGEFOLDER_TRAIN_REPORT,
+    "imagefolder_validation": IMAGEFOLDER_VALIDATION_REPORT,
+    "diffusers_loader_probe": DIFFUSERS_LOADER_REPORT,
+    "gpu": GPU_REPORT,
+    "dependencies_before": DEPENDENCY_AUDIT_BEFORE,
+    "dependencies_after": DEPENDENCY_AUDIT_AFTER,
+    "diffusers_runtime": DIFFUSERS_RUNTIME_REPORT,
+    "diffusers_commit": ACTUAL_DIFFUSERS_COMMIT,
+    "optimizer": OPTIMIZER_ACTUAL,
+    "smoke": SMOKE_VALIDATION,
+    "smoke_performance": SMOKE_PERFORMANCE,
+    "main_runtime_estimate": MAIN_RUNTIME_ESTIMATE,
+    "main": MAIN_VALIDATION,
+    "final_lora_sha256": FINAL_LORA_SHA256,
+    "sanity": SANITY_RESULTS,
+    "evaluation_status": EVALUATION_STATUS,
+    "evaluation_generated_images": len(EVALUATION_RECORDS),
+    "automated_metrics_status": AUTOMATED_METRICS_STATUS,
+    "human_evaluation_status": "template_blank_pending_human_review",
+    "rule_engine_remains_authoritative": True,
+    "events": RUN_EVENTS,
+}
+FINAL_REPORT_JSON = LORA_ROOT / "final_training_report.json"
+FINAL_REPORT_MD = LORA_ROOT / "final_training_report.md"
+FINAL_REPORT_JSON.write_text(json.dumps(FINAL_TRAINING_REPORT, indent=2), encoding="utf-8")
+FINAL_REPORT_MD.write_text(
+    f"""# TaniAdaptif Kaggle LoRA Training Report
+
+- Run ID: `{RUN_ID}`
+- Dataset SHA-256: `{DATASET_PACKAGE_SHA256}`
+- Dataset: 312 train / 77 validation / 389 total
+- Smoke: PASS at 100 steps
+- Main: PASS at 1600 steps
+- Optimizer actual: `{OPTIMIZER_ACTUAL}`
+- Final LoRA SHA-256: `{FINAL_LORA_SHA256}`
+- Sanity inference: 4/4 images PASS
+- Automated evaluation: `{EVALUATION_STATUS}`
+- Human evaluation: template blank, pending real review
+
+Automated image metrics are proxy statistics only. Stable Diffusion generates
+visualizations; the TaniAdaptif rule-based engine remains authoritative for
+crop recommendations.
+""",
+    encoding="utf-8",
+)
+print("Final training report:", FINAL_REPORT_JSON)
+```
+
+## Cell 48 - Create EXPORT_TANIADAPTIF Folder
+
+- Type: Code
+- Tujuan: Mengumpulkan final model, configs, checksums, validations, losses, logs, sanity, dan evaluation.
+- Input: Seluruh artefak tervalidasi di /kaggle/working/taniadaptif_lora.
+- Expected output: EXPORT_TANIADAPTIF lengkap dengan export_manifest.json.
+- Stop condition: STOP jika required export file hilang atau hash model berubah.
+
+```python
+resolved_export = EXPORT_ROOT.resolve()
+expected_export = (WORKING_ROOT / "EXPORT_TANIADAPTIF").resolve()
+if resolved_export != expected_export:
+    raise SystemExit(f"STOP: unsafe export path: {resolved_export}")
+if EXPORT_ROOT.exists():
+    shutil.rmtree(EXPORT_ROOT)
+EXPORT_ROOT.mkdir(parents=True)
+shutil.copy2(MAIN_CANONICAL_PATH, EXPORT_ROOT / MAIN_CANONICAL_PATH.name)
+shutil.copy2(FINAL_LORA_SHA_PATH, EXPORT_ROOT / FINAL_LORA_SHA_PATH.name)
+shutil.copy2(MAIN_OUTPUT / "actual_training_config.json", EXPORT_ROOT / "training_config.json")
+(EXPORT_ROOT / "dataset_package_sha256.txt").write_text(
+    f"{DATASET_PACKAGE_SHA256}  {CONFIG['dataset']['preferred_filename']}\n",
+    encoding="ascii",
+)
+shutil.copy2(SMOKE_MANIFEST_PATH, EXPORT_ROOT / "smoke_validation.json")
+shutil.copy2(MAIN_MANIFEST_PATH, EXPORT_ROOT / "main_validation.json")
+shutil.copy2(SMOKE_LOSS_PATH, EXPORT_ROOT / "smoke_loss_history.csv")
+shutil.copy2(MAIN_LOSS_PATH, EXPORT_ROOT / "main_loss_history.csv")
+shutil.copy2(FINAL_REPORT_JSON, EXPORT_ROOT / FINAL_REPORT_JSON.name)
+shutil.copy2(FINAL_REPORT_MD, EXPORT_ROOT / FINAL_REPORT_MD.name)
+for log_path in (
+    SMOKE_LOG_PATH,
+    MAIN_LOG_PATH,
+    LOGS_ROOT / "dependency_audit_before.json",
+    LOGS_ROOT / "dependency_audit_after.json",
+    LOGS_ROOT / "diffusers_runtime_report.json",
+    LOGS_ROOT / "bitsandbytes_probe.log",
+    LOGS_ROOT / "training_entrypoint_probe.log",
+):
+    if log_path.is_file():
+        shutil.copy2(log_path, EXPORT_ROOT / log_path.name)
+shutil.copytree(SANITY_ROOT, EXPORT_ROOT / "sanity")
+shutil.copytree(EVALUATION_ROOT, EXPORT_ROOT / "evaluation")
+required_export_files = {
+    CONFIG["model"]["canonical_lora_filename"],
+    "multisource_multicrop_lora.sha256",
+    "training_config.json",
+    "dataset_package_sha256.txt",
+    "smoke_validation.json",
+    "main_validation.json",
+    "smoke_loss_history.csv",
+    "main_loss_history.csv",
+    "final_training_report.json",
+    "final_training_report.md",
+}
+actual_export_files = {path.name for path in EXPORT_ROOT.iterdir() if path.is_file()}
+missing_export_files = sorted(required_export_files - actual_export_files)
+if missing_export_files:
+    raise SystemExit(f"STOP: export missing required files: {missing_export_files}")
+if sha256_file(EXPORT_ROOT / MAIN_CANONICAL_PATH.name) != FINAL_LORA_SHA256:
+    raise SystemExit("STOP: exported LoRA SHA mismatch")
+EXPORT_MANIFEST = []
+for path in sorted(item for item in EXPORT_ROOT.rglob("*") if item.is_file()):
+    EXPORT_MANIFEST.append(
+        {
+            "path": path.relative_to(EXPORT_ROOT).as_posix(),
+            "size_bytes": path.stat().st_size,
+            "sha256": sha256_file(path),
+        }
+    )
+(EXPORT_ROOT / "export_manifest.json").write_text(
+    json.dumps(EXPORT_MANIFEST, indent=2), encoding="utf-8"
+)
+print("Export files:", len(EXPORT_MANIFEST))
+```
+
+## Cell 49 - Create Artifact ZIP
+
+- Type: Code
+- Tujuan: Membuat ZIP download tunggal dari EXPORT_TANIADAPTIF.
+- Input: EXPORT_ROOT tervalidasi.
+- Expected output: /kaggle/working/taniadaptif_lora_artifacts.zip nonzero.
+- Stop condition: STOP jika ZIP tidak dapat dibuat atau korup.
+
+```python
+if ARTIFACT_ZIP.exists():
+    ARTIFACT_ZIP.unlink()
+shutil.make_archive(str(ARTIFACT_ZIP.with_suffix("")), "zip", EXPORT_ROOT)
+if not ARTIFACT_ZIP.is_file() or ARTIFACT_ZIP.stat().st_size <= 0:
+    raise SystemExit("STOP: artifact ZIP missing or empty")
+with zipfile.ZipFile(ARTIFACT_ZIP) as archive:
+    corrupt = archive.testzip()
+    if corrupt:
+        raise SystemExit(f"STOP: artifact ZIP corrupt member: {corrupt}")
+print("Artifact ZIP:", ARTIFACT_ZIP)
+print("Artifact size bytes:", ARTIFACT_ZIP.stat().st_size)
+```
+
+## Cell 50 - Final Integrity Validation
+
+- Type: Code
+- Tujuan: Memvalidasi ZIP, canonical model bytes, required entries, dan menulis integrity report.
+- Input: ARTIFACT_ZIP, final LoRA SHA, dan required export files.
+- Expected output: FINAL_INTEGRITY status pass dan ZIP dibangun ulang dengan report.
+- Stop condition: STOP: final integrity validation failed.
+
+```python
+with zipfile.ZipFile(ARTIFACT_ZIP) as archive:
+    names = set(archive.namelist())
+    missing_zip_entries = sorted(required_export_files - names)
+    if missing_zip_entries:
+        raise SystemExit(f"STOP: artifact ZIP missing entries: {missing_zip_entries}")
+    model_bytes = archive.read(CONFIG["model"]["canonical_lora_filename"])
+    model_sha_in_zip = hashlib.sha256(model_bytes).hexdigest()
+if model_sha_in_zip != FINAL_LORA_SHA256:
+    raise SystemExit("STOP: final LoRA SHA mismatch inside artifact ZIP")
+FINAL_INTEGRITY = {
+    "status": "pass",
+    "artifact_zip": str(ARTIFACT_ZIP),
+    "artifact_size_bytes": ARTIFACT_ZIP.stat().st_size,
+    "required_entries": sorted(required_export_files),
+    "missing_entries": [],
+    "model_sha256_expected": FINAL_LORA_SHA256,
+    "model_sha256_in_zip": model_sha_in_zip,
+    "smoke_status": SMOKE_VALIDATION["status"],
+    "main_status": MAIN_VALIDATION["status"],
+    "sanity_status": SANITY_VALIDATION["status"],
+    "evaluation_status": EVALUATION_STATUS,
+    "human_template_blank_rows": len(HUMAN_TEMPLATE_ROWS),
+}
+INTEGRITY_PATH = EXPORT_ROOT / "final_integrity.json"
+INTEGRITY_PATH.write_text(json.dumps(FINAL_INTEGRITY, indent=2), encoding="utf-8")
+ARTIFACT_ZIP.unlink()
+shutil.make_archive(str(ARTIFACT_ZIP.with_suffix("")), "zip", EXPORT_ROOT)
+with zipfile.ZipFile(ARTIFACT_ZIP) as archive:
+    if archive.testzip() or "final_integrity.json" not in archive.namelist():
+        raise SystemExit("STOP: final integrity validation failed")
+print(json.dumps(FINAL_INTEGRITY, indent=2))
+```
+
+## Cell 51 - Final SUCCESS or FAIL Summary
+
+- Type: Code
+- Tujuan: Menulis state final, memasukkannya ke ZIP, dan mencetak tindakan download yang sah.
+- Input: Semua gate dataset, smoke, main, sanity, export, dan integrity.
+- Expected output: FINAL STATUS: SUCCESS serta final artifact checksum.
+- Stop condition: STOP jika satu required gate bukan PASS.
+
+```python
+FINAL_SUCCESS = all(
+    (
+        PHYSICAL_VALIDATION["train"]["status"] == "pass",
+        PHYSICAL_VALIDATION["validation"]["status"] == "pass",
+        IMAGEFOLDER_TRAIN_REPORT["status"] == "pass",
+        IMAGEFOLDER_VALIDATION_REPORT["status"] == "pass",
+        DIFFUSERS_LOADER_REPORT["status"] == "pass",
+        SMOKE_VALIDATION["status"] == "pass",
+        MAIN_VALIDATION["status"] == "success",
+        SANITY_VALIDATION["status"] == "pass",
+        FINAL_INTEGRITY["status"] == "pass",
+    )
+)
+if not FINAL_SUCCESS:
+    raise SystemExit("STOP: final pipeline integrity gate failed")
+FINAL_STATE = {
+    "schema_version": 1,
+    "run_id": RUN_ID,
+    "current_stage": "complete_kaggle_pipeline",
+    "status": "success",
+    "completed_at": utc_now(),
+    "dataset_package_sha256": DATASET_PACKAGE_SHA256,
+    "final_lora_path": str(MAIN_CANONICAL_PATH),
+    "final_lora_sha256": FINAL_LORA_SHA256,
+    "artifact_zip": str(ARTIFACT_ZIP),
+    "evaluation_status": EVALUATION_STATUS,
+    "automated_metrics_are_proxy": True,
+    "human_evaluation_status": "pending_real_human_review",
+    "rule_engine_remains_authoritative": True,
+}
+STATE_PATH = LORA_ROOT / "complete_pipeline_state.json"
+STATE_PATH.write_text(json.dumps(FINAL_STATE, indent=2), encoding="utf-8")
+shutil.copy2(STATE_PATH, EXPORT_ROOT / STATE_PATH.name)
+ARTIFACT_ZIP.unlink()
+shutil.make_archive(str(ARTIFACT_ZIP.with_suffix("")), "zip", EXPORT_ROOT)
+FINAL_ARTIFACT_SHA256 = sha256_file(ARTIFACT_ZIP)
+ARTIFACT_SHA_PATH = WORKING_ROOT / "taniadaptif_lora_artifacts.sha256"
+ARTIFACT_SHA_PATH.write_text(f"{FINAL_ARTIFACT_SHA256}  {ARTIFACT_ZIP.name}\n", encoding="ascii")
+with zipfile.ZipFile(ARTIFACT_ZIP) as archive:
+    if archive.testzip() or STATE_PATH.name not in archive.namelist():
+        raise SystemExit("STOP: final state missing from artifact ZIP")
+print("=" * 72)
+print("FINAL STATUS: SUCCESS")
+print("Final LoRA:", MAIN_CANONICAL_PATH)
+print("Final LoRA SHA-256:", FINAL_LORA_SHA256)
+print("Artifact ZIP:", ARTIFACT_ZIP)
+print("Artifact ZIP SHA-256:", FINAL_ARTIFACT_SHA256)
+print("Evaluation status:", EVALUATION_STATUS)
+print("Human evaluation: template blank, pending real review")
+print("=" * 72)
+```

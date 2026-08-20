@@ -1,0 +1,32 @@
+strategy: separate_lora_adapters
+base_model: stable-diffusion-v1-5/stable-diffusion-v1-5
+enabled: false
+reason: Enable only after human evaluation confirms unacceptable class confusion.
+
+shared_training:
+  resolution: 512
+  seed: 42
+  rank: 8
+  learning_rate: 0.0001
+  train_batch_size: 1
+  gradient_accumulation_steps: 4
+  checkpointing_steps: 200
+  mixed_precision: fp16
+
+adapters:
+  padi:
+    trigger_token: taniadaptif_padi
+    train_subdirectory: padi
+    output_directory: /content/drive/MyDrive/skripsi_lora/output/fallback/padi
+  jagung:
+    trigger_token: taniadaptif_jagung
+    train_subdirectory: jagung
+    output_directory: /content/drive/MyDrive/skripsi_lora/output/fallback/jagung
+  cabai:
+    trigger_token: taniadaptif_cabai
+    train_subdirectory: cabai
+    output_directory: /content/drive/MyDrive/skripsi_lora/output/fallback/cabai
+  kacang_tanah:
+    trigger_token: taniadaptif_kacang_tanah
+    train_subdirectory: kacang_tanah
+    output_directory: /content/drive/MyDrive/skripsi_lora/output/fallback/kacang_tanah

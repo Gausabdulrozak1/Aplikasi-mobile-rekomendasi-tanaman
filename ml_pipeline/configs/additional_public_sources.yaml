@@ -1,0 +1,83 @@
+access_date: "2026-08-13"
+review_batch: additional_batch_v1
+duplicate_threshold: 5
+max_download_workers: 8
+
+sources:
+  - id: mendeley_maize_nitrogen_g7xnn2bm4g_v1
+    class_id: jagung
+    target_candidates: 50
+    minimum_candidates: 40
+    download_pool_size: 72
+    dataset_name: "Nitrogen deficiency in maize: annotated image classification dataset"
+    authors: "Vlatko Galic; Ivana Podnar Zarko; Filip Novoselnik; Miroslav Salaic"
+    organization: "University of Zagreb Faculty of Agriculture"
+    source_url: "https://data.mendeley.com/datasets/g7xnn2bm4g/1"
+    doi: "10.17632/g7xnn2bm4g.1"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    archive_name: Images.zip
+    archive_size: 512773398
+    archive_sha256: "ff123ac868a509e3f9e864f79bcbfd4bedb34b3ee28dfff3240fed26ed1e3348"
+    review_rotation_degrees: -90
+    archive_download_url: "https://data.mendeley.com/public-files/datasets/g7xnn2bm4g/files/0caeb722-2a0e-4690-9f23-84f3230f2218/file_downloaded"
+    transport_url: "https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/ac9806be-2f62-4782-8e27-d1ac3fe0f3c9"
+    member_groups:
+      - name: N0
+        pattern: '^N0 \([0-9]+\)\.JPG$'
+      - name: N75
+        pattern: '^N75 \([0-9]+\)\.JPG$'
+      - name: NFull
+        pattern: '^NFull \([0-9]+\)\.JPG$'
+
+  - id: mendeley_chili_growth_w9mr3vf56s_v1
+    class_id: cabai
+    target_candidates: 40
+    minimum_candidates: 32
+    download_pool_size: 60
+    dataset_name: "Chili Plant Leaf Disease and Growth Stage Dataset from Bangladesh"
+    authors: "Md Asraful Sharker Nirob; A K M Fazlul Kobir Siam; Prayma Bishshash; Md Assaduzzaman"
+    organization: "Academic agricultural dataset contributors, Bangladesh"
+    source_url: "https://data.mendeley.com/datasets/w9mr3vf56s/1"
+    doi: "10.17632/w9mr3vf56s.1"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    archive_name: "Chili Growth Stage Original Dataset.zip"
+    archive_size: 417184633
+    archive_sha256: "2066d6d530d875fa975d75214f508c5dfc583cf2ee57b803ab5053250b4abb6d"
+    archive_download_url: "https://data.mendeley.com/public-files/datasets/w9mr3vf56s/files/626627c3-5155-46fc-88fb-b8713c396747/file_downloaded"
+    transport_url: "https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/c7dadd04-84ec-4ba0-90d2-cd70328b9892"
+    member_groups:
+      - name: flower
+        pattern: '^Chili Growth Stage Original Dataset/Flower/[^/]+\.(?:JPG|jpg|JPEG|jpeg|PNG|png)$'
+      - name: green_chili
+        pattern: '^Chili Growth Stage Original Dataset/Green Chili/[^/]+\.(?:JPG|jpg|JPEG|jpeg|PNG|png)$'
+
+  - id: mendeley_groundnut_field_bsr2vzhrzr_v2
+    class_id: kacang_tanah
+    target_candidates: 35
+    minimum_candidates: 28
+    download_pool_size: 55
+    dataset_name: "Custom Dataset for Plant Species and Disease Detection using Deep Learning on Plant Images Captured in Realistic Natural Field Conditions"
+    authors: "Ranveersinh19 Patil Bhosale; Trishna Ugale"
+    organization: "Independent academic dataset contributors"
+    source_url: "https://data.mendeley.com/datasets/bsr2vzhrzr/2"
+    doi: "10.17632/bsr2vzhrzr.2"
+    license: "CC BY 4.0"
+    license_url: "https://creativecommons.org/licenses/by/4.0/"
+    archive_name: Ranveer_Realistic_dataset_2000_1126.zip
+    archive_size: 5424577523
+    archive_sha256: "209cab836b496e23ca6b93c5ee496d7818bb301c078a9ea55bd3cf968b0ffdab"
+    archive_download_url: "https://data.mendeley.com/public-files/datasets/bsr2vzhrzr/files/979cd9d9-3d7d-4c70-a6af-17a54a9b3f14/file_downloaded"
+    transport_url: "https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/1e78f278-5b4e-43f3-8dd6-103f1509a8de"
+    member_groups:
+      - name: healthy
+        pattern: '^Ranveer_Realistic_dataset_2000_1126/groundnut_healthy/[^/]+\.(?:jpg|JPG|jpeg|JPEG|png|PNG)$'
+      - name: chlorosis
+        pattern: '^Ranveer_Realistic_dataset_2000_1126/groundnut_chlorosis/[^/]+\.(?:jpg|JPG|jpeg|JPEG|png|PNG)$'
+      - name: cercospora_personata
+        pattern: '^Ranveer_Realistic_dataset_2000_1126/groundnut_cercospora_personata/[^/]+\.(?:jpg|JPG|jpeg|JPEG|png|PNG)$'
+      - name: cercospora_arachidicola
+        pattern: '^Ranveer_Realistic_dataset_2000_1126/groundnut_cercospora_arachidicola/[^/]+\.(?:jpg|JPG|jpeg|JPEG|png|PNG)$'
+      - name: mineral_deficiency
+        pattern: '^Ranveer_Realistic_dataset_2000_1126/groundnut_mineral_deficiency/[^/]+\.(?:jpg|JPG|jpeg|JPEG|png|PNG)$'

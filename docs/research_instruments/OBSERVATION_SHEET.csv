@@ -1,0 +1,7 @@
+observation_id,observer_code,date_time,location_general,item_id,aspect,observation,evidence_reference,notes
+,,,,OBS-01,Existing crop-rotation practice,,,
+,,,,OBS-02,Water availability and irrigation,,,
+,,,,OBS-03,Land type and general condition,,,
+,,,,OBS-04,Access to weather information,,,
+,,,,OBS-05,Mobile-device and network constraints,,,
+,,,,OBS-06,Use of recommendations in workflow,,,

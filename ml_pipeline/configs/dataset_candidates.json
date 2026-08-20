@@ -1,0 +1,175 @@
+{
+  "access_date": "2026-07-28",
+  "purpose": "Public dataset candidates for TaniAdaptif LoRA pilot. Public datasets are for pilot only and must not be claimed as local Aikmel data.",
+  "required_commodities": ["padi", "jagung", "cabai", "kacang_tanah"],
+  "candidates": [
+    {
+      "id": "PheniX-Lab/RiceSEG",
+      "platform": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/PheniX-Lab/RiceSEG",
+      "commodities": ["padi"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_on_source_page"
+      },
+      "access": "gated_contact_info_required",
+      "fit": "strong",
+      "visual_scope": "High-resolution rice field imagery for segmentation; suitable for the padi class after access conditions are accepted.",
+      "caveats": "Requires Hugging Face login and accepting access conditions. Use only 80-100 curated images for the padi class."
+    },
+    {
+      "id": "devshaheen/100_crops_plants_object_detection_25k_image_dataset",
+      "platform": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/devshaheen/100_crops_plants_object_detection_25k_image_dataset",
+      "commodities": ["padi", "jagung", "cabai", "kacang_tanah"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_on_source_page"
+      },
+      "access": "public_zip",
+      "fit": "medium",
+      "visual_scope": "Object detection crop images with categories including Rice, Maize, Chili Pepper, and Groundnut.",
+      "caveats": "Large archive. Verify framing manually and curate 80-100 suitable images for each selected class."
+    },
+    {
+      "id": "CVRPDataset/CVRP",
+      "platform": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/CVRPDataset/CVRP",
+      "commodities": ["padi"],
+      "license": {
+        "name": "needs verification",
+        "status": "needs_verification"
+      },
+      "access": "gated_contact_info_required",
+      "fit": "medium",
+      "visual_scope": "Rice field and panicle images with segmentation masks.",
+      "caveats": "Source page shows access conditions; verify license before use."
+    },
+    {
+      "id": "drtawfikrrahman/prediction-of-rice-ripening-and-plant-dataset",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/drtawfikrrahman/prediction-of-rice-ripening-and-plant-dataset",
+      "commodities": ["padi"],
+      "license": {
+        "name": "needs verification",
+        "status": "needs_verification"
+      },
+      "access": "kaggle_login_required",
+      "fit": "medium",
+      "visual_scope": "Rice phenological/ripening stages under environmental, soil, and climatic conditions.",
+      "caveats": "Verify Kaggle license and sample framing before selecting."
+    },
+    {
+      "id": "minhhuy2810/rice-diseases-image-dataset",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/minhhuy2810/rice-diseases-image-dataset",
+      "commodities": ["padi"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "fallback",
+      "visual_scope": "Rice disease images.",
+      "caveats": "Likely disease/leaf focused. Use only as fallback if field-context images are insufficient."
+    },
+    {
+      "id": "yashparalkar/chillicam-7k",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/yashparalkar/chillicam-7k",
+      "commodities": ["cabai"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "strong_for_cabai",
+      "visual_scope": "Chilli plant images captured in real-world cultivation environments.",
+      "caveats": "Verify license, resolution, and full-plant framing before selecting the cabai subset."
+    },
+    {
+      "id": "ravindubandara3002/chilli-plant-diseases-dataset",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/ravindubandara3002/chilli-plant-diseases-dataset",
+      "commodities": ["cabai"],
+      "license": {
+        "name": "CC0: Public Domain",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "fallback",
+      "visual_scope": "Chilli disease images with test images for prediction.",
+      "caveats": "Likely disease focused. Prefer cultivation-environment images for visual LoRA."
+    },
+    {
+      "id": "warcoder/groundnut-plant-leaf-data",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/warcoder/groundnut-plant-leaf-data",
+      "commodities": ["kacang_tanah"],
+      "license": {
+        "name": "CC BY 4.0",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "fallback",
+      "visual_scope": "Groundnut plant leaf data.",
+      "caveats": "Leaf focused. Verify whether full-plant or field-context photos exist."
+    },
+    {
+      "id": "muhammadazeemabbas/groundnut-leaves-dataset",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/muhammadazeemabbas/groundnut-leaves-dataset",
+      "commodities": ["kacang_tanah"],
+      "license": {
+        "name": "CC BY 4.0",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "fallback",
+      "visual_scope": "Groundnut leaf dataset.",
+      "caveats": "Leaf focused and less ideal for field visual simulation."
+    },
+    {
+      "id": "abhimanuer/peanut-plant-leaf-disease",
+      "platform": "Kaggle",
+      "source_url": "https://www.kaggle.com/datasets/abhimanuer/peanut-plant-leaf-disease",
+      "commodities": ["kacang_tanah"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_from_search_result"
+      },
+      "access": "kaggle_login_required",
+      "fit": "fallback",
+      "visual_scope": "Peanut plant leaf disease images.",
+      "caveats": "Disease/leaf focused. Do not use as primary visual LoRA source if only close-ups are available."
+    },
+    {
+      "id": "musfiqurtuhin/BCDD",
+      "platform": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/musfiqurtuhin/BCDD",
+      "commodities": ["jagung", "padi"],
+      "license": {
+        "name": "CC BY-SA 4.0",
+        "status": "verified_on_source_page"
+      },
+      "access": "public_huggingface",
+      "fit": "not_recommended_for_lora_visual",
+      "visual_scope": "Bangladeshi crop disease classification data resized to 96x96.",
+      "caveats": "Too small and disease-focused for 512px visual LoRA. Useful only as reference/fallback."
+    },
+    {
+      "id": "tirtho149/SAGE",
+      "platform": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/tirtho149/SAGE",
+      "commodities": ["jagung"],
+      "license": {
+        "name": "MIT",
+        "status": "verified_on_source_page"
+      },
+      "access": "public_streaming_recommended",
+      "fit": "not_recommended_for_pilot",
+      "visual_scope": "Large plant disease dataset with crop field photographs including corn.",
+      "caveats": "Very large dataset. Stream and filter only if it is selected for the jagung class."
+    }
+  ]
+}

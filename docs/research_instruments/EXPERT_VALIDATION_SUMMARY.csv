@@ -1,0 +1,6 @@
+round_id,date,expert_count,aspect,valid_ratings,mean_score,required_revisions,resolution_evidence,final_disposition,verified_by
+,,,Decision-table inputs,,,,,,
+,,,Rule outputs and order,,,,,,
+,,,Recommendation reasons,,,,,,
+,,,Weather-category mapping,,,,,,
+,,,Four-week activity guidance,,,,,,

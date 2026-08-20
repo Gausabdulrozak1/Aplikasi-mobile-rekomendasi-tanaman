@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Review Visual LoRA TaniAdaptif</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand-block">
+        <p>TaniAdaptif</p>
+        <h1>Review Visual LoRA</h1>
+      </div>
+      <div class="header-progress" aria-live="polite">
+        <div class="progress-copy">
+          <strong id="row-progress">0 / 72</strong>
+          <span id="condition-progress">0 / 36 pasangan</span>
+        </div>
+        <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+      </div>
+      <label class="reviewer-role">
+        Peran reviewer
+        <input id="reviewer-role" maxlength="100" autocomplete="organization-title" />
+      </label>
+      <div class="header-actions">
+        <a class="button secondary" href="/api/export" download>Ekspor CSV</a>
+        <button id="finalize-button" class="button finalize" type="button" disabled>
+          Validasi 72 Penilaian
+        </button>
+      </div>
+    </header>
+
+    <section class="filter-band" aria-label="Filter kondisi evaluasi">
+      <div id="class-filter" class="segmented class-filter" role="group" aria-label="Kelas">
+        <button type="button" data-class="all" class="active">Semua</button>
+        <button type="button" data-class="padi">Padi</button>
+        <button type="button" data-class="jagung">Jagung</button>
+        <button type="button" data-class="cabai">Cabai</button>
+        <button type="button" data-class="kacang_tanah">Kacang tanah</button>
+      </div>
+      <label>
+        Status
+        <select id="status-filter">
+          <option value="all">Semua pasangan</option>
+          <option value="pending">Belum lengkap</option>
+          <option value="complete">Selesai</option>
+        </select>
+      </label>
+      <p id="filter-count">0 pasangan</p>
+    </section>
+
+    <main class="workspace">
+      <aside class="condition-panel" aria-label="Daftar kondisi">
+        <div class="condition-heading">
+          <strong>Kondisi</strong>
+          <span id="run-id">-</span>
+        </div>
+        <div id="condition-list" class="condition-list"></div>
+      </aside>
+
+      <section class="review-workspace">
+        <div id="loading-state" class="state-message">Memuat evaluasi...</div>
+        <div id="empty-state" class="state-message" hidden>Tidak ada pasangan pada filter ini.</div>
+        <div id="review-content" hidden>
+          <header class="review-heading">
+            <div>
+              <p id="sequence-label">0 dari 0</p>
+              <h2 id="condition-title">-</h2>
+            </div>
+            <div class="condition-meta">
+              <span id="prompt-index">Prompt -</span>
+              <span id="seed-label">Seed -</span>
+            </div>
+          </header>
+          <p id="prompt-text" class="prompt-text"></p>
+
+          <div id="variant-grid" class="variant-grid"></div>
+
+          <nav class="navigation-row" aria-label="Navigasi pasangan">
+            <button id="previous-button" class="button secondary" type="button">Sebelumnya</button>
+            <span id="save-state" aria-live="polite">Siap</span>
+            <button id="next-button" class="button secondary" type="button">Berikutnya</button>
+          </nav>
+        </div>
+      </section>
+    </main>
+
+    <template id="variant-template">
+      <article class="variant-panel">
+        <header class="variant-heading">
+          <div>
+            <p class="variant-label">Variant</p>
+            <h3 class="variant-title">-</h3>
+          </div>
+          <span class="variant-status">Belum dinilai</span>
+        </header>
+        <a class="image-frame" target="_blank" rel="noopener">
+          <img alt="" />
+          <span class="image-error" hidden>Gambar tidak dapat ditampilkan</span>
+        </a>
+        <div class="assessment-form">
+          <fieldset class="assessment-group crop-group">
+            <legend>Komoditas sesuai</legend>
+            <div class="segmented binary-control">
+              <button type="button" data-value="true">Ya</button>
+              <button type="button" data-value="false">Tidak</button>
+            </div>
+          </fieldset>
+          <fieldset class="assessment-group score-group" data-field="field_context_quality">
+            <legend>Kualitas konteks lahan</legend>
+            <div class="score-control" aria-label="Kualitas konteks lahan">
+              <button type="button" data-score="1">1</button>
+              <button type="button" data-score="2">2</button>
+              <button type="button" data-score="3">3</button>
+              <button type="button" data-score="4">4</button>
+              <button type="button" data-score="5">5</button>
+            </div>
+          </fieldset>
+          <fieldset class="assessment-group score-group" data-field="visual_realism_score">
+            <legend>Realisme visual</legend>
+            <div class="score-control" aria-label="Realisme visual">
+              <button type="button" data-score="1">1</button>
+              <button type="button" data-score="2">2</button>
+              <button type="button" data-score="3">3</button>
+              <button type="button" data-score="4">4</button>
+              <button type="button" data-score="5">5</button>
+            </div>
+          </fieldset>
+          <label class="field-label">
+            Hasil identifikasi / confusion
+            <select class="confusion-select">
+              <option value="">Pilih hasil pengamatan</option>
+              <option value="none">Tidak ada</option>
+              <option value="padi">Terlihat sebagai padi</option>
+              <option value="jagung">Terlihat sebagai jagung</option>
+              <option value="cabai">Terlihat sebagai cabai</option>
+              <option value="kacang_tanah">Terlihat sebagai kacang tanah</option>
+              <option value="mixed">Tanaman bercampur</option>
+              <option value="unclear">Tidak dapat dikenali</option>
+            </select>
+          </label>
+          <label class="field-label notes-label">
+            Catatan
+            <textarea class="notes-input" rows="3" maxlength="2000"></textarea>
+          </label>
+          <div class="variant-actions">
+            <button class="button clear-button" type="button">Hapus</button>
+            <button class="button save-button" type="button">Simpan Penilaian</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <div id="toast" class="toast" hidden role="status"></div>
+  </body>
+</html>

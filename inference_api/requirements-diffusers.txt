@@ -1,0 +1,9 @@
+-r requirements.txt
+# Install a CUDA-compatible PyTorch build supplied by the GPU host first.
+# Do not use this file on the local Ryzen laptop.
+diffusers==0.35.1
+transformers==4.57.6
+accelerate==1.14.0
+peft==0.20.0
+safetensors==0.8.0
+huggingface-hub==0.36.2

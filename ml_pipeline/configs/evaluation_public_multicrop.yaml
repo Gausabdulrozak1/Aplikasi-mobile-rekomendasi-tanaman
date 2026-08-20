@@ -1,0 +1,60 @@
+experiment_name: multisource_multicrop_lora_sd15_evaluation
+base_model: stable-diffusion-v1-5/stable-diffusion-v1-5
+training_config: ml_pipeline/configs/training_public_multicrop.yaml
+
+generation:
+  seeds:
+    - 42
+    - 123
+    - 2026
+  inference_steps: 25
+  guidance_scale: 7.5
+  width: 512
+  height: 512
+  negative_prompt: >-
+    blurry, low quality, distorted plants, mixed crops, incorrect crop,
+    watermark, text, people, buildings, deformed leaves,
+    unrealistic agricultural field
+
+classes:
+  - id: padi
+    trigger_token: taniadaptif_padi
+    prompts:
+      - a realistic agricultural photograph of taniadaptif_padi, rice plants growing in an agricultural environment, natural lighting
+      - taniadaptif_padi, rice plants in an agricultural environment, natural lighting, field-level view
+      - taniadaptif_padi, rice plants in an agricultural environment, natural lighting, clear crop view
+
+  - id: jagung
+    trigger_token: taniadaptif_jagung
+    prompts:
+      - a realistic agricultural photograph of taniadaptif_jagung, maize plants growing in an agricultural environment, natural lighting
+      - taniadaptif_jagung, maize plants in an agricultural environment, natural lighting, field-level view
+      - taniadaptif_jagung, maize plants in an agricultural environment, natural lighting, clear crop view
+
+  - id: cabai
+    trigger_token: taniadaptif_cabai
+    prompts:
+      - a realistic agricultural photograph of taniadaptif_cabai, chili plants growing in an agricultural environment, natural lighting
+      - taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, field-level view
+      - taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, clear crop view
+
+  - id: kacang_tanah
+    trigger_token: taniadaptif_kacang_tanah
+    prompts:
+      - a realistic agricultural photograph of taniadaptif_kacang_tanah, peanut plants growing in an agricultural environment, natural lighting
+      - taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, field-level view
+      - taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, clear crop view
+
+output:
+  google_drive_directory: /content/drive/MyDrive/skripsi_lora/evaluation/multicrop_v1
+
+confusion_review:
+  columns:
+    - expected_class
+    - predicted_visual_class
+    - prompt
+    - seed
+    - reviewer_score
+    - class_correct
+    - mixed_crop_detected
+    - notes
