@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../config/app_config.dart';
 import '../models/cuaca_model.dart';
-import '../models/generate_visual_model.dart';
 import '../models/rekomendasi_model.dart';
 import '../services/local_storage_service.dart';
 import '../services/stable_diffusion_service.dart';
+import 'riwayat_screen.dart';
+import 'simulasi_visual_screen.dart';
 
 class HasilScreen extends StatefulWidget {
   final CuacaModel cuaca;
@@ -30,123 +31,86 @@ class HasilScreen extends StatefulWidget {
 }
 
 class _HasilScreenState extends State<HasilScreen> {
-  late final StableDiffusionService _stableDiffusionService;
   late final LocalStorageService _localStorageService;
-
-  bool _isLoadingAI = false;
-  String? _aiPrompt;
-  String? _aiImageUrl;
-  String? _aiModel;
-  int _aiSeed = 42;
-  String? _aiError;
-  String? _aiRequestId;
-  String? _inferenceProvider;
-  String? _loraIdentifier;
+  late final String _historyId;
+  bool _isSaved = false;
 
   @override
   void initState() {
     super.initState();
-    _stableDiffusionService =
-        widget.stableDiffusionService ?? StableDiffusionService();
     _localStorageService =
         widget.localStorageService ?? const LocalStorageService();
-    _loadModelInfo();
+    _historyId =
+        'recommendation-${DateTime.now().microsecondsSinceEpoch.toString()}';
   }
 
-  Future<void> _loadModelInfo() async {
-    try {
-      final info = await _stableDiffusionService.getModelInfo();
-      if (!mounted) return;
-      setState(() {
-        _inferenceProvider = info.provider;
-        _loraIdentifier = info.loraIdentifier;
-      });
-    } catch (_) {
-      // Model info is supplementary; recommendation and generation stay usable.
-    }
-  }
-
-  Future<void> _generateSimulasiAI() async {
+  Future<void> _simpanRekomendasi() async {
     if (widget.rekomendasi.rekomendasi.isEmpty) return;
-
-    setState(() {
-      _isLoadingAI = true;
-      _aiError = null;
-      _aiImageUrl = null;
-      _aiModel = null;
-    });
-
-    final tanamanUtama = widget.rekomendasi.rekomendasi.first;
-    final request = _stableDiffusionService.buildRequest(
-      tanaman: tanamanUtama,
-      cuaca: widget.cuaca,
-      jenisLahan: widget.jenisLahan,
-      ketersediaanAir: widget.ketersediaanAir,
-      tanamanSebelumnya: widget.rekomendasi.tanamanSebelumnyaKode,
-      seed: _aiSeed,
-    );
-
-    try {
-      final response = await _stableDiffusionService.generate(request);
-      await _simpanRiwayatVisual(request, response, tanamanUtama);
-      if (!mounted) return;
-      setState(() {
-        _aiPrompt = response.metadata['prompt']?.toString();
-        _aiImageUrl = response.imageUrl;
-        _aiModel = response.model;
-        _aiSeed = response.seed;
-        _aiRequestId = response.requestId;
-        _inferenceProvider = response.metadata['provider']?.toString();
-        _loraIdentifier = response.metadata['lora_identifier']?.toString();
-        _isLoadingAI = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _aiError = e is StableDiffusionException
-            ? '${e.message} Rekomendasi tanaman tetap dapat digunakan.'
-            : 'Simulasi visual belum tersedia. Rekomendasi tanaman tetap dapat digunakan.';
-        _isLoadingAI = false;
-      });
-    }
-  }
-
-  Future<void> _simpanRiwayatVisual(
-    GenerateVisualRequest request,
-    GenerateVisualResponse response,
-    TanamanRekomendasi tanaman,
-  ) async {
+    final tanaman = widget.rekomendasi.rekomendasi.first;
     await _localStorageService.saveVisualHistory({
+      'id': _historyId,
       'timestamp': DateTime.now().toIso8601String(),
       'tanaman': tanaman.kode,
       'nama_tanaman': tanaman.nama,
-      'land_type': request.landType,
-      'water_availability': request.waterAvailability,
-      'previous_crop': request.previousCrop,
-      'weather_summary': request.weatherSummary,
-      'prompt': response.metadata['prompt'],
-      'negative_prompt': response.metadata['negative_prompt'],
-      'seed': response.seed,
-      'request_id': response.requestId,
-      'image_url': response.imageUrl,
-      'image_id': response.imageId,
-      'model': response.model,
+      'land_type': widget.jenisLahan,
+      'water_availability': widget.ketersediaanAir,
+      'previous_crop': widget.rekomendasi.tanamanSebelumnyaKode,
+      'weather_summary': _weatherSummary(),
       'rekomendasi_alasan': widget.rekomendasi.alasan,
       'rule_id': widget.rekomendasi.ruleId,
     });
+    if (!mounted) return;
+    setState(() => _isSaved = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Rekomendasi tersimpan di riwayat.')),
+    );
+  }
+
+  void _bukaSimulasi() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SimulasiVisualScreen(
+          cuaca: widget.cuaca,
+          rekomendasi: widget.rekomendasi,
+          jenisLahan: widget.jenisLahan,
+          ketersediaanAir: widget.ketersediaanAir,
+          historyId: _historyId,
+          stableDiffusionService: widget.stableDiffusionService,
+          localStorageService: _localStorageService,
+        ),
+      ),
+    );
+  }
+
+  void _bukaRiwayat() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            RiwayatScreen(localStorageService: _localStorageService),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Hasil Rekomendasi')),
+      appBar: AppBar(
+        title: const Text('Hasil Rekomendasi'),
+        actions: [
+          IconButton(
+            onPressed: _bukaRiwayat,
+            icon: const Icon(Icons.history),
+            tooltip: 'Buka riwayat',
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildRingkasanCuaca(),
-            const SizedBox(height: 24),
             const Text(
               'Rekomendasi Tanaman',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -161,16 +125,18 @@ class _HasilScreenState extends State<HasilScreen> {
               _buildRekomendasiKosong()
             else
               ...widget.rekomendasi.rekomendasi.map(_buildKartuTanaman),
+            const SizedBox(height: 4),
+            _buildAlasan(),
+            const SizedBox(height: 16),
+            _buildRingkasanCuaca(),
+            const SizedBox(height: 18),
+            _buildActions(),
             if (widget.rekomendasi.memilikiKalender) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               _buildKalenderBulanan(),
               const SizedBox(height: 16),
               _buildJadwalTanam(),
             ],
-            const SizedBox(height: 16),
-            _buildAlasan(),
-            const SizedBox(height: 16),
-            _buildSimulasiAI(),
           ],
         ),
       ),
@@ -182,7 +148,7 @@ class _HasilScreenState extends State<HasilScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.primaryLightest,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
@@ -216,6 +182,45 @@ class _HasilScreenState extends State<HasilScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildActions() {
+    final hasRecommendation = widget.rekomendasi.rekomendasi.isNotEmpty;
+    return Row(
+      children: [
+        Expanded(
+          child: FilledButton.icon(
+            onPressed: hasRecommendation ? _bukaSimulasi : null,
+            icon: const Icon(Icons.auto_awesome),
+            label: const Text('Simulasi Visual', textAlign: TextAlign.center),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: !hasRecommendation || _isSaved
+                ? null
+                : _simpanRekomendasi,
+            icon: Icon(_isSaved ? Icons.check : Icons.bookmark_add_outlined),
+            label: Text(
+              _isSaved ? 'Tersimpan' : 'Simpan Riwayat',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _weatherSummary() {
+    final details = <String>[widget.cuaca.kondisi];
+    if (widget.cuaca.suhu != null) {
+      details.add('${widget.cuaca.suhu!.toStringAsFixed(0)} C');
+    }
+    if (widget.cuaca.kategoriCurahHujan != null) {
+      details.add('hujan ${widget.cuaca.kategoriCurahHujan}');
+    }
+    return details.join(', ');
   }
 
   Widget _buildRekomendasiKosong() {
@@ -648,243 +653,6 @@ class _HasilScreenState extends State<HasilScreen> {
     final hari = tanggal.day.toString().padLeft(2, '0');
     final bulan = tanggal.month.toString().padLeft(2, '0');
     return '$hari/$bulan/${tanggal.year}';
-  }
-
-  Widget _buildSimulasiAI() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Simulasi Visual',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.greyLight),
-          ),
-          child: _buildKontenSimulasi(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildKontenSimulasi() {
-    if (_isLoadingAI) {
-      return const SizedBox(
-        height: 100,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 8),
-              Text(
-                'Menunggu provider simulasi visual...',
-                style: TextStyle(fontSize: 12, color: AppColors.grey),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_aiError != null) {
-      return Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.danger.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              children: [
-                const Icon(
-                  Icons.info_outline,
-                  size: 40,
-                  color: AppColors.warning,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  _aiError!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: AppColors.grey),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  onPressed: _generateSimulasiAI,
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Coba Lagi'),
-                ),
-              ],
-            ),
-          ),
-          if (widget.rekomendasi.rekomendasi.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Container(
-              height: 120,
-              decoration: BoxDecoration(
-                color: AppColors.primaryLightest,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.eco, size: 40, color: AppColors.primary),
-                    Text(
-                      widget.rekomendasi.rekomendasi.first.nama,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ],
-      );
-    }
-
-    if (_aiImageUrl != null && _aiImageUrl!.isNotEmpty) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.primaryLightest,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Icon(
-                  Icons.auto_awesome,
-                  color: AppColors.primary,
-                  size: 24,
-                ),
-                const SizedBox(width: 8),
-                const Expanded(
-                  child: Text(
-                    'Simulasi Tanaman',
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: _generateSimulasiAI,
-                  icon: const Icon(Icons.refresh, color: AppColors.primary),
-                  tooltip: 'Generate ulang',
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Image.network(
-                  _aiImageUrl!,
-                  headers: AppConfig.visualImageHeaders,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.white.withValues(alpha: 0.7),
-                      child: const Center(
-                        child: Icon(
-                          Icons.broken_image,
-                          color: AppColors.grey,
-                          size: 48,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            if (_aiModel != null && _aiModel!.isNotEmpty)
-              Text(
-                'Model: $_aiModel - Seed: $_aiSeed',
-                style: TextStyle(fontSize: 11, color: AppColors.grey),
-              ),
-            if (_inferenceProvider != null || _aiRequestId != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                [
-                  if (_inferenceProvider != null)
-                    'Provider: $_inferenceProvider',
-                  if (_loraIdentifier != null && _loraIdentifier!.isNotEmpty)
-                    'LoRA: $_loraIdentifier',
-                  if (_aiRequestId != null) 'Request: $_aiRequestId',
-                ].join(' - '),
-                style: TextStyle(fontSize: 10, color: AppColors.grey),
-              ),
-            ],
-            const SizedBox(height: 8),
-            if (_aiPrompt != null && _aiPrompt!.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  'Prompt: $_aiPrompt',
-                  style: TextStyle(fontSize: 10, color: AppColors.grey),
-                ),
-              ),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.primaryLightest,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              const Icon(Icons.eco, size: 44, color: AppColors.primary),
-              const SizedBox(height: 8),
-              const Text(
-                'Buat simulasi visual dari rekomendasi tanaman utama.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13),
-              ),
-              const SizedBox(height: 12),
-              if (_inferenceProvider != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Provider: $_inferenceProvider',
-                    style: const TextStyle(fontSize: 11, color: AppColors.grey),
-                  ),
-                ),
-              ElevatedButton.icon(
-                onPressed: _generateSimulasiAI,
-                icon: const Icon(Icons.auto_awesome),
-                label: const Text('Generate Visual'),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildKartuTanaman(TanamanRekomendasi t) {

@@ -74,6 +74,22 @@ void main() {
     expect(history, hasLength(20));
     expect(history.first['request_id'], 'request-24');
     expect(history.last['request_id'], 'request-5');
+
+    await storage.saveVisualHistory({
+      'request_id': 'request-24',
+      'crop': 'jagung',
+    });
+    final updated = await storage.loadVisualHistory();
+    expect(updated, hasLength(20));
+    expect(updated.first['crop'], 'jagung');
+
+    await storage.deleteVisualHistory('request-24');
+    final deleted = await storage.loadVisualHistory();
+    expect(deleted, hasLength(19));
+    expect(
+      deleted.any((entry) => entry['request_id'] == 'request-24'),
+      isFalse,
+    );
   });
 }
 

@@ -67,7 +67,18 @@ class LocalStorageService {
   Future<void> saveVisualHistory(Map<String, dynamic> entry) async {
     final preferences = await _preferences;
     final existing = preferences.getStringList(_visualHistoryKey) ?? const [];
-    final updated = [jsonEncode(entry), ...existing].take(20).toList();
+    final entryId = _historyId(entry);
+    final updated = [
+      jsonEncode(entry),
+      ...existing.where((item) {
+        if (entryId.isEmpty) return true;
+        try {
+          return _historyId(_asMap(jsonDecode(item))) != entryId;
+        } on FormatException {
+          return true;
+        }
+      }),
+    ].take(20).toList();
     await preferences.setStringList(_visualHistoryKey, updated);
   }
 
@@ -85,6 +96,19 @@ class LocalStorageService {
         .where((item) => item.isNotEmpty)
         .toList();
   }
+
+  Future<void> deleteVisualHistory(String id) async {
+    final preferences = await _preferences;
+    final existing = preferences.getStringList(_visualHistoryKey) ?? const [];
+    final updated = existing.where((item) {
+      try {
+        return _historyId(_asMap(jsonDecode(item))) != id;
+      } on FormatException {
+        return true;
+      }
+    }).toList();
+    await preferences.setStringList(_visualHistoryKey, updated);
+  }
 }
 
 Map<String, dynamic> _asMap(dynamic value) {
@@ -93,4 +117,8 @@ Map<String, dynamic> _asMap(dynamic value) {
     return value.map((key, item) => MapEntry(key.toString(), item));
   }
   return <String, dynamic>{};
+}
+
+String _historyId(Map<String, dynamic> entry) {
+  return entry['id']?.toString() ?? entry['request_id']?.toString() ?? '';
 }

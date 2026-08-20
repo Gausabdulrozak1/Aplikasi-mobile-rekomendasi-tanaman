@@ -4,6 +4,7 @@ import '../config/app_config.dart';
 import '../models/cuaca_model.dart';
 import '../repositories/tani_adaptif_repository.dart';
 import 'form_lahan_screen.dart';
+import 'riwayat_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final TaniAdaptifRepository? repository;
@@ -81,11 +82,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 12),
               ],
               _buildKontenCuaca(),
+              if (_cuaca != null) ...[
+                const SizedBox(height: 16),
+                _buildRingkasanCuaca(_cuaca!),
+              ],
               const SizedBox(height: 24),
               _buildTombolRekomendasi(),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 0,
+        onDestinationSelected: _handleNavigation,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Beranda',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.eco_outlined),
+            selectedIcon: Icon(Icons.eco),
+            label: 'Rekomendasi',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.history_outlined),
+            selectedIcon: Icon(Icons.history),
+            label: 'Riwayat',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleNavigation(int index) {
+    if (index == 1) {
+      _openForm();
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const RiwayatScreen()),
+      );
+    }
+  }
+
+  void _openForm() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FormLahanScreen(repository: _repository, cuaca: _cuaca),
       ),
     );
   }
@@ -193,7 +239,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
-                  '${cuaca.desa}, ${cuaca.kecamatan}',
+                  'Aikmel, Lombok Timur',
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -261,6 +307,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Widget _buildRingkasanCuaca(CuacaModel cuaca) {
+    final rain = cuaca.kategoriCurahHujan ?? 'belum tersedia';
+    final humidity = cuaca.kelembaban == null
+        ? 'belum tersedia'
+        : '${cuaca.kelembaban!.toStringAsFixed(0)}%';
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.greyLight),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.summarize_outlined, color: AppColors.info),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Ringkasan Cuaca',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${cuaca.kondisi}. Kelembaban $humidity dengan kategori curah hujan $rain.',
+                  style: const TextStyle(fontSize: 12, height: 1.45),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _infoCuaca(IconData icon, String label, String value) {
     return Flexible(
       child: Column(
@@ -296,16 +381,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => FormLahanScreen(repository: _repository),
-            ),
-          );
-        },
-        icon: const Icon(Icons.eco),
-        label: const Text('Dapatkan Rekomendasi Rotasi Tanam'),
+        onPressed: _openForm,
+        icon: const Icon(Icons.arrow_forward),
+        label: const Text('Lanjut ke Input Kondisi'),
       ),
     );
   }
