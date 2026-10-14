@@ -66,7 +66,9 @@ def create_router(settings: Settings, service: GenerationService) -> APIRouter:
             supported_width=SUPPORTED_DIMENSIONS,
             supported_height=SUPPORTED_DIMENSIONS,
             default_parameters={
-                "seed": settings.default_seed,
+                "seed": None,
+                "seed_behavior": "random_when_omitted",
+                "reproducible_seed_example": settings.default_seed,
                 "steps": 25,
                 "guidance_scale": 7.5,
                 "width": settings.default_width,

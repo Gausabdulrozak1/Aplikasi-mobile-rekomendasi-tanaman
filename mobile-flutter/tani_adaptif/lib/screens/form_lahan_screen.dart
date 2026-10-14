@@ -197,20 +197,31 @@ class _FormLahanScreenState extends State<FormLahanScreen> {
               'Ringkasan belum tersedia. Cuaca akan diambil saat rekomendasi diproses.',
               style: TextStyle(fontSize: 12, color: AppColors.grey),
             )
-          else
-            Row(
+            else
+            Column(
               children: [
-                _weatherValue(
-                  'Suhu',
-                  cuaca.suhu == null
-                      ? 'Tidak tersedia'
-                      : '${cuaca.suhu!.toStringAsFixed(0)} C',
+                Row(
+                  children: [
+                    _weatherValue(
+                      'Suhu',
+                      cuaca.suhu == null
+                          ? 'Tidak tersedia'
+                          : '${cuaca.suhu!.toStringAsFixed(0)} C',
+                    ),
+                    _weatherValue(
+                      'Curah hujan',
+                      cuaca.kategoriCurahHujan ?? 'Tidak tersedia',
+                    ),
+                    _weatherValue('Kondisi', cuaca.kondisi),
+                  ],
                 ),
-                _weatherValue(
-                  'Curah hujan',
-                  cuaca.kategoriCurahHujan ?? 'Tidak tersedia',
+                const SizedBox(height: 8),
+                Text(
+                  cuaca.isStale
+                      ? 'Sumber: data cuaca tersimpan'
+                      : 'Sumber: BMKG live',
+                  style: const TextStyle(fontSize: 10, color: AppColors.grey),
                 ),
-                _weatherValue('Kondisi', cuaca.kondisi),
               ],
             ),
         ],

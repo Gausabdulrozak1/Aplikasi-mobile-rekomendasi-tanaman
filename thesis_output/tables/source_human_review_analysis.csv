@@ -1,0 +1,16 @@
+scope,class_id,metric,unit,paired_conditions,base_value,lora_value,lora_minus_base,base_median,lora_median,lora_wins,ties,base_wins,non_tied,exact_p_value,test
+overall,all,crop_correct,percent,36,86.111111,94.444444,8.333333,,,3,33,0,3,0.25,exact_mcnemar_discordant_pairs
+overall,all,field_context_quality,score_1_to_5,36,4.027778,3.861111,-0.166667,4.5,4.0,6,21,9,15,0.6072387695,exact_sign_test_ties_excluded
+overall,all,visual_realism_score,score_1_to_5,36,4.027778,3.861111,-0.166667,4.5,4.0,6,21,9,15,0.6072387695,exact_sign_test_ties_excluded
+class,padi,crop_correct,percent,9,100.0,100.0,0.0,,,0,9,0,0,1.0,exact_mcnemar_discordant_pairs
+class,padi,field_context_quality,score_1_to_5,9,4.111111,3.888889,-0.222222,4.0,4.0,0,7,2,2,0.5,exact_sign_test_ties_excluded
+class,padi,visual_realism_score,score_1_to_5,9,4.111111,3.888889,-0.222222,4.0,4.0,0,7,2,2,0.5,exact_sign_test_ties_excluded
+class,jagung,crop_correct,percent,9,100.0,100.0,0.0,,,0,9,0,0,1.0,exact_mcnemar_discordant_pairs
+class,jagung,field_context_quality,score_1_to_5,9,5.0,3.666667,-1.333333,5.0,4.0,0,3,6,6,0.03125,exact_sign_test_ties_excluded
+class,jagung,visual_realism_score,score_1_to_5,9,5.0,3.666667,-1.333333,5.0,4.0,0,3,6,6,0.03125,exact_sign_test_ties_excluded
+class,cabai,crop_correct,percent,9,100.0,100.0,0.0,,,0,9,0,0,1.0,exact_mcnemar_discordant_pairs
+class,cabai,field_context_quality,score_1_to_5,9,4.666667,4.333333,-0.333333,5.0,5.0,0,8,1,1,1.0,exact_sign_test_ties_excluded
+class,cabai,visual_realism_score,score_1_to_5,9,4.666667,4.333333,-0.333333,5.0,5.0,0,8,1,1,1.0,exact_sign_test_ties_excluded
+class,kacang_tanah,crop_correct,percent,9,44.444444,77.777778,33.333333,,,3,6,0,3,0.25,exact_mcnemar_discordant_pairs
+class,kacang_tanah,field_context_quality,score_1_to_5,9,2.333333,3.555556,1.222222,2.0,4.0,6,3,0,6,0.03125,exact_sign_test_ties_excluded
+class,kacang_tanah,visual_realism_score,score_1_to_5,9,2.333333,3.555556,1.222222,2.0,4.0,6,3,0,6,0.03125,exact_sign_test_ties_excluded

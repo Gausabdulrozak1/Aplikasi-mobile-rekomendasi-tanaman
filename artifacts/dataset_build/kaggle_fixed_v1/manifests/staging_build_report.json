@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-08-14T09:24:12.096669+00:00",
+  "status": "staging_valid",
+  "staging_root": "D:\\TaniAdaptif\\artifacts\\dataset_build\\kaggle_fixed_v1",
+  "source_truth": {
+    "audited_at": "2026-08-14T09:24:05.644236+00:00",
+    "training_allowed": true,
+    "review": {
+      "path": "D:\\TaniAdaptif\\artifacts\\dataset_review\\manual_review_template.csv",
+      "rows": 475,
+      "accepted": 390,
+      "rejected": 85,
+      "other": 0
+    },
+    "split_counts": {
+      "train": 312,
+      "validation": 77
+    },
+    "total": 389,
+    "class_counts": {
+      "cabai": 97,
+      "jagung": 100,
+      "kacang_tanah": 97,
+      "padi": 95
+    },
+    "duplicate_leakage": 0,
+    "trigger_crossing": 0,
+    "old_package_path": "D:\\TaniAdaptif\\artifacts\\dataset_packages\\dataset_multicrop_v1.zip",
+    "old_package_sha256": "f6aa060658cf95e48996f10f0ffde200938d340dd15e6b60adace5bb5cecfb33",
+    "metadata_paths": {
+      "train": "D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\train\\metadata.jsonl",
+      "validation": "D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\validation\\metadata.jsonl"
+    },
+    "split_manifest_path": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\split_manifest.csv",
+    "physical_image_count": 389
+  },
+  "train": 312,
+  "validation": 77,
+  "total": 389,
+  "class_counts": {
+    "padi": 95,
+    "jagung": 100,
+    "cabai": 97,
+    "kacang_tanah": 97
+  },
+  "unresolved": 0,
+  "ambiguous": 0,
+  "match_methods": {
+    "exact_relative_path": 389
+  },
+  "images_changed": 0,
+  "human_decisions_changed": 0,
+  "split_changed": 0,
+  "caption_changed": 0,
+  "metadata_file_name_changed": 389,
+  "reserved_provenance_columns_renamed": {
+    "original_file_name->source_original_name": 389
+  },
+  "pil_validation": {
+    "train": {
+      "status": "pass",
+      "metadata_rows": 312,
+      "physical_images": 312,
+      "missing": 0,
+      "decode_failures": 0
+    },
+    "validation": {
+      "status": "pass",
+      "metadata_rows": 77,
+      "physical_images": 77,
+      "missing": 0,
+      "decode_failures": 0
+    }
+  },
+  "physical_index": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\kaggle_physical_image_index.csv",
+  "resolution_report": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\kaggle_metadata_resolution.csv",
+  "mapping_manifest": "D:\\TaniAdaptif\\artifacts\\dataset_build\\kaggle_fixed_v1\\manifests\\kaggle_file_mapping.csv"
+}

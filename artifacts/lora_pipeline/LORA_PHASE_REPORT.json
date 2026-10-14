@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "report_date": "2026-08-13",
+  "phase_status": "dataset_ready_remote_training_pending",
+  "training_allowed_by_dataset_gate": true,
+  "dataset": {
+    "review": {
+      "total": 475,
+      "accepted": 390,
+      "rejected": 85,
+      "unsure": 0,
+      "pending": 0
+    },
+    "final_per_class": {
+      "padi": 95,
+      "jagung": 100,
+      "cabai": 97,
+      "kacang_tanah": 97
+    },
+    "train_count": 312,
+    "validation_count": 77,
+    "padi_sources": {
+      "public": 70,
+      "local_aikmel": 25
+    },
+    "package_status": "valid",
+    "package_path": "artifacts/dataset_packages/dataset_multicrop_v1.zip",
+    "package_size_bytes": 188356224,
+    "checksum_sha256": "f6aa060658cf95e48996f10f0ffde200938d340dd15e6b60adace5bb5cecfb33",
+    "duplicate_leakage": false,
+    "metadata_valid": true
+  },
+  "google_drive": {
+    "authenticated": true,
+    "root_folder_url": "https://drive.google.com/drive/folders/11OtZXChqKb4SMt4j5ebwBcFHDVCMN6__",
+    "datasets_folder_url": "https://drive.google.com/drive/folders/1N03Yaunf6P_42rWx6AahQIlNrTm9nK-N",
+    "structure_created": true,
+    "checksum_uploaded": true,
+    "notebooks_uploaded": 3,
+    "dataset_zip_uploaded": false,
+    "dataset_zip_upload_attempts": 2,
+    "dataset_zip_upload_error": "Connector file-blob handoff timed out after 60 seconds for the 188356224-byte ZIP."
+  },
+  "notebooks": {
+    "preparation": "static_validation_passed_not_executed",
+    "training": "static_validation_passed_not_executed",
+    "evaluation": "static_validation_passed_not_executed",
+    "repository_clone_required": false,
+    "drive_config_handoff": true
+  },
+  "gpu": {
+    "used": false,
+    "authenticated_remote_gpu_available": false,
+    "google_drive_auth_is_gpu_evidence": false,
+    "detection": "No controllable Colab runtime, Kaggle config, gcloud, CUDA, or SSH GPU target was available."
+  },
+  "smoke_test": {
+    "status": "not_run",
+    "target_steps": 100,
+    "actual_steps": 0,
+    "loss": null,
+    "checkpoint": null,
+    "lora_path": null
+  },
+  "main_training": {
+    "status": "not_run",
+    "target_steps": 1600,
+    "actual_steps": 0,
+    "checkpoint": null,
+    "lora_path": null,
+    "lora_size_bytes": null
+  },
+  "evaluation": {
+    "status": "not_run",
+    "planned_prompt_seed_pairs": 36,
+    "planned_generated_images": 72,
+    "automated_results": null,
+    "human_results": null,
+    "multicrop_or_fallback_decision": "pending_actual_multicrop_evaluation",
+    "fallback_executed": false
+  },
+  "real_inference_api": {
+    "status": "implementation_ready_not_activated",
+    "active_provider": "mock",
+    "diffusers_provider_present": true,
+    "final_lora_loaded": false
+  },
+  "flutter": {
+    "status": "mock_real_configuration_ready_no_final_model",
+    "analyze": "passed",
+    "tests": "13 passed"
+  },
+  "tests": {
+    "ml_dataset": "44 passed",
+    "inference_api": "16 passed",
+    "backend_node": "16 passed",
+    "dataset_review_ui": "11 passed",
+    "flutter": "13 passed",
+    "flutter_analyze": "passed",
+    "ruff": "passed",
+    "notebook_validation": "passed",
+    "preflight": "passed",
+    "secret_scan": "passed",
+    "pip_check": "passed",
+    "pip_audit": "passed",
+    "npm_audit": "passed"
+  },
+  "apk": {
+    "lora_debug_apk_status": "not_built",
+    "reason": "No validated final LoRA exists."
+  },
+  "blockers": [
+    "Dataset ZIP is not yet present in the Google Drive datasets folder.",
+    "No authenticated and controllable remote GPU runtime is available.",
+    "Smoke test has not run."
+  ],
+  "required_human_actions": [
+    "Unggah dataset_multicrop_v1.zip ke folder Drive datasets, lalu buka notebook preparation/training di Google Colab GPU T4 dan izinkan mount Google Drive untuk menjalankan preparation serta smoke test."
+  ],
+  "local_stable_diffusion_training_performed": false
+}

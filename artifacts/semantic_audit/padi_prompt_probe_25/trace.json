@@ -1,0 +1,29 @@
+[
+    {
+        "id":  "g",
+        "prompt":  "taniadaptif_padi, mature rice paddy plants with abundant visible golden rice grain panicles bending from rice stalks, rows in a cultivated paddy field, realistic agricultural photograph, natural daylight, clear crop view",
+        "negative_prompt":  "maize plants, corn plants, chili plants, chili peppers, peanut plants, grass lawn, weeds, cut grass, harvested produce only, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "seed":  42,
+        "provider":  "diffusers",
+        "path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_prompt_probe_25\\g.png",
+        "bytes":  615284
+    },
+    {
+        "id":  "h",
+        "prompt":  "taniadaptif_padi, mature Indonesian rice plants with clearly visible golden grain heads growing in a wet rice paddy, realistic agricultural photograph, natural daylight, field-level view",
+        "negative_prompt":  "maize plants, corn plants, chili plants, chili peppers, peanut plants, grass lawn, weeds, cut grass, harvested produce only, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "seed":  42,
+        "provider":  "diffusers",
+        "path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_prompt_probe_25\\h.png",
+        "bytes":  596004
+    },
+    {
+        "id":  "i",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "negative_prompt":  "maize plants, corn plants, chili plants, chili peppers, peanut plants, grass lawn, weeds, cut grass, harvested produce only, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "seed":  42,
+        "provider":  "diffusers",
+        "path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_prompt_probe_25\\i.png",
+        "bytes":  561923
+    }
+]

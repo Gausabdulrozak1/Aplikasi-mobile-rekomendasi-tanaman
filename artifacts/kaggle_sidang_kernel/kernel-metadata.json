@@ -1,0 +1,19 @@
+{
+  "id": "gausabdul/taniadaptif-live-inference-sidang",
+  "title": "TaniAdaptif Live Inference Sidang",
+  "code_file": "09_kaggle_live_inference_sidang.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "gausabdul/taniadaptif-final-lora-sidang",
+    "gausabdul/taniadaptif-sidang-secret-private"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

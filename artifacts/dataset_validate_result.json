@@ -1,0 +1,29 @@
+{
+  "valid": false,
+  "splits": {
+    "train": {
+      "path": "D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\train\\metadata.jsonl",
+      "rows": 0,
+      "valid": false,
+      "errors": [
+        "metadata file not found: D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\train\\metadata.jsonl"
+      ],
+      "distribution": {},
+      "source_distribution": {}
+    },
+    "validation": {
+      "path": "D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\validation\\metadata.jsonl",
+      "rows": 0,
+      "valid": false,
+      "errors": [
+        "metadata file not found: D:\\TaniAdaptif\\ml_pipeline\\data\\processed\\validation\\metadata.jsonl"
+      ],
+      "distribution": {},
+      "source_distribution": {}
+    }
+  },
+  "cross_split_errors": [],
+  "manifest_errors": [
+    "split manifest not found: D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\split_manifest.csv"
+  ]
+}

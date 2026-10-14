@@ -1,0 +1,23 @@
+﻿no,feature,scenario,input,expected,actual,status
+1,Health backend,Memanggil endpoint kesehatan,GET /api/kesehatan,HTTP 200 dan status layanan,Kontrak kesehatan terpenuhi,Lulus
+2,Validasi rekomendasi,Mengirim input valid dan tidak lengkap,POST /api/rekomendasi,Input valid diproses; input salah ditolak,Rule ID dikembalikan dan payload salah ditolak,Lulus
+3,Parser BMKG,Field curah hujan tidak tersedia,Fixture tanpa tp,Nilai dipertahankan null,Tidak dibuat nilai hujan fiktif,Lulus
+4,Cache BMKG,"Network, cache segar, lalu timeout",Tiga permintaan berurutan,network -> fresh-cache -> stale-cache,Urutan fallback teramati,Lulus
+5,Decision table,Menjalankan seluruh kunci aturan,30 kombinasi hujan-air-tanaman,Keluaran valid dan dapat diaudit,30/30 kunci menghasilkan empat kelas terbatas,Lulus
+6,Penyesuaian lahan,Membandingkan sawah dan non-sawah,Input cuaca/air/tanaman sama,Jenis lahan memengaruhi prioritas,Prioritas berubah deterministik; rule ID berbeda,Lulus
+7,Kalender rekomendasi,Membentuk rencana satu bulan,Kondisi valid dan tanggal acuan,Empat rentang mingguan stabil,Empat minggu dengan tanggal stabil,Lulus
+8,Integrasi BMKG live,Mengambil cuaca ADM4 Aikmel,52.03.09.2002,Respons lokasi dan horizon dapat diproses,Uji 5 Agustus 2026: 18 titik/3 hari; 18 tp lengkap,Lulus
+9,FastAPI health/ready,Menjalankan provider lokal aman,GET /health dan /ready,Status provider eksplisit,"HTTP 200, provider mock dan CPU terlabel jelas",Lulus (mock)
+10,Validasi inference,Crop/dimensi/prompt tidak valid,Payload di luar kontrak,HTTP 422 terstruktur,VALIDATION_ERROR dikembalikan,Lulus
+11,Timeout inference,Provider gagal atau lambat,Fixture error dan timeout,Retry terbatas; HTTP 503/504,Satu retry untuk error; timeout tidak diulang,Lulus
+12,Akses visual backend,Token kosong/placeholder dan rate limit,Route /api/visual,Akses ditolak atau dibatasi,Token salah ditolak; rate limit aktif,Lulus
+13,Proxy pembangkitan,Meneruskan konteks rekomendasi,POST /api/visual/generate,Request ID dipertahankan; URL upstream tersembunyi,Kontrak terpenuhi pada provider mock,Lulus (mock)
+14,Pengiriman PNG,Mengambil gambar melalui Express,GET /api/visual/images/*.png,PNG valid dari domain backend,PNG mock valid dan URL upstream tidak terbuka,Lulus (mock)
+15,Cache cuaca Flutter,Jaringan gagal setelah data tersimpan,Simulasi offline,Cache lokal ditampilkan,Data cache termuat dengan notice,Lulus
+16,Cache rekomendasi Flutter,Mencari cache dengan signature input,Signature sama dan berbeda,Hanya signature sama yang dimuat,Perilaku sesuai kontrak,Lulus
+17,Isolasi kegagalan visual,Provider visual gagal,Rekomendasi Jagung + error visual,Rekomendasi tetap terlihat,Widget tetap menampilkan Jagung,Lulus
+18,Riwayat visual,Menyimpan 25 entri,25 fixture riwayat,Maksimal 20 entri terbaru,Entri request-24 sampai request-5 tersimpan,Lulus
+19,Artefak LoRA,Memvalidasi model dan export,ZIP run 20260820T143551Z,"Hash, tensor, manifest, PNG, loss valid",100 file; 256 tensor; 76 PNG; error 0,Lulus
+20,Human review analyzer,Menganalisis review final,72 penilaian/36 pasangan,Tidak kosong; pair identik; tanpa skor otomatis,Seluruh pemeriksaan true; JSON/CSV/Markdown terbentuk,Lulus
+21,Inference E2E GPU,Flutter-backend-FastAPI-CUDA-LoRA-PNG,Host GPU nyata,"Diffusers CUDA, hash final, PNG 512 x 512",[BUKTI E2E GPU BELUM TERSEDIA],Belum diuji
+22,Tampilan Android nyata,Menampilkan PNG E2E pada perangkat,APK + backend GPU nyata,Gambar LoRA termuat dan dapat didokumentasikan,[SCREENSHOT ANDROID BELUM TERSEDIA],Belum diuji

@@ -1,0 +1,16 @@
+﻿layer,command,result,status
+Python dataset/LoRA,.venv Python -m pytest ml_pipeline/tests,96 passed,Lulus
+Python inference API,.venv Python -m pytest inference_api/tests,29 passed,Lulus
+Python total,.venv Python -m pytest ml_pipeline/tests inference_api/tests -q,125 passed in 70.13s,Lulus
+Express backend,npm test,23 passed; 0 failed,Lulus
+Flutter,flutter test,13 passed,Lulus
+Dataset review UI,npm run dataset-review:test,11 passed,Lulus
+LoRA review UI,npm run lora-review:test,7 passed,Lulus
+Flutter static analysis,flutter analyze,No issues found,Lulus
+Ruff lint,python -m ruff check ml_pipeline inference_api,All checks passed,Lulus
+Notebook validation,node ml_pipeline/scripts/validate_notebooks.mjs,8 notebook valid; Kaggle notebook 52 cells,Lulus
+Repository preflight,node ml_pipeline/scripts/preflight_check.mjs,All checks passed,Lulus
+Secret scan,node ml_pipeline/scripts/security_scan.mjs,No obvious secrets found,Lulus
+Python dependency audit,python -m pip_audit,No known vulnerabilities found,Lulus
+Node dependency audit,npm audit --omit=dev,0 vulnerabilities,Lulus
+Debug APK artifact,Get-FileHash SHA256,"152,840,310 bytes; SHA-256 417604f6...cedb5",Terverifikasi

@@ -1,0 +1,15 @@
+﻿parameter,value
+Model dasar,stable-diffusion-v1-5/stable-diffusion-v1-5
+Resolusi,512 x 512 piksel
+LoRA rank,8
+Train batch size,1
+Gradient accumulation,4
+Learning rate,0.0001
+Optimizer,AdamW 8-bit
+Mixed precision,fp16
+Gradient checkpointing,Aktif
+Smoke test,100 langkah; checkpoint setiap 50
+Main training,1600 langkah; checkpoint setiap 200
+Seed,42
+Runtime,"Kaggle GPU; Tesla T4 terdeteksi 2; VRAM 14,56 GiB pada laporan perangkat"
+Diffusers commit,0f252be0ed42006c125ef4429156cb13ae6c1d60

@@ -16,38 +16,37 @@ PILOT_TRIGGER_TOKENS = {
     "gaus_padi_public": "padi",
 }
 
-CROP_PHRASES = {
-    "padi": "rice plants",
-    "jagung": "maize plants",
-    "cabai": "chili plants",
-    "kacang_tanah": "peanut plants",
-}
+CROP_VISUAL_PROMPTS = {
+    "padi": (
+    "taniadaptif_padi, commercial agricultural photograph of a wooden bowl "
+    "overflowing with uncooked white rice grains beside bundles of golden rice "
+    "panicles, unmistakable rice harvest, paddy field background, realistic "
+    "natural daylight"
 
-LAND_PHRASES = {
-    "sawah": "in a cultivated rice-field landscape",
-    "tegalan": "on cultivated dryland",
-    "kebun_campur": "in a cultivated mixed-garden landscape",
-}
-
-WATER_PHRASES = {
-    "cukup": "with sufficient water availability",
-    "terbatas": "with limited water availability",
-    "kurang": "with low water availability",
-}
-
-PREVIOUS_CROP_PHRASES = {
-    "padi": "rice",
-    "jagung": "maize",
-    "cabai": "chili",
-    "kacang_tanah": "peanut",
-    "kosong": "no previous crop",
+    ),
+    "jagung": (
+        "maize plants in an agricultural environment, natural lighting, clear crop view"
+    ),
+    "cabai": (
+        "chili plants in an agricultural environment, natural lighting, clear crop view"
+    ),
+    "kacang_tanah": (
+        "peanut plants in an agricultural environment, natural lighting, clear crop view"
+    ),
 }
 
 DEFAULT_NEGATIVE_PROMPT = (
-    "illustration, painting, drawing, CGI, artificial plastic texture, blurry, low resolution, "
-    "distorted plants, duplicated plants, harvested produce only, prepared food, market stall, "
-    "text, logo, watermark, people as the main subject"
+    "illustration, painting, drawing, CGI, blurry, text, logo, watermark"
 )
+
+CROP_NEGATIVE_PROMPTS = {
+    "padi": (
+        "wooden bowl, cup, plate, cooked rice, uncooked rice grains, rice product, "
+        "packaged rice, food, kitchen, restaurant, harvested rice only, wheat, barley, "
+        "oats, maize, corn, chili, peanut, illustration, painting, drawing, CGI, blurry, "
+        "text, logo, watermark"
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -71,20 +70,15 @@ def build_generation_prompt(
     default_seed: int,
 ) -> PreparedGenerationRequest:
     trigger = TRIGGER_TOKENS[request.crop]
-    crop_phrase = CROP_PHRASES[request.crop]
-    previous_crop = PREVIOUS_CROP_PHRASES[request.previous_crop]
-    weather = request.weather_summary.rstrip(".,; ")
-    prompt = (
-        f"a realistic agricultural photograph of {trigger}, {crop_phrase} growing in an "
-        f"agricultural environment, natural lighting, {LAND_PHRASES[request.land_type]}, "
-        f"{WATER_PHRASES[request.water_availability]}, following {previous_crop}, "
-        f"weather context: {weather}"
-    )
+    crop_visual_prompt = CROP_VISUAL_PROMPTS[request.crop]
+    # Keep historical crops and land labels out of the visual prompt: terms such
+    # as "rice-field" can overpower the explicitly selected non-rice trigger.
+    prompt = f"{trigger}, {crop_visual_prompt}"
     return PreparedGenerationRequest(
         crop=request.crop,
         trigger_token=trigger,
         prompt=prompt,
-        negative_prompt=DEFAULT_NEGATIVE_PROMPT,
+        negative_prompt=CROP_NEGATIVE_PROMPTS.get(request.crop, DEFAULT_NEGATIVE_PROMPT),
         seed=request.seed if request.seed is not None else default_seed,
         steps=request.steps,
         guidance_scale=request.guidance_scale,

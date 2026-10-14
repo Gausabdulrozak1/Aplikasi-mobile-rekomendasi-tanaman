@@ -1,0 +1,7 @@
+﻿component,implementation,status,evidence
+Aplikasi mobile,"Flutter Android: dashboard cuaca, form lahan, hasil rekomendasi, kalender empat minggu, permintaan visual",Terimplementasi dan diuji otomatis,mobile-flutter/tani_adaptif/lib; flutter test
+Data cuaca,"Express mengambil dan menormalisasi API BMKG untuk ADM4 Aikmel, dengan timeout dan cache",Kontrak dan respons live tercatat,backend-nodejs/src/services/bmkgService.js; node_bmkg_live_contract.json
+Rekomendasi,Rule-based engine 30 kunci; keluaran dibatasi pada empat komoditas dan memuat rule ID,30/30 kunci diuji deterministik,aturanRotasi.js; rekomendasiService.test.js
+Simulasi visual,Flutter -> Express proxy -> FastAPI -> provider Diffusers pada GPU,Kontrak mock lulus; E2E GPU nyata belum tersedia,backend_inference_proxy_live_contract.json; GPU report
+Model visual,Stable Diffusion 1.5 dengan LoRA final run 20260820T143551Z,"Training, export, sanity, dan evaluasi selesai",complete_pipeline_state.json; final_training_report.json
+Penyimpanan lokal,Cache cuaca/rekomendasi dan riwayat visual maksimal 20 entri,Penyimpanan diuji; layar riwayat khusus belum tersedia,local_storage_service.dart; repository_test.dart

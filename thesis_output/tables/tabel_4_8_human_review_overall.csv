@@ -1,0 +1,5 @@
+﻿metric,base,lora,difference
+Kesesuaian komoditas,"31/36 (86,11%)","34/36 (94,44%)","+8,33 poin persentase"
+Konteks lahan (mean; median),"4,0278; 4,5","3,8611; 4,0","-0,1667 pada mean"
+Realisme visual (mean; median),"4,0278; 4,5","3,8611; 4,0","-0,1667 pada mean"
+Class confusion/cross-class/unclear,5,2,-3 gambar

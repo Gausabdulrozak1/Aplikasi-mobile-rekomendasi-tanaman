@@ -55,19 +55,55 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Simulasi Visual'), findsWidgets);
+    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Jagung').last);
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Buat Simulasi Visual'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Buat Simulasi Visual'));
     await tester.pumpAndSettle();
 
     expect(
-      find.textContaining('Rekomendasi tanaman tetap dapat digunakan'),
+      find.textContaining('Menampilkan hasil simulasi tersimpan'),
       findsOneWidget,
     );
     await tester.pageBack();
     await tester.pumpAndSettle();
     expect(find.text('Jagung'), findsWidgets);
   });
+
+  testWidgets(
+    'visual simulation sends the explicitly selected recommendation',
+    (WidgetTester tester) async {
+      final bundle = RecommendationBundle.fromJson(_resultJson);
+      final service = _RecordingVisualService();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: HasilScreen(
+            cuaca: bundle.cuaca,
+            rekomendasi: bundle.rekomendasi,
+            stableDiffusionService: service,
+          ),
+        ),
+      );
+
+      await tester.ensureVisible(find.text('Simulasi Visual'));
+      await tester.tap(find.text('Simulasi Visual'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Cabai').last);
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Buat Simulasi Visual'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Buat Simulasi Visual'));
+      await tester.pumpAndSettle();
+
+      expect(service.lastRequest?.selectedCrop, 'cabai');
+      expect(service.lastRequest?.seed, isNull);
+    },
+  );
 
   testWidgets('history page shows saved recommendation details', (
     WidgetTester tester,
@@ -119,6 +155,36 @@ class _FailingVisualService extends StableDiffusionService {
   }
 }
 
+class _RecordingVisualService extends StableDiffusionService {
+  GenerateVisualRequest? lastRequest;
+
+  @override
+  Future<InferenceModelInfo> getModelInfo() async {
+    return const InferenceModelInfo(
+      baseModel: 'fixture',
+      loraIdentifier: 'fixture-lora',
+      provider: 'diffusers',
+      supportedCrops: ['jagung', 'cabai'],
+    );
+  }
+
+  @override
+  Future<GenerateVisualResponse> generate(GenerateVisualRequest request) async {
+    lastRequest = request;
+    return GenerateVisualResponse(
+      success: true,
+      requestId: request.requestId,
+      crop: request.selectedCrop,
+      imageUrl: '',
+      imageId: 'fixture-image',
+      seed: request.seed ?? 42,
+      generationTimeSeconds: 0,
+      model: 'fixture',
+      metadata: const {'provider': 'diffusers', 'is_mock': false},
+    );
+  }
+}
+
 final Map<String, dynamic> _resultJson = {
   'cuaca': {
     'lokasi': {'desa': 'Aikmel'},
@@ -142,6 +208,16 @@ final Map<String, dynamic> _resultJson = {
         'hariTumbuh': 90,
         'kebutuhanAir': 'sedang',
         'deskripsi': 'Tanaman fixture.',
+      },
+      {
+        'prioritas': 2,
+        'kode': 'cabai',
+        'nama': 'Cabai',
+        'namaIlmiah': 'Capsicum annuum',
+        'keluarga': 'Sayuran',
+        'hariTumbuh': 90,
+        'kebutuhanAir': 'sedang',
+        'deskripsi': 'Tanaman fixture kedua.',
       },
     ],
   },

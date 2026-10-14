@@ -28,7 +28,7 @@ FastAPI host or its token.
 
 ```json
 {
-  "crop": "padi",
+  "selected_crop": "padi",
   "land_type": "sawah",
   "water_availability": "cukup",
   "previous_crop": "jagung",
@@ -42,9 +42,12 @@ FastAPI host or its token.
 }
 ```
 
-The inference service does not choose a crop. It validates `padi`, `jagung`,
-`cabai`, or `kacang_tanah` and builds a visual prompt with the matching
-`taniadaptif_*` trigger. Flutter uses only this `structured_context` mode.
+The inference service does not choose a crop. Flutter requires the user to
+select exactly one item from the rule-engine recommendations and sends it as
+`selected_crop`: `padi`, `jagung`, `cabai`, or `kacang_tanah`. Express validates
+and normalizes that scalar, then maps it to the private FastAPI `crop` field.
+FastAPI builds the visual prompt with the matching `taniadaptif_*` trigger.
+Arrays and conflicting `selected_crop`/legacy `crop` values are rejected.
 
 Successful public response:
 
@@ -52,6 +55,7 @@ Successful public response:
 {
   "success": true,
   "request_id": "flutter-padi-001",
+  "selected_crop": "padi",
   "crop": "padi",
   "image_url": "https://pod-id-3000.proxy.runpod.net/api/visual/images/sd15_flutter-padi-001.png",
   "image_id": "sd15_flutter-padi-001",
@@ -106,6 +110,11 @@ exposed RunPod HTTP port. Express alone calls:
 Except for liveness `/health`, these routes require `X-Inference-Token`. The
 value is held by the backend and FastAPI environment only. It must never be put
 in Flutter configuration or a screenshot.
+
+The private structured request retains the field name `crop` for backward
+compatibility. Express is the sole translation boundary from public
+`selected_crop` to private `crop`; the value must remain identical in the
+FastAPI response metadata and prompt trigger.
 
 Pilot tooling may send a bounded direct-prompt payload to the private generate
 contract through an authorized backend test. That mode only creates a visual;

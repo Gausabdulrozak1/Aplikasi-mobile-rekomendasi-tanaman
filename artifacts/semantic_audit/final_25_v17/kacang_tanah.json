@@ -1,0 +1,18 @@
+﻿{
+    "request_id":  "semantic-v17-kacang_tanah-42",
+    "selected_crop":  "kacang_tanah",
+    "express_crop":  "kacang_tanah",
+    "fastapi_crop":  "kacang_tanah",
+    "trigger_token":  "taniadaptif_kacang_tanah",
+    "final_prompt":  "taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, clear crop view",
+    "negative_prompt":  "illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+    "provider":  "diffusers",
+    "device":  "cuda",
+    "is_mock":  false,
+    "lora_sha256":  "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+    "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\final_25_v17\\kacang_tanah.png",
+    "image_bytes":  703871,
+    "width":  512,
+    "height":  512,
+    "status":  "PASS"
+}

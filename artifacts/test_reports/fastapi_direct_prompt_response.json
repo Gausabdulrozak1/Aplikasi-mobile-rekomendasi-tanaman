@@ -1,0 +1,1 @@
+{"success":false,"request_id":"212a6b0b5d2d4cdb","error":{"code":"VALIDATION_ERROR","message":"Payload permintaan tidak valid.","retryable":false,"details":[{"location":["body","1"],"message":"JSON decode error","type":"json_invalid"}]}}

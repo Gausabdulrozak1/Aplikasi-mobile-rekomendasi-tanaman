@@ -1,0 +1,5 @@
+image_id,model_variant,prompt_id,seed,visual_relevance_1_5,agricultural_plausibility_1_5,artifact_level_1_5,notes,evaluator
+base_padi_wet_field_cloudy_42,base,padi_wet_field_cloudy,42,,,,,
+lora_padi_wet_field_cloudy_42,lora,padi_wet_field_cloudy,42,,,,,
+base_padi_enough_water_lombok_123,base,padi_enough_water_lombok,123,,,,,
+lora_padi_enough_water_lombok_123,lora,padi_enough_water_lombok,123,,,,,

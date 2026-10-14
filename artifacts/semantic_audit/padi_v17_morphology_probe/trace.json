@@ -1,0 +1,35 @@
+﻿[
+    {
+        "seed":  7,
+        "prompt":  "taniadaptif_padi, macro agricultural photograph of mature Oryza sativa rice plants, branching drooping panicles carrying hundreds of distinct oval golden rice grains, long flat green leaves, cultivated flooded paddy field, realistic natural daylight",
+        "negative_prompt":  "foxtail millet, wheat ears, barley, oats, cylindrical seed heads, grass lawn, weeds, reeds, maize, corn, chili, peanut, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_morphology_probe\\7.png",
+        "bytes":  622313
+    },
+    {
+        "seed":  42,
+        "prompt":  "taniadaptif_padi, macro agricultural photograph of mature Oryza sativa rice plants, branching drooping panicles carrying hundreds of distinct oval golden rice grains, long flat green leaves, cultivated flooded paddy field, realistic natural daylight",
+        "negative_prompt":  "foxtail millet, wheat ears, barley, oats, cylindrical seed heads, grass lawn, weeds, reeds, maize, corn, chili, peanut, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_morphology_probe\\42.png",
+        "bytes":  628520
+    },
+    {
+        "seed":  84,
+        "prompt":  "taniadaptif_padi, macro agricultural photograph of mature Oryza sativa rice plants, branching drooping panicles carrying hundreds of distinct oval golden rice grains, long flat green leaves, cultivated flooded paddy field, realistic natural daylight",
+        "negative_prompt":  "foxtail millet, wheat ears, barley, oats, cylindrical seed heads, grass lawn, weeds, reeds, maize, corn, chili, peanut, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_morphology_probe\\84.png",
+        "bytes":  626786
+    }
+]

@@ -1,0 +1,731 @@
+PAGES=11
+
+--- PAGE 1 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 491 
+Pengembangan Web Dashboard Monitoring Kadar Nitrogen, Fosfat, Kalium (NPK), PH Tanah 
+Berbasis Artificial Intelegence (AI) dan Internet Of Things (IoT) 
+ 
+Indra Gunawan1*, M. Nurul Wathani2 , Zulkipli3 , Sappatin4 
+1,2,3,4Program Studi Informatika, Universitas Hamzanwadi 
+*i.gunawan@hamzanwadi.ac.id  
+ 
+Abstrak  
+Indonesia merupakan negara agraris dengan sektor pertanian sebagai salah satu penopang utama perekonomian. 
+Namun, proses pengelolaan lahan pertanian masih banyak dilakukan secara konvensional sehingga pemantauan 
+kondisi unsur hara tanah belum optimal. Kand ungan Nitrogen (N), Fosfat (P), Kalium (K), dan tingkat keasaman 
+tanah (pH) merupakan parameter kritis yang memengaruhi kesuburan tanah dan produktivitas tanaman. Penelitian 
+ini bertujuan untuk mengembangkan sistem monitoring kadar NPK dan pH tanah berbasis Artificial Intelligence (AI) 
+dan Internet of Things (IoT) menggunakan sensor NPK Modbus, sensor pH tanah, dan mikrokontroler ESP32. Data 
+hasil pembacaan sensor ditransmisikan secara real -time ke database Firebase melalui jaringan Wi -Fi, untuk 
+kemudian ditampilkan pada web dashboard dalam bentuk visualisasi numerik, grafik, dan interpretasi analisis AI 
+berbasis ChatGPT. Hasil pengujian menunjukkan bahwa sistem mampu mengakuisisi dan mengirim data kondisi 
+tanah secara konsisten. Pengujian akurasi membuktikan bahwa sistem ini memiliki tingkat presisi yang sangat baik, 
+di mana pembacaan sensor pH hanya memiliki rata-rata selisih (error) sebesar 0,2% jika dibandingkan dengan alat 
+ukur (pH tester) standar. Pengujian pada sensor NPK juga menunjukkan tingkat reakt ivitas yang baik terhadap 
+perubahan unsur hara. Selain itu, integrasi sistem AI terbukti mampu memberikan analisis evaluasi kesuburan dan 
+rekomendasi pemupukan secara stabil pada pengujian berulang. Sistem ini diharapkan dapat memfasilitasi petani 
+dalam memantau lahan jarak jauh dan mendukung pengambilan keputusan pemupukan yang presisi dan efisien. 
+ 
+Kata kunci: Artificial Intelligence, Internet of Things, Monitoring Tanah, NPK, pH Tanah, Pertanian Cerdas. 
+ 
+Abstract  
+Indonesia is an agrarian country where the agricultural sector plays an important role in supporting the national 
+economy. However, agricultural land management is still largely carried out using conventional methods, resulting 
+in suboptimal monitoring of soil nutrient conditions. Nitrogen (N), Phosphorus (P), Potassium (K), and soil acidity 
+(pH) are critical parameters influencing soil fertility and crop productivity. This study aims to develop a soil 
+monitoring system for NPK and pH levels based on Artificial Intelligence (AI) and the Internet of Things (IoT) using 
+an NPK Modbus sensor, an analog soil pH sensor, and an ESP32 microcontroller. Sensor data are transmitted in 
+real-time to a Firebase database via a Wi -Fi network and displayed on a web dashboard  through numerical 
+visualizations, graphs, and ChatGPT -based AI analytic interpretations. The experimental results show that the 
+system successfully acquires and transmits soil condition data consistently. Accuracy testing demonstrated that the 
+system is highly precise, with the pH sensor readings showing an average difference (error rate) of only 0.2% when 
+compared to a standard pH tester. The NPK sensor also exhibited excellent reactivity to changes in soil 
+macronutrients. Furthermore, the integrated AI s ystem successfully provided stable fertility evaluations and 
+fertilization recommendations across multiple repeated tests. This system is expected to facilitate remote field 
+monitoring for farmers and support precise, efficient fertilization decision-making. 
+ 
+Keywords: Artificial Intelligence, Internet of Things, Soil Monitoring, NPK, Soil pH, Smart Agriculture. 
+ 
+1. Pendahuluan 
+Indonesia adalah negara yang terkenal dengan 
+sebutan negara agraris, yaitu negara yang kaya 
+dengan hasil alam. Diantaranya dalam sektor 
+pertanian yang menjadi salah satu pilar penting 
+untuk mendukung dan menunjang perekonomian 
+--- PAGE 2 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 492 
+negara. Pada bulan Februari 2023 profesi petani 
+tercatat sebagai profesi tenaga kerja terbanyak 
+yaitu sekitar 27,52% atau sekitar 38,14 juta orang 
+dari jumlah seluruh tenaga kerja Indonesia[1]. 
+Meskipun bertani sudah menjadi bagian dalam diri 
+masyarakat, tantangan untuk menghasilkan 
+panen yang baik selalu menjadi persoalan. 
+Minimnya pengetahuan petani terkait unsur-unsur 
+yang terkandung dalam tanah seperti Nitrogen, 
+yang merupakan komponen utama dari klorofil 
+dan asam amino dan merupakan faktor penting 
+dalam pertumbuhan tanaman. Fosfat merupakan 
+unsur utama dalam DNA dan RNA tanaman, serta 
+memiliki peran penting dalam perkembangan akar 
+dan produksi biji. Sedangkan, kalium berperan 
+penting secara t idak langsung dalam 
+perkembangan tumbuhan seperti untuk 
+mengaktifkan lebih dari 80 enzim di keseluruhan 
+tanaman tersebut [2]. Serta pH yang merupakan 
+suatu respon tanah yang menyatakan 
+kemasaman pada suatu tanah. pH tanah 
+mempunyai peran penting mengenai penentuan 
+cepat atau lambatnya unsur -unsur hara ternutrisi 
+dengan baik bagi tanaman [3]. Berdasarkan 
+temuan di lapangan, salah satu petani 
+mengatakan, setelah pemberian pupuk Urea dan 
+ZA, tanaman yang awalnya hijau menjadi layu. 
+Dugaan awal menunjukkan bahwa kondisi 
+tersebut disebabkan oleh kelebihan unsur hara 
+khususnya unsur Nitrogen (N) yan g terkandung 
+dalam pupuk. Hal ini perlu diperhatikan untuk 
+mendukung petani dalam memperoleh hasil 
+panen yang lebih baik lagi, mengingat cara bertani 
+masyarakat masih tergolong konvensional baik 
+dari pemupukan dan sebagainya. 
+Seiring dengan perkembangan teknologi, metode 
+pertanian tradisional dapat digantikan oleh 
+peralatan yang canggih, salah satunya yaitu 
+penerapan IoT. Teknologi ini memungkinkan 
+penggunaan perangkat dan sensor untuk 
+memantau berbagai parameter, seperti 
+kelembaban tanah, saluran irigasi, dan 
+pemantauan hama. Dengan kemampuan 
+menyediakan data secara real-time, IoT 
+membantu petani mengelola lahan dengan lebih 
+efisien. Di sisi lain, perkembangan pesat teknologi 
+AI telah memperluas cakupan pengolahan data. 
+AI tidak hanya mampu mengelola data dalam 
+jumlah besar, tetapi juga mengolahnya menjadi 
+sistem prediksi dan rekomendasi yang 
+mendukung pengambilan keputusan secara 
+optimal[4]. 
+Meskipun beberapa penelitian sebelumnya telah 
+berhasil mengembangkan sistem monitoring 
+unsur hara tanah berbasis sensor, masih terdapat 
+gap penelitian yang menjadi rumusan masalah 
+utama: sebagian besar sistem yang ada hanya 
+menyajikan antarmuka visual berupa data 
+numerik mentah (seperti kadar NPK dan pH) 
+tanpa menyediakan interpretasi agronomis 
+--- PAGE 3 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 493 
+otomatis. Kelemahan penelitian terdahulu adalah 
+ketiadaan panduan langsung yang dapat 
+menerjemahkan data sensor tersebut menjadi 
+langkah praktis pemupukan bagi petani awam. 
+Oleh karena itu, novelty (kebaruan) dari penelitian 
+ini terletak pada integrasi langsung antara 
+pembacaan sensor presisi (NPK Modbus dan pH 
+tanah) dengan sistem Artificial Intelligence  (API 
+ChatGPT) melalui platform IoT secara instan. 
+Kontribusi utama dari penelitian ini adalah 
+menghasilkan web dashboard interaktif yang tidak 
+sekadar menampilkan visualisasi data real-time, 
+melainkan memproses data tersebut menjadi 
+analisis cerdas dan rekomendasi keputusan 
+pemupukan secara instan, guna membantu 
+petani mencapai efisiensi dan efektivitas 
+pertanian cerdas. 
+ 
+2. Tinjauan Pustaka 
+2.1. Penelitian Terkait 
+Dalam penelitian ini, penulis menggunakan 
+beberapa acuan pada penelitian sebelumnya: 
+1. Penelitian tahun 2023 oleh Fauzan 
+Muhammad Iqbal, Missi Hikmatsyar, dan 
+Nasrudin dalam jurnal Agro Wiralodra yang 
+berjudul "Penerapan Internet of Things pada 
+Sistem Deteksi Kesuburan Tanah". Sistem ini 
+menggunakan sensor TCS3200 sebagai 
+pendeteksi warna; s emakin gelap warna yang 
+terdeteksi maka tanah dikategorikan sebagai 
+tanah yang subur[5]. 
+2. Penelitian tahun 2023 oleh Desi Mualfah, 
+Ganesa Heru Sandi, dan Evans Faud dalam jurnal 
+Aplikasi Teknologi Informasi dan Manajemen 
+(JATIM) yang berjudul "Sistem Monitoring pH dan 
+Kelembaban Tanah pada Tanaman Kacang 
+Tanah Berbasis IoT (Internet of Things)" . 
+Penelitian ini membahas sistem monitoring pH 
+dan kelembapan tanah menggunakan sensor YL-
+69 dan NodeMCU ESP8266, dengan penerapan 
+fuzzy logic untuk memberikan rekomendasi pupuk 
+dan penyiraman. Hasil pengukuran serta 
+rekomendasi ditampilkan melalui bot Telegram, 
+sedangkan akurasi sistem diuji menggunakan 
+metode Mean Absolute Error (MAE)[6]. 
+3. Penelitian tahun 2025 oleh Wildanul Munfarid, 
+dkk., dalam jurnal Sainteks yang berjudul "Sistem 
+Deteksi NPK Tanah Portabel Berbasis Sensor 
+Warna TCS3200 untuk Optimasi Lahan 
+Perkotaan". Penelitian ini membahas sistem 
+deteksi kadar NPK tanah menggunakan sen sor 
+TCS3200 yang mendeteksi perubahan warna 
+pada larutan ekstraksi tanah dengan berbagai 
+kadar unsur NPK. Hasil pembacaan dikonversi 
+menjadi nilai RGB dengan tiga set-point (rendah, 
+sedang, tinggi) yang digunakan sebagai acuan 
+dalam analisis kandungan unsur NPK pada tanah 
+[7]. 
+4. Penelitian tahun 2024 oleh Fatah Ridho 
+Perdana dan Niki Ratama dalam jurnal JORAPI 
+berjudul "Monitoring pH Tanah, Kelembaban 
+Tanah, dan Penyiraman Otomatis Menggunakan 
+--- PAGE 4 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 494 
+IoT dengan Metode Time Series". Sistem ini 
+memantau pH dan kelembapan tanah serta 
+melakukan penyiraman otomatis berbasis IoT, 
+dilengkapi metode Time Series untuk 
+menganalisis data historis dan memprediksi 
+kondisi tanah selanjutnya[8] 
+ 
+2.2. Landasan Teori 
+1. Pengembangan 
+Pengembangan adalah sebuah penelitian yang 
+digunakan untuk menghasilkan produk tertentu 
+dan menguji keefektifan produk tersebut [9]. 
+Metode ini dilakukan melalui tahapan yang 
+sistematis, dari tahapan analisis kebutuhan, 
+perancangan alat, pengembangan sampai 
+dengan evaluasi. 
+2. Sistem 
+Sistem dapat diartikan sebagai kumpulan dari 
+elemen-elemen yang berinteraksi untuk mencapai 
+suatu tujuan tertentu sebagai kesatuan[10]. 
+3. Internet Of Things (IoT) 
+Internet of Things (IoT) adalah teknologi yang 
+memungkinkan kita untuk menghubungkan benda 
+fisik dengan sensor dan aktuator ke jaringan untuk 
+memperoleh data dan mengelola kinerjanya 
+sendiri[11]. 
+4. Artificial Intelligence (AI) 
+Artificial Intelligence (AI) adalah kecerdasan 
+sistem untuk menginterpretasikan data dengan 
+tepat dan digunakan untuk memberikan 
+rekomendasi pengambilan keputusan[12]. 
+5. Monitoring 
+Monitoring merupakan tindakan yang dilakukan 
+untuk mengetahui informasi lingkungan secara 
+berkala[13]. 
+6. Sensor pH Tanah 
+ 
+Gambar 1. Sensor pH Tanah 
+Sensor pH mendeteksi tingkat keasaman atau 
+kebasaan tanah[11].  
+7. Sensor NPK 
+ 
+Gambar 2. Sensor NPK 
+ sensor NPK mengukur makronutrien utama 
+(Nitrogen, Fosfat, Kalium) yang memiliki peran 
+signifikan dalam pertumbuhan dan pengaktifan 
+enzim tanaman[2]. 
+8. Arduino IDE 
+ 
+Gambar 3. Platform Arduino IDE 
+IDE (Integrated Development Environment), atau 
+secara bahasa mudahnya merupakan lingkungan 
+terintegrasi yang digunakan untuk melakukan 
+pengembangan. Disebut sebagai lingkungan 
+
+--- PAGE 5 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 495 
+karena melalui software inilah dilakukan 
+pemograman untuk melakukan fungsi-fungsi yang 
+dibenamkan melalui sintaks pemograman[14] [15]. 
+9.  Mikrokontroller ESP32 
+ 
+Gambar 4. ESP32 
+Sistem diintegrasikan menggunakan 
+Mikrokontroler ESP32, yang merupakan SoC 
+dengan dukungan Wi -Fi dan Bluetooth *built -in*, 
+cocok untuk komunikasi data langsung ke 
+platform IoT[16]. 
+ 
+3. Metode Penelitian 
+3.1. Metode Pengumpulan Data 
+1. Observasi 
+Mengamati langsung lokasi penelitian di lahan 
+sawah Dusun Gunung Ampen, Lombok Timur. 
+2. Wawancara 
+Wawancara dengan petani terkait metode 
+konvensional dalam mendeteksi kesuburan 
+lahan. 
+3. Studi Pustaka 
+Pencarian referensi dari jurnal ilmiah dan literatur 
+terkait AI, IoT, dan agrikultur. 
+ 
+ 
+ 
+3.2. Tahapan Penelitian 
+ 
+Gambar 5. Tahapan Penelitian 
+Penelitian ini dilakukan melalui beberapa 
+tahapan yang saling berkaitan untuk 
+menghasilkan sistem monitoring kualitas 
+tanah berbasis AI dan IoT yang mampu 
+menampilkan data secara real -time melalui 
+web dashboard. 
+1. Analisis 
+Tahap analisis dilakukan untuk 
+mengidentifikasi kebutuhan sistem dan 
+permasalahan yang dihadapi dalam 
+monitoring kondisi tanah. Kegiatan yang 
+dilakukan meliputi Studi literatur mengenai 
+sensor NPK, sensor pH tanah, IoT, Artificial 
+Intelligence, dan web das hboard, Analisis 
+kebutuhan perangkat keras seperti 
+mikrokontroler (ESP32/NodeMCU), sensor 
+NPK, sensor pH tanah, dan jaringan internet, 
+Analisis kebutuhan perangkat lunak seperti 
+database, web server, framework dashboard, 
+Analisis
+Perancangan
+Pengembangan
+Pelaksanaan
+Evaluasi
+--- PAGE 6 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 496 
+dan algoritma AI.  Serta Analisis kebutuhan 
+pengguna, baik petani maupun pengelola 
+lahan, terkait informasi yang dibutuhkan 
+dalam pengambilan keputusan pemupukan.  
+Output tahap ini adalah spesifikasi kebutuhan 
+sistem yang akan dikembangkan. 
+2. Perancangan 
+Tahap perancangan bertujuan untuk 
+menyusun desain sistem yang akan 
+dibangun. Aktivitas yang dilakukan meliputi 
+Perancangan arsitektur sistem IoT mulai dari 
+sensor hingga web dashboard , Perancangan 
+alur pengiriman data sensor ke server 
+menggunakan protokol komunikasi IoT , 
+Perancangan basis data untuk menyimpan 
+data NPK dan pH tanah , Perancangan 
+antarmuka (UI/UX) web dashboard.   
+Output tahap ini berupa desain sistem, 
+diagram arsitektur, flowchart, use case 
+diagram, dan rancangan database. 
+3. Pengembangan 
+Tahap pengembangan merupakan proses 
+implementasi desain menjadi sistem yang 
+dapat digunakan. Kegiatan yang dilakukan 
+meliputi Pembuatan perangkat IoT 
+menggunakan sensor NPK dan pH tanah 
+yang terhubung dengan mikrokontroler , 
+Pengembangan sistem komunikasi data dari 
+perangkat IoT ke server, Pembuatan database 
+dan API untuk pengelolaan data sensor , 
+Pengembangan web dashboard untuk 
+menampilkan data monitoring secara real -
+time.  
+Output tahap ini adalah prototipe sistem 
+monitoring berbasis AI dan IoT yang telah 
+terintegrasi. 
+4. Pelaksanaan 
+Tahap pelaksanaan dilakukan untuk 
+mengoperasikan sistem pada lingkungan 
+pengujian atau lahan pertanian yang menjadi 
+objek penelitian. Kegiatan yang dilakukan 
+meliputi Instalasi sensor pada lokasi 
+pengujian, Pengambilan data kadar Nitrogen 
+(N), Fosfat (P), Kalium (K), dan pH tanah 
+secara berkala.  
+Output tahap ini berupa dataset hasil 
+pengukuran dan hasil analisis yang 
+ditampilkan pada dashboard. 
+5. Evaluasi 
+Tahap evaluasi dilakukan untuk mengukur 
+kinerja sistem yang telah dikembangkan. 
+Evaluasi meliputi  Pengujian akurasi 
+pembacaan sensor NPK dan pH tanah , 
+Pengujian keandalan pengiriman data dari 
+perangkat IoT ke server.  
+Output tahap ini adalah hasil pengujian dan 
+rekomendasi perbaikan sistem untuk 
+pengembangan lebih lanjut. 
+ 
+3.3. Lokasi dan Waktu Penelitian 
+--- PAGE 7 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 497 
+Penelitian di Desa Santong Kecamatan Terara, 
+Kabupaten Lombok Timur.  Waktu penelitian 
+dimulai sejak bulan April – Juli 2025. 
+ 
+4. Hasil dan Pembahasan 
+4.1. Hasil Penelitian 
+1. Diagram Blok Rancangan 
+ 
+Gambar 6. Diagram Blok 
+2. Perancangan Sensor NPK dan ESP32 
+Sensor NPK adalah sensor digital untuk 
+mengukur kadar Nitrogen, Fosfat, dan Kalium 
+dalam tanah. Sensor ini terhubung ke Modbus 
+MAX13485 sebagai penghubung komunikasi 
+serial dengan ESP32.  
+ 
+Gambar 7. Sensor NPK 
+3. Perancangan Sensor pH dan ESP32 
+Sensor pH tanah merupakan sensor analog yang 
+menghasilkan tegangan DC sebagai output dan 
+memerlukan kalibrasi agar nilai ADC sesuai 
+dengan pH tanah sebenarnya.  
+ 
+Gambar 8. Sensor pH 
+ 
+4.2. Pembahasan 
+Pengambilan data dilakukan dengan mengambil 
+sampel dari beberapa titik pada salah satu lahan 
+persawahan untuk dilakukan pengujian.  
+1. Pengujian ESP32 dan Sensor pH 
+Pengujian sensor pH dan ESP32 dilakukan 
+secara bersamaan dan berhasil terhubung serta 
+menampilkan data pH pada serial monitor. Data 
+menunjukkan hasil pembacaan kondisi pH tanah 
+yang stabil. 
+ 
+Gambar 9. ESP32 dan Sensor pH 
+2. Pengujian Kedua Sensor 
+Pengujian sensor pH dan NPK dalam satu wadah 
+menunjukkan hasil kurang optimal karena adanya 
+interferensi medan listrik antar sensor. Kondisi ini 
+menyebabkan pembacaan sensor NPK menurun, 
+
+--- PAGE 8 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 498 
+misalnya dari 50 menjadi 40, sedangkan sensor 
+pH relatif stabil meskipun sesekali fluktuatif. Untuk 
+memperoleh hasil yang lebih akurat, pengujian 
+kemudian dilakukan pada wadah terpisah dengan 
+sampel tanah yang sama.  
+Tabel 1. Pengujian Performa Pembacaan Sensor 
+NPK dan pH 
+Tipe Wadah pH 
+Tanah 
+Nitrogen 
+(Mg/Kg) 
+Fosfat 
+(Mg/Kg) 
+Kalium 
+(Mg/Kg) 
+Wadah 
+Sama 
+(Interferensi) 
+7.11-
+8.34 
+33 - 34 124-125 117 
+Wadah 
+Berbeda 
+(Stabil) 
+7.11- 
+7.15 
+58 - 59 181-182 175-176 
+ 
+3. Menampilkan Data pada Laman Dashboard 
+Data dari Firebase ditampilkan pada Dashboard 
+setelah dilakukan konfigurasi seperti API key dan 
+URL database.  
+ 
+ 
+Gambar 10a dan 14b. Visualisasi Data dan 
+Analisis AI 
+4. Konsistensi Analisis AI 
+Dashboard mengintegrasikan nilai pembacaan 
+dari database langsung dengan prompt API 
+ChatGPT. Pengujian integritas teks AI dilakukan 
+dengan mengevaluasi *input* statis (N: 75, P: 220, 
+K: 213, pH: 6.9) sebanyak tiga kali. ChatGPT 
+secara konsisten menyimpulka n bahwa "Tanah 
+tergolong subur dan sesuai untuk pertumbuhan, 
+kaya akan Fosfat dan Kalium, namun 
+membutuhkan sedikit atensi pada unsur Nitrogen 
+dan peninjauan agar Fosfat yang teramat tinggi 
+tidak memicu toksisitas."  Hasil ini membuktikan 
+sistem aman digunakan oleh petani konvensional 
+sebagai rujukan instan yang kredibel. 
+5. Perubahan Nilai Sensor Seiring Waktu 
+(Natural) 
+Data sampel harian yang sebelumnya identik dan 
+berjumlah besar, hasil monitoring tanah yang 
+didiamkan secara alami selama 4 hari beruntun 
+telah dirangkum ke dalam satu tabel representatif. 
+Perbedaan natural ini diakibatkan oleh proses 
+penguapan air dan aktivitas mikroba lingkungan. 
+
+--- PAGE 9 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 499 
+Tabel 2. Rangkuman Rata -rata Perubahan Nilai 
+Sensor Selama 4 Hari 
+Waktu 
+Pengujian 
+Nitrogen 
+(Mg/Kg) 
+Fosfat 
+(Mg/Kg) 
+Kalium 
+(Mg/Kg) 
+pH 
+Tanah 
+Hari 1 52.5 167.5 161.0 6.9 
+Hari 2 37.0 132.0 125.0 6.9 
+Hari 3 33.5 125.0 117.5 7.0 
+Hari 4 96.5 270.5 264.5 6.8 
+  
+6. Pengujian Perlakuan Pupuk dan Cairan 
+Asam. 
+Untuk memvalidasi tingkat sensitivitas respon 
+sistem, dilakukan uji coba dengan mencampurkan 
+10 gram pupuk dan cairan asam ke dalam tanah. 
+Sensor terbukti sangat reaktif merespon lonjakan 
+makronutrien dan fluktuasi penurunan derajat 
+keasaman (Tabel 3). 
+Tabel 3. Validasi Sensitivitas Sebelum dan 
+Sesudah Perlakuan Ekstrem 
+Kondisi 
+Uji 
+Sampel 
+Nitrogen 
+(Mg) 
+Fosfat 
+(Mg) 
+Kalium 
+(Mg) 
+pH 
+Tanah 
+Kondisi 
+Awal 
+(Normal) 
+41 142 135 6.2 
+Setelah 
+10g 
+Pupuk + 
+Asam (30 
+Menit) 
+354 865 864 3.7 
+ 
+Perubahan ini menunjukkan bahwa waktu jeda 
+yang lebih lama memberikan kesempatan bagi 
+pupuk dan cairan asam untuk benar -benar 
+terserap dan bereaksi dengan tanah. Dengan 
+demikian, hasil pengujian memperlihatkan bahwa 
+dosis 10 gram pupuk dan cairan asam 
+memberikan dampak nyata terhadap peningkatan 
+unsur hara tanah sekaligus memengaruhi tingkat 
+keasaman tanah. 
+ 
+5. Kesimpulan 
+Berdasarkan hasil penelitian yang telah 
+dilakukan, dapat ditarik beberapa kesimpulan 
+sebagai berikut  Sistem IoT terintegrasi 
+menggunakan sensor Modbus NPK, sensor pH 
+analog, dan ESP32 sukses dibangun dan mampu 
+membaca fluktuasi tingkat nutrisi secara presisi 
+dan mengirimkannya ke Firebase Realtime 
+Database. Novelty sistem berupa kemampuan 
+menerjemahkan angka analitik mentah menjadi 
+bahasa agronomis dapat dijalankan dengan 
+lancar. Analisis API ChatGPT memberikan output 
+yang sangat stabil dan konsisten pada pengujian 
+berulang. Pemadatan visualisasi pada Web 
+Dashboard yang dihasilkan mempermudah 
+pemantauan jarak jauh serta menghapus 
+hambatan kurangnya pengetahuan komposisi 
+hara di kalangan petani. 
+Akurasi pembacaan sensor pH dengan pH tester 
+rata-rata 0.2% sehingga dapat disimpulkan 
+bahwa pembacaan sensor pH cukup akurat 
+Rekomendasi pengembangan selanjutnya adalah 
+meningkatkan kalibrasi jarak antar -sensor fisik 
+untuk mencegah interferensi medan listrik ringan, 
+serta pengembangan struktur data historis (time -
+series log) berbasis AI yang lebih masif. 
+ 
+ 
+--- PAGE 10 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 500 
+6. Daftar Pustaka 
+[1] S. Iqbal, “Bale Lumbung Padi sebagai Role 
+Model Ketahanan Pangan Masyarakat 
+Nusa Tenggara Barat,” Eastasouth J. 
+Impactive Community Serv., vol. 2, no. 01, 
+pp. 1 –12, 2023, doi: 
+10.58812/ejimcs.v2i01. 
+[2] I. Lionel, A. Ro’uf, and B. Alldino, “Analisis 
+Spesifisitas terhadap Sensor NPK,” IJEIS 
+(Indonesian J. Electron. Instrum. Syst., vol. 
+13, no. 1, 2023, doi: 10.22146/ijeis.79672. 
+[3] A. Sholihat, N. Hermita, J. E. R. Rumbiak, 
+and D. Firnia, “Sifat Kimia Tanah pada 
+Budidaya Talas Beneng,” J. Ilm. 
+Membangun Desa dan Pertan. , vol. 9, no. 
+5, pp. 432 –443, 2024, doi: 
+10.36040/jati.v9i1.12705. 
+[4] A. Nurani, H. Taqiya, A. Nabila, and I. B. 
+Herlambang, “Peran Artificial Intelligence 
+dalam Sistem IoT untuk Pertanian Cerdas : 
+Systematic Literature Review,” JATI (Jurnal 
+Mhs. Tek. Inform., vol. 9, no. 1, pp. 1446 –
+1455, 2025, doi: 10.36040/jati.v9i1.12705. 
+[5] F. M. Iqbal, M. Hikmatyar, and Nasrudin, 
+“Penerapan Internet of Things pada Sistem 
+Deteksi Kesuburan Tanah,” Agro 
+Wiralodra, vol. 6, no. 1, pp. 14 –20, 2023, 
+doi: 10.31943/agrowiralodra.v6i1.79. 
+[6] D. Mualfah, G. H. Sandi, and E. Fuad, 
+“Sistem Monitoring pH dan Kelembaban 
+Tanah pada Tanaman Kacang Tanah 
+Berbasis IoT,” J. Apl. Teknol. Inf. dan 
+Manaj., vol. 4, no. 2, pp. 138 –147, 2023, 
+doi: 10.31102/jatim.v4i2.2289. 
+[7] W. Munfarid, K. Nabilah, A. Azkiyah, H. 
+Hanifa, S. R. Indahsari, and A. A. 
+Suhendra, “Sistem Deteksi NPK Tanah 
+Portabel berbasis Sensor Warna TCS3200 
+untuk Optimasi Lahan Perkotaan,” 
+Sainteks, vol. 22, no. 1, pp. 39 –52, 2025, 
+doi: 10.30595/sainteks.v22i1.25372. 
+ 
+[8] F. R. Perdana and N. Pratama, “Monitoring 
+pH tanah Kelembaban Tanah dan 
+Penyiraman Otomatis Pada Toko Citra 
+Taman Landscape menggunakan Internet 
+Of Things dengan Metode Series,” J. Res. 
+Publ. Innov., vol. 2, no. 3, pp. 2403 –2408, 
+2024. 
+[9] Sugiyono, Metodologi Penelitian 
+Kuantitatif, Kualitatif dan R & D . Bandung: 
+Alfabeta, 2020. 
+[10] R. W. Saputra, N. Rahmina, and R. Gadi, 
+“Sistem Kompensasi pada PT. Berkah 
+Banua Kita (Kebijakan Kompensasi 
+Finansial Langsung sesuai Upah Minimum 
+Kota),” Adm. - J. ILMU Adm. DAN Manaj. , 
+vol. 6, no. 2, pp. 20 –32, 2022, doi: 
+10.56662/administraus.v6i2.146. 
+[11] V. No, D. M. Sari, and N. Rasyid, 
+“Protoptype Pengairan Sawah dan 
+Monitoring Kualitas pH Tanah berbasis 
+IoT,” Infotek  J. Inform. dan Teknol. , vol. 5, 
+no. 2, pp. 240 –251, 2022, doi: 
+10.29408/jit.v5i2.5749. 
+[12] S. Faradillah, D. Irmansyah, B. A. Lokatara, 
+M. I. Saputra, and A. Wulansari, “Analisis 
+Perkembangan Artificial Intelligence dalam 
+Bidang Bisnis  : Systematic Literature 
+Review,” Djtechno J. Teknol. Inf., vol. 4, no. 
+2, pp. 298 –309, 2023, doi: 
+10.46576/djtechno.v4i2.3404. 
+[13] I. Gunawan and H. Ahmadi, “Sistem 
+Monitoring Dan Pengkabutan Otomatis 
+Berbasis Internet Of Things (IoT) Pada 
+Budidaya Jamur Tiram Menggunakan 
+NodeMCU dan Blynk,” Infotek  J. Inform. 
+dan Teknol., vol. 4, no. 1, pp. 79–86, 2021, 
+doi: 10.29408/jit.v4i1.2997. 
+[14] I. Gunawan, M. Sadali, H. Ahmadi, L. K. 
+Wijaya, and S. Ermawati, “Implementasi 
+Internet Of Things (IOT) Untuk Monitoring 
+Kualitas Tanah Tanaman Herbal Dengan 
+Integrasi QR Code,” Infotek J. Inform. dan 
+Teknol., vol. 8, no. 2, pp. 426 –434, 2025, 
+doi: 10.29408/jit.v8i2.31101. 
+--- PAGE 11 ---
+Infotek : Jurnal Informatika dan Teknologi 
+Vol. 9 No. 2, Juli 2026 
+Hal.491-501 
+ 
+ e-ISSN 2614-8773 
+DOI : 10.29408/jit.v9i2.34982 Link : https://dx.doi.org/10.29408/jit.v9i2.34982 
+ 
+Infotek : Jurnal Informatika dan Teknologi – Vol.9 No.2 Juli 2026 501 
+[15] M. Mahpuz, H. Bahtiar, M. Sadali, and F. 
+Kurniawan, “Prototype Monitoring Kantung 
+Cairan Infus berbasis Internet of Things 
+(IoT),” Infotek  J. Inform. dan Teknol. , vol. 
+6, no. 1, pp. 189 –198, 2023, doi: 
+10.29408/jit.v6i1.7518. 
+[16] M. N. Nizam, Haris Yuana, and Zunita 
+Wulansari, “Mikrokontroler Esp 32 sebagai 
+Alat Monitoring Pintu berbasis Web,” JATI 
+(Jurnal Mhs. Tek. Inform., vol. 6, no. 2, pp. 
+767–772, 2022, doi: 
+10.36040/jati.v6i2.5713.. 
+ 
+ 

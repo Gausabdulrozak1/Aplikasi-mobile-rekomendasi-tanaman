@@ -1,0 +1,68 @@
+[
+    {
+        "id":  "padi_a",
+        "crop":  "padi",
+        "prompt":  "taniadaptif_padi, mature rice paddy plants with visible golden rice panicles, rows of rice stalks in a cultivated field, realistic agricultural photograph, natural daylight, clear crop view",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, grass lawn, weeds, cut grass",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\padi_a.png",
+        "image_bytes":  639138
+    },
+    {
+        "id":  "padi_b",
+        "crop":  "padi",
+        "prompt":  "taniadaptif_padi, Indonesian rice plants growing in a flooded paddy field, visible grain panicles on rice stalks, realistic agricultural photograph, natural daylight",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, grass lawn, weeds, cut grass",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\padi_b.png",
+        "image_bytes":  602634
+    },
+    {
+        "id":  "padi_c",
+        "crop":  "padi",
+        "prompt":  "taniadaptif_padi, close view of mature rice plants with golden grain heads in a rice paddy field, realistic agricultural photograph, natural daylight",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, grass lawn, weeds, cut grass",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\padi_c.png",
+        "image_bytes":  618883
+    },
+    {
+        "id":  "kacang_a",
+        "crop":  "kacang_tanah",
+        "prompt":  "taniadaptif_kacang_tanah, peanut plant rows in cultivated farmland, clear green oval leaves, realistic agricultural photograph, natural daylight",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, garlic, onion, bulbs, rocks, harvested pods, bare soil",
+        "trigger_token":  "taniadaptif_kacang_tanah",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\kacang_a.png",
+        "image_bytes":  603232
+    },
+    {
+        "id":  "kacang_b",
+        "crop":  "kacang_tanah",
+        "prompt":  "taniadaptif_kacang_tanah, healthy peanut crop plants with four oval leaflets growing in rows in dark soil, wide cultivated field, realistic agricultural photograph, natural daylight",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, garlic, onion, bulbs, rocks, harvested pods, bare soil",
+        "trigger_token":  "taniadaptif_kacang_tanah",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\kacang_b.png",
+        "image_bytes":  648823
+    },
+    {
+        "id":  "kacang_c",
+        "crop":  "kacang_tanah",
+        "prompt":  "taniadaptif_kacang_tanah, peanut plant rows in cultivated farmland, clear green leaves, natural daylight, realistic agricultural photo",
+        "negative_prompt":  "illustration, painting, drawing, CGI, blurry, low resolution, distorted plants, text, logo, watermark, garlic, onion, bulbs, rocks, harvested pods, bare soil",
+        "trigger_token":  "taniadaptif_kacang_tanah",
+        "provider":  "diffusers",
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\refined_prompt_probe\\kacang_c.png",
+        "image_bytes":  652800
+    }
+]

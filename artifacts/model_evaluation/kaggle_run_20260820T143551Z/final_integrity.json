@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "artifact_zip": "/kaggle/working/taniadaptif_lora_artifacts.zip",
+  "artifact_size_bytes": 51939535,
+  "required_entries": [
+    "dataset_package_sha256.txt",
+    "final_training_report.json",
+    "final_training_report.md",
+    "main_loss_history.csv",
+    "main_validation.json",
+    "multisource_multicrop_lora.safetensors",
+    "multisource_multicrop_lora.sha256",
+    "smoke_loss_history.csv",
+    "smoke_validation.json",
+    "training_config.json"
+  ],
+  "missing_entries": [],
+  "model_sha256_expected": "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+  "model_sha256_in_zip": "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+  "smoke_status": "pass",
+  "main_status": "success",
+  "sanity_status": "pass",
+  "evaluation_status": "complete",
+  "human_template_blank_rows": 72
+}

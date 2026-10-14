@@ -1,0 +1,122 @@
+{
+  "project_name": "rotasi_tanam_aikmel",
+  "experiment_name": "multisource_multicrop_lora",
+  "base_model": null,
+  "dataset": {
+    "source_manifest": "ml_pipeline/data/dataset_source_manifest.csv",
+    "processed_directory": "ml_pipeline/data/processed",
+    "reports_directory": "ml_pipeline/data/reports",
+    "review_directory": "artifacts/dataset_review",
+    "review_candidates_directory": "artifacts/dataset_review/candidates",
+    "packages_directory": "artifacts/dataset_packages",
+    "package_version": "dataset_multicrop_v1",
+    "dataset_card": "docs/DATASET_CARD.md",
+    "package_manifest_document": "docs/DATASET_PACKAGE_MANIFEST.md",
+    "package_configs": [
+      "ml_pipeline/configs/dataset_public_multicrop.yaml",
+      "ml_pipeline/configs/training_public_multicrop.yaml",
+      "ml_pipeline/configs/evaluation_public_multicrop.yaml"
+    ],
+    "review_sample_per_class": 20,
+    "train_ratio": 0.8,
+    "validation_ratio": 0.2,
+    "minimum_width": 512,
+    "minimum_height": 512,
+    "duplicate_threshold": 5,
+    "allowed_extensions": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp"
+    ],
+    "allowed_image_formats": [
+      "JPEG",
+      "PNG",
+      "WEBP"
+    ]
+  },
+  "summary": {
+    "total_files": 499,
+    "by_status": {
+      "valid": 499
+    },
+    "by_class": {
+      "cabai": 80,
+      "jagung": 80,
+      "kacang_tanah": 90,
+      "padi": 249
+    },
+    "valid_by_class": {
+      "cabai": 80,
+      "jagung": 80,
+      "kacang_tanah": 90,
+      "padi": 249
+    },
+    "by_source": {
+      "local_aikmel": 30,
+      "public": 469
+    }
+  },
+  "duplicate_report": {
+    "exact": [],
+    "near": [],
+    "cross_source_padi": [],
+    "cross_class": []
+  },
+  "metadata_validation": {},
+  "class_balance": [
+    {
+      "class_id": "padi",
+      "raw_count": 249,
+      "valid_count": 249,
+      "rejected_count": 0,
+      "duplicate_count": 0,
+      "public_valid_count": 219,
+      "local_aikmel_valid_count": 30,
+      "curated_count": 0,
+      "train_count": 0,
+      "validation_count": 0,
+      "target_status": "above_maximum"
+    },
+    {
+      "class_id": "jagung",
+      "raw_count": 80,
+      "valid_count": 80,
+      "rejected_count": 0,
+      "duplicate_count": 0,
+      "public_valid_count": 80,
+      "local_aikmel_valid_count": 0,
+      "curated_count": 0,
+      "train_count": 0,
+      "validation_count": 0,
+      "target_status": "within_target"
+    },
+    {
+      "class_id": "cabai",
+      "raw_count": 80,
+      "valid_count": 80,
+      "rejected_count": 0,
+      "duplicate_count": 0,
+      "public_valid_count": 80,
+      "local_aikmel_valid_count": 0,
+      "curated_count": 0,
+      "train_count": 0,
+      "validation_count": 0,
+      "target_status": "within_target"
+    },
+    {
+      "class_id": "kacang_tanah",
+      "raw_count": 90,
+      "valid_count": 90,
+      "rejected_count": 0,
+      "duplicate_count": 0,
+      "public_valid_count": 90,
+      "local_aikmel_valid_count": 0,
+      "curated_count": 0,
+      "train_count": 0,
+      "validation_count": 0,
+      "target_status": "within_target"
+    }
+  ],
+  "split_summary": {}
+}

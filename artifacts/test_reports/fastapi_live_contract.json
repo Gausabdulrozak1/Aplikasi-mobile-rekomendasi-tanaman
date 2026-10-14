@@ -1,0 +1,205 @@
+﻿{
+    "tested_at":  "2026-08-05T12:11:32.8180162Z",
+    "health":  {
+                   "status":  "ok",
+                   "provider":  "mock",
+                   "device":  "cpu",
+                   "model_loaded":  true,
+                   "version":  "0.1.0"
+               },
+    "ready":  {
+                  "status":  "ready",
+                  "provider":  "mock",
+                  "device":  "cpu",
+                  "model_loaded":  true,
+                  "reason":  null
+              },
+    "model_info":  {
+                       "base_model":  "stable-diffusion-v1-5/stable-diffusion-v1-5",
+                       "lora_identifier":  "none",
+                       "provider":  "mock",
+                       "supported_crops":  [
+                                               "padi",
+                                               "jagung",
+                                               "cabai",
+                                               "kacang_tanah"
+                                           ],
+                       "trigger_tokens":  {
+                                              "padi":  "taniadaptif_padi",
+                                              "jagung":  "taniadaptif_jagung",
+                                              "cabai":  "taniadaptif_cabai",
+                                              "kacang_tanah":  "taniadaptif_kacang_tanah"
+                                          },
+                       "pilot_trigger_tokens":  {
+                                                    "padi":  "gaus_padi_public"
+                                                },
+                       "supported_request_modes":  [
+                                                       "structured_context",
+                                                       "direct_prompt"
+                                                   ],
+                       "supported_width":  [
+                                               256,
+                                               320,
+                                               384,
+                                               448,
+                                               512,
+                                               576,
+                                               640,
+                                               704,
+                                               768
+                                           ],
+                       "supported_height":  [
+                                                256,
+                                                320,
+                                                384,
+                                                448,
+                                                512,
+                                                576,
+                                                640,
+                                                704,
+                                                768
+                                            ],
+                       "default_parameters":  {
+                                                  "seed":  42,
+                                                  "steps":  25,
+                                                  "guidance_scale":  7.5,
+                                                  "width":  512,
+                                                  "height":  512,
+                                                  "max_retries":  1,
+                                                  "timeout_seconds":  90.0
+                                              }
+                   },
+    "direct_prompt":  {
+                          "success":  true,
+                          "request_id":  "live-pilot-contract",
+                          "crop":  "padi",
+                          "image_url":  "http://127.0.0.1:5000/static/generated/mock_f6290417236047bc.png",
+                          "image_id":  "mock_f6290417236047bc",
+                          "seed":  42,
+                          "generation_time_seconds":  0.006,
+                          "model":  "mock-placeholder",
+                          "metadata":  {
+                                           "provider":  "mock",
+                                           "request_id":  "live-pilot-contract",
+                                           "crop":  "padi",
+                                           "trigger_token":  "gaus_padi_public",
+                                           "prompt":  "a realistic agricultural photograph of gaus_padi_public, rice plants growing in a field",
+                                           "negative_prompt":  "blurry, watermark",
+                                           "width":  512,
+                                           "height":  512,
+                                           "is_mock":  true,
+                                           "research_output":  false,
+                                           "base_model":  "stable-diffusion-v1-5/stable-diffusion-v1-5",
+                                           "lora_identifier":  "none",
+                                           "seed":  42,
+                                           "generated_at":  "2026-08-05T12:11:32.758091+00:00",
+                                           "recommendation_source":  "direct_prompt_input",
+                                           "request_mode":  "direct_prompt"
+                                       }
+                      },
+    "structured_context":  {
+                               "success":  true,
+                               "request_id":  "live-structured-contract",
+                               "crop":  "jagung",
+                               "image_url":  "http://127.0.0.1:5000/static/generated/mock_b6013f8d452d0b44.png",
+                               "image_id":  "mock_b6013f8d452d0b44",
+                               "seed":  42,
+                               "generation_time_seconds":  0.008,
+                               "model":  "mock-placeholder",
+                               "metadata":  {
+                                                "provider":  "mock",
+                                                "request_id":  "live-structured-contract",
+                                                "crop":  "jagung",
+                                                "trigger_token":  "taniadaptif_jagung",
+                                                "prompt":  "a realistic agricultural photograph of taniadaptif_jagung, maize plants growing in an agricultural environment, natural lighting, on cultivated dryland, with limited water availability, following peanut, weather context: Cerah berawan",
+                                                "negative_prompt":  "illustration, painting, drawing, CGI, artificial plastic texture, blurry, low resolution, distorted plants, duplicated plants, harvested produce only, prepared food, market stall, text, logo, watermark, people as the main subject",
+                                                "width":  512,
+                                                "height":  512,
+                                                "is_mock":  true,
+                                                "research_output":  false,
+                                                "base_model":  "stable-diffusion-v1-5/stable-diffusion-v1-5",
+                                                "lora_identifier":  "none",
+                                                "seed":  42,
+                                                "generated_at":  "2026-08-05T12:11:32.770820+00:00",
+                                                "recommendation_source":  "rule_engine_input",
+                                                "request_mode":  "structured_context"
+                                            }
+                           },
+    "blank_prompt":  {
+                         "status_code":  422,
+                         "response":  {
+                                          "success":  false,
+                                          "request_id":  "eba0c12ff3164f16",
+                                          "error":  {
+                                                        "code":  "VALIDATION_ERROR",
+                                                        "message":  "Payload permintaan tidak valid.",
+                                                        "retryable":  false,
+                                                        "details":  [
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "crop"
+                                                                                         ],
+                                                                            "message":  "Field required",
+                                                                            "type":  "missing"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "land_type"
+                                                                                         ],
+                                                                            "message":  "Field required",
+                                                                            "type":  "missing"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "water_availability"
+                                                                                         ],
+                                                                            "message":  "Field required",
+                                                                            "type":  "missing"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "previous_crop"
+                                                                                         ],
+                                                                            "message":  "Field required",
+                                                                            "type":  "missing"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "weather_summary"
+                                                                                         ],
+                                                                            "message":  "Field required",
+                                                                            "type":  "missing"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "GenerateRequest",
+                                                                                             "prompt"
+                                                                                         ],
+                                                                            "message":  "Extra inputs are not permitted",
+                                                                            "type":  "extra_forbidden"
+                                                                        },
+                                                                        {
+                                                                            "location":  [
+                                                                                             "body",
+                                                                                             "PromptGenerateRequest",
+                                                                                             "prompt"
+                                                                                         ],
+                                                                            "message":  "Value error, prompt must not be blank",
+                                                                            "type":  "value_error"
+                                                                        }
+                                                                    ]
+                                                    }
+                                      }
+                     }
+}

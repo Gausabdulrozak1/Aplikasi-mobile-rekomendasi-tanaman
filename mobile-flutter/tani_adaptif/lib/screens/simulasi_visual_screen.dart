@@ -4,6 +4,7 @@ import '../config/app_config.dart';
 import '../models/cuaca_model.dart';
 import '../models/generate_visual_model.dart';
 import '../models/rekomendasi_model.dart';
+import '../services/demo_visual_fallback_service.dart';
 import '../services/local_storage_service.dart';
 import '../services/stable_diffusion_service.dart';
 
@@ -41,10 +42,15 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
   GenerateVisualResponse? _response;
   String? _provider;
   String? _loraIdentifier;
+  String? _selectedCropCode;
+  bool _isLiveVisual = true;
 
-  TanamanRekomendasi? get _tanaman => widget.rekomendasi.rekomendasi.isEmpty
-      ? null
-      : widget.rekomendasi.rekomendasi.first;
+  TanamanRekomendasi? get _tanaman {
+    for (final tanaman in widget.rekomendasi.rekomendasi) {
+      if (tanaman.kode == _selectedCropCode) return tanaman;
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -53,6 +59,9 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
         widget.stableDiffusionService ?? StableDiffusionService();
     _localStorageService =
         widget.localStorageService ?? const LocalStorageService();
+    _selectedCropCode = widget.rekomendasi.rekomendasi.isEmpty
+        ? null
+        : widget.rekomendasi.rekomendasi.first.kode;
     _loadModelInfo();
   }
 
@@ -72,6 +81,10 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
   Future<void> _generate() async {
     final tanaman = _tanaman;
     if (tanaman == null) return;
+    debugPrint(
+      'RULE_RECOMMENDATIONS=${widget.rekomendasi.rekomendasi.map((item) => item.kode).join(',')}',
+    );
+    debugPrint('SELECTED_CROP=${tanaman.kode}');
 
     setState(() {
       _isLoading = true;
@@ -86,21 +99,47 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
       jenisLahan: widget.jenisLahan,
       ketersediaanAir: widget.ketersediaanAir,
       tanamanSebelumnya: widget.rekomendasi.tanamanSebelumnyaKode,
-      seed: 42,
     );
 
     try {
       final response = await _stableDiffusionService.generate(request);
+      if (response.metadata['is_mock'] == true) {
+        throw const StableDiffusionException(
+          'Provider live belum tersedia.',
+          technicalMessage: 'MOCK_PROVIDER',
+        );
+      }
       if (!mounted) return;
       setState(() {
         _response = response;
         _provider = response.metadata['provider']?.toString() ?? _provider;
         _loraIdentifier =
             response.metadata['lora_identifier']?.toString() ?? _loraIdentifier;
+        _isLiveVisual = response.metadata['is_mock'] != true &&
+            response.metadata['visual_source'] != 'cached_inference_artifact';
         _isLoading = false;
       });
     } catch (error) {
       if (!mounted) return;
+      final fallback = AppConfig.demoFallbackEnabled
+          ? DemoVisualFallbackService.responseFor(
+              request,
+              fallbackReason: error.toString(),
+            )
+          : null;
+      if (fallback != null) {
+        setState(() {
+          _response = fallback;
+          _provider = 'LoRA tersimpan';
+          _loraIdentifier =
+              fallback.metadata['lora_identifier']?.toString() ??
+              _loraIdentifier;
+          _isLiveVisual = false;
+          _error = null;
+          _isLoading = false;
+        });
+        return;
+      }
       setState(() {
         _error = error is StableDiffusionException
             ? error.message
@@ -129,7 +168,9 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
       'seed': response.seed,
       'request_id': response.requestId,
       'image_url': response.imageUrl,
+      'image_asset': response.metadata['asset_path'],
       'image_id': response.imageId,
+      'visual_source': response.metadata['visual_source'],
       'model': response.model,
       'rekomendasi_alasan': widget.rekomendasi.alasan,
       'rule_id': widget.rekomendasi.ruleId,
@@ -143,40 +184,43 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tanaman = _tanaman;
     return Scaffold(
       appBar: AppBar(title: const Text('Simulasi Visual')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           const Text(
-            'Tanaman Rekomendasi',
+            'Tanaman untuk Visualisasi',
             style: TextStyle(fontSize: 13, color: AppColors.grey),
           ),
           const SizedBox(height: 6),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.primaryLightest,
-              borderRadius: BorderRadius.circular(8),
+          DropdownButtonFormField<String>(
+            key: ValueKey(_selectedCropCode),
+            initialValue: _selectedCropCode,
+            hint: const Text('Pilih tanaman rekomendasi'),
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.eco),
+              border: OutlineInputBorder(),
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.eco, color: AppColors.primary, size: 34),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    tanaman?.nama ?? 'Belum tersedia',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
+            items: widget.rekomendasi.rekomendasi
+                .map(
+                  (item) => DropdownMenuItem<String>(
+                    value: item.kode,
+                    child: Text(item.nama),
                   ),
-                ),
-              ],
-            ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value == null || value == _selectedCropCode) return;
+              setState(() {
+                _selectedCropCode = value;
+                _response = null;
+                _error = null;
+                _isSaved = false;
+                _isLiveVisual = true;
+              });
+              debugPrint('SELECTED_CROP=$value');
+            },
           ),
           const SizedBox(height: 20),
           Text(
@@ -294,6 +338,71 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
     }
 
     final response = _response;
+    final assetPath = response?.metadata['asset_path']?.toString() ?? '';
+    if (response != null && assetPath.isNotEmpty) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            assetPath,
+            fit: BoxFit.cover,
+            semanticLabel:
+                '${_tanaman?.nama ?? response.crop} | ${response.crop}',
+            errorBuilder: (_, _, _) => const Center(
+              child: Icon(
+                Icons.broken_image_outlined,
+                size: 52,
+                color: AppColors.grey,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 8,
+            left: 8,
+            right: 56,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.68),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Text(
+                'Menampilkan hasil simulasi tersimpan',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 8,
+            right: 8,
+            child: IconButton.filledTonal(
+              onPressed: _generate,
+              icon: const Icon(Icons.refresh),
+              tooltip: 'Coba layanan live lagi',
+            ),
+          ),
+          Positioned(
+            left: 8,
+            right: 8,
+            bottom: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.68),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                '${_tanaman?.nama ?? response.crop} | Tersimpan | Seed ${response.seed}',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
     if (response != null && response.imageUrl.isNotEmpty) {
       return Stack(
         fit: StackFit.expand,
@@ -302,6 +411,8 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
             response.imageUrl,
             headers: AppConfig.visualImageHeaders,
             fit: BoxFit.cover,
+            semanticLabel:
+                '${_tanaman?.nama ?? response.crop} | ${response.crop}',
             errorBuilder: (_, _, _) => const Center(
               child: Icon(
                 Icons.broken_image_outlined,
@@ -331,8 +442,10 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
               ),
               child: Text(
                 [
+                  ?_tanaman?.nama,
                   ?_provider,
                   ?_loraIdentifier,
+                  _isLiveVisual ? 'Inference live' : 'Tersimpan',
                   'Seed ${response.seed}',
                 ].join(' | '),
                 maxLines: 2,
@@ -353,7 +466,7 @@ class _SimulasiVisualScreenState extends State<SimulasiVisualScreen> {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Text(
-            'Buat gambaran visual untuk tanaman rekomendasi utama.',
+            'Pilih satu tanaman rekomendasi untuk membuat gambaran visual.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13),
           ),

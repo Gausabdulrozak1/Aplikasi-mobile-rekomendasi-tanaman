@@ -1,0 +1,4 @@
+﻿metric,test,lora_wins,ties,base_wins,non_tied,exact_p_value
+Kesesuaian komoditas,exact_mcnemar_discordant_pairs,3,33,0,3,0.25
+Konteks lahan,exact_sign_test_ties_excluded,6,21,9,15,0.6072387695
+Realisme visual,exact_sign_test_ties_excluded,6,21,9,15,0.6072387695

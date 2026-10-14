@@ -1,0 +1,487 @@
+[
+  {
+    "path": "bitsandbytes_probe.log",
+    "size_bytes": 59,
+    "sha256": "1a844832692fbb12be88fa37f434692e941ed1171fc0597903d8635fcef8ed73"
+  },
+  {
+    "path": "dataset_package_sha256.txt",
+    "size_bytes": 104,
+    "sha256": "45de8aed207ee41694532d421616a3480ac70113c06ca0243de74d9226664a37"
+  },
+  {
+    "path": "dependency_audit_after.json",
+    "size_bytes": 463,
+    "sha256": "db7e93b2531870c2d143646d9ce03d8261a067a01bbd2bd69e97d17ada7239f3"
+  },
+  {
+    "path": "dependency_audit_before.json",
+    "size_bytes": 451,
+    "sha256": "f8a89f65c6a0e3e8ff1794c4542dbad5562ce76df50a7d82d20c4922d8b8147d"
+  },
+  {
+    "path": "evaluation/automated_proxy_metrics.csv",
+    "size_bytes": 4668,
+    "sha256": "8a9ca21b856047102c545b862fd288a230067f58646b59d1c1a69f4fa57a2317"
+  },
+  {
+    "path": "evaluation/base/cabai_p1_s123_base.png",
+    "size_bytes": 651352,
+    "sha256": "6be6a1f5aace30cd61779e201262833e07ec2220fc5628757139a54f14f5c3f9"
+  },
+  {
+    "path": "evaluation/base/cabai_p1_s2026_base.png",
+    "size_bytes": 541160,
+    "sha256": "4dd22092410be72d9a234ad3ef3b79d3d97227daaee2c10e70a908bcf78ea1fd"
+  },
+  {
+    "path": "evaluation/base/cabai_p1_s42_base.png",
+    "size_bytes": 581884,
+    "sha256": "70e48894c2ab46f36dc001ccae99c471d92f9f61d1cdbc0f5a471853fb8dd33c"
+  },
+  {
+    "path": "evaluation/base/cabai_p2_s123_base.png",
+    "size_bytes": 518723,
+    "sha256": "1204f4a8ec1364a4473d4de3216ef58177c499a4eeeab0fef9377f2768670325"
+  },
+  {
+    "path": "evaluation/base/cabai_p2_s2026_base.png",
+    "size_bytes": 533391,
+    "sha256": "a137433dd4b0690597438f07235c32df3e2e31305c8ec8525d601872cdf50c6e"
+  },
+  {
+    "path": "evaluation/base/cabai_p2_s42_base.png",
+    "size_bytes": 586779,
+    "sha256": "6d089aa4f22b48fb7953ec29f9c252a6cae66846fe7f44b2a35e339a49144d20"
+  },
+  {
+    "path": "evaluation/base/cabai_p3_s123_base.png",
+    "size_bytes": 636364,
+    "sha256": "e41ac07049fd198946d42f7827715ea4ff2fcfc1b059c2761d34260a73ad9abc"
+  },
+  {
+    "path": "evaluation/base/cabai_p3_s2026_base.png",
+    "size_bytes": 532883,
+    "sha256": "9d320513a24f11bf899e17c843f992097da02285f1170e7c162fd5b05821ae8b"
+  },
+  {
+    "path": "evaluation/base/cabai_p3_s42_base.png",
+    "size_bytes": 589551,
+    "sha256": "494fea2b2ad00722491337c7bd2b12cc02aab4014e82cde1aca0045e62a4cf06"
+  },
+  {
+    "path": "evaluation/base/jagung_p1_s123_base.png",
+    "size_bytes": 618431,
+    "sha256": "947604754f99d8284df0f2f5a94617174f6c3b9356f8db2663041bfca7e7f9ff"
+  },
+  {
+    "path": "evaluation/base/jagung_p1_s2026_base.png",
+    "size_bytes": 524269,
+    "sha256": "af5dc3ed639f2a6ad0f5173f6194947e095e6e3e4ee4a230b6f1b184760127c1"
+  },
+  {
+    "path": "evaluation/base/jagung_p1_s42_base.png",
+    "size_bytes": 578641,
+    "sha256": "a9e99360f995f5f3eae3f3d1faeee3708f581f7b94f352f2c826c42176c847a1"
+  },
+  {
+    "path": "evaluation/base/jagung_p2_s123_base.png",
+    "size_bytes": 653291,
+    "sha256": "816c5bb6e68fdbd26a91abdbe17c1505fd64cc61715df2ac71a1e49c2521c9aa"
+  },
+  {
+    "path": "evaluation/base/jagung_p2_s2026_base.png",
+    "size_bytes": 547776,
+    "sha256": "185ea52fb858d6bc3f9adb29ac8f1c98e8db9bc887fd7cc7af5d72381b445ae3"
+  },
+  {
+    "path": "evaluation/base/jagung_p2_s42_base.png",
+    "size_bytes": 575623,
+    "sha256": "b929c94af05e297793c8122dae8e8b728f280ec04f4fbc2f15c0e2e72a3b647a"
+  },
+  {
+    "path": "evaluation/base/jagung_p3_s123_base.png",
+    "size_bytes": 622459,
+    "sha256": "1dc19af869f8ffb94aad4641c96cc5f78da5b36148024b492b4e4c4e7b9a4e21"
+  },
+  {
+    "path": "evaluation/base/jagung_p3_s2026_base.png",
+    "size_bytes": 531900,
+    "sha256": "c3d41327003e9cb13f473a93bd615ed0af517fbacc54cda38a719157686daf8c"
+  },
+  {
+    "path": "evaluation/base/jagung_p3_s42_base.png",
+    "size_bytes": 569569,
+    "sha256": "11a180cd37564c1908b80f44ad5b7f8a60e4d2aaa4a2625026914bdc9c40f8a0"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p1_s123_base.png",
+    "size_bytes": 696045,
+    "sha256": "aa4887dbe31938bd972a3cd65a9c0745841108a8ea9ed20857b958ac86674455"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p1_s2026_base.png",
+    "size_bytes": 577057,
+    "sha256": "c50bb7db5d4e5b58fed5f4097f2f04e0e7363ce97acb586cf6205931e7d0e5d1"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p1_s42_base.png",
+    "size_bytes": 584978,
+    "sha256": "a1402c626f089d911d860a768d8066ad74a762c4685419ca783613e4d07f4840"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p2_s123_base.png",
+    "size_bytes": 678541,
+    "sha256": "20df0966d895ab12bdcf71df57a3c6014496f0639c13b2f1caa96d53f5d1b517"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p2_s2026_base.png",
+    "size_bytes": 519511,
+    "sha256": "e9dbe640323d7b51f267753d4253e8674acb74c47dd5cfefb030559b6b573f6d"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p2_s42_base.png",
+    "size_bytes": 526599,
+    "sha256": "368c8b3adf1112bc2f282a97f2cd8283899b4b72cbcd7a1f7be3000b7e47f5e6"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p3_s123_base.png",
+    "size_bytes": 689222,
+    "sha256": "84d2afaa399683dd7b59e7b2c1718e8f51b1fe84aaebb4314c8227b8c35c7766"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p3_s2026_base.png",
+    "size_bytes": 570564,
+    "sha256": "2de636c466647c9871a5f1155a82612b7c6466ba9a00990a42af4e969ff7c5f1"
+  },
+  {
+    "path": "evaluation/base/kacang_tanah_p3_s42_base.png",
+    "size_bytes": 596792,
+    "sha256": "837b4537d297fe02acca0bfac84a764d1a8e1098f98a53bdaa3029b46054c20b"
+  },
+  {
+    "path": "evaluation/base/padi_p1_s123_base.png",
+    "size_bytes": 618607,
+    "sha256": "7882ef1ec24097a0fca02886466c70a1f12907020e96195f759bd90bb434d78e"
+  },
+  {
+    "path": "evaluation/base/padi_p1_s2026_base.png",
+    "size_bytes": 531874,
+    "sha256": "08667ba139e6cd4586c2d61680d60a37d7c97fc6689c8dda2b9705c8aac9476e"
+  },
+  {
+    "path": "evaluation/base/padi_p1_s42_base.png",
+    "size_bytes": 566938,
+    "sha256": "4018bea8010354a34ed59f0618f8c7c25014db0aabaaa45abbbf1ca6d9e955a1"
+  },
+  {
+    "path": "evaluation/base/padi_p2_s123_base.png",
+    "size_bytes": 639649,
+    "sha256": "1708a5cf5370ccc722d07f068bacc92c171b8b1b7f4500220dd35395f4fc346b"
+  },
+  {
+    "path": "evaluation/base/padi_p2_s2026_base.png",
+    "size_bytes": 518246,
+    "sha256": "5ee454ab7ef2da51a23c1993a40d570b9073b2886e4e1cea85ab2bea11154ff0"
+  },
+  {
+    "path": "evaluation/base/padi_p2_s42_base.png",
+    "size_bytes": 624577,
+    "sha256": "74882862351570249a649808ea5e308083e38cc0f564ee004e612024071555e0"
+  },
+  {
+    "path": "evaluation/base/padi_p3_s123_base.png",
+    "size_bytes": 615759,
+    "sha256": "4764661cbd9e1a8b30e40daa572a495847f362a19a84e92000e91d8a855e763c"
+  },
+  {
+    "path": "evaluation/base/padi_p3_s2026_base.png",
+    "size_bytes": 526286,
+    "sha256": "acff608441e84e4e1483b2bb83e3a5518f08faf0d885986c4aa0f5f6b5bb2a17"
+  },
+  {
+    "path": "evaluation/base/padi_p3_s42_base.png",
+    "size_bytes": 560618,
+    "sha256": "caca5e6bc5baf12ed4528c769c0bc0464631755101d1ee8752b0347dc5853c88"
+  },
+  {
+    "path": "evaluation/evaluation_manifest.csv",
+    "size_bytes": 20816,
+    "sha256": "6acc9ad2ab3d1b78e973c3a850bbd56adec0173327abc9a60e803924fb0531a5"
+  },
+  {
+    "path": "evaluation/evaluation_manifest.json",
+    "size_bytes": 33812,
+    "sha256": "fd09ad3c30bcb26f389c71cf54d65d66d10bad0d7b4cde01523349d9ade42cd9"
+  },
+  {
+    "path": "evaluation/human_evaluation_template.csv",
+    "size_bytes": 16508,
+    "sha256": "8c1f24ee11f6b1cf4e0ee3d54b4fa7591bf97b7644b5e25a8fa74cc22c859362"
+  },
+  {
+    "path": "evaluation/lora/cabai_p1_s123_lora.png",
+    "size_bytes": 586932,
+    "sha256": "d1afd63ae4b23113ec92830471b16b85521183d8fc43dc050b323528e63de5cd"
+  },
+  {
+    "path": "evaluation/lora/cabai_p1_s2026_lora.png",
+    "size_bytes": 593332,
+    "sha256": "214dbe0310695b2c91c3e902aca32c224fa4b0010c889730435438f77fbf3624"
+  },
+  {
+    "path": "evaluation/lora/cabai_p1_s42_lora.png",
+    "size_bytes": 639334,
+    "sha256": "70f929c8898860a8a5f41044dd8c88728c057c2d0ee77e38aa3599b86ee28616"
+  },
+  {
+    "path": "evaluation/lora/cabai_p2_s123_lora.png",
+    "size_bytes": 569493,
+    "sha256": "a11641f2871a336f978273cd8ad76d74434b3fd2ee463c7ca98e76ced22c4e18"
+  },
+  {
+    "path": "evaluation/lora/cabai_p2_s2026_lora.png",
+    "size_bytes": 478282,
+    "sha256": "7b5f4e5387c83616365984e2ef5c93c4be2741a3230f1efd70e1854fe01dec04"
+  },
+  {
+    "path": "evaluation/lora/cabai_p2_s42_lora.png",
+    "size_bytes": 511054,
+    "sha256": "c8369252b114c52a15ec670f4256dcb7fa05aefefad217bccc9e302f81f7b5fa"
+  },
+  {
+    "path": "evaluation/lora/cabai_p3_s123_lora.png",
+    "size_bytes": 592379,
+    "sha256": "0118412d69b93024639d0a3d8350dce760940c4c4093654ba94bb25cc719b65c"
+  },
+  {
+    "path": "evaluation/lora/cabai_p3_s2026_lora.png",
+    "size_bytes": 578158,
+    "sha256": "f7044f22b932a1e557c43980a2bdb182c8bb2dc1ded6634b6e44165bce5d2029"
+  },
+  {
+    "path": "evaluation/lora/cabai_p3_s42_lora.png",
+    "size_bytes": 511706,
+    "sha256": "98b91f6074c88d99643f54bacf926480b38cf6b1dfdc025b9b0787235a97efac"
+  },
+  {
+    "path": "evaluation/lora/jagung_p1_s123_lora.png",
+    "size_bytes": 702251,
+    "sha256": "8f77877751d44dc2c96dd28d037db6803a04c161909eef13936624dc6cb84f83"
+  },
+  {
+    "path": "evaluation/lora/jagung_p1_s2026_lora.png",
+    "size_bytes": 582829,
+    "sha256": "437577b6926c00271fffc396db7d8414f3764072a0f8ab82cc22fa80b2b61aef"
+  },
+  {
+    "path": "evaluation/lora/jagung_p1_s42_lora.png",
+    "size_bytes": 641769,
+    "sha256": "57fa8bcdde32872bf2984ecbc8491aa424bf67b37bdd10bb89b5fda2f066d386"
+  },
+  {
+    "path": "evaluation/lora/jagung_p2_s123_lora.png",
+    "size_bytes": 650566,
+    "sha256": "b0320d1cb42e30768f4ba17abe3e1d4982241b64d45fdf730a46f6711c9c3556"
+  },
+  {
+    "path": "evaluation/lora/jagung_p2_s2026_lora.png",
+    "size_bytes": 571400,
+    "sha256": "fa3e8ea3acd05586b940deaeb781b2b9dd457ffcb95ceec0d8913d5786f06495"
+  },
+  {
+    "path": "evaluation/lora/jagung_p2_s42_lora.png",
+    "size_bytes": 605034,
+    "sha256": "bd5fc83d639c6a79407be72d45f7237718917669cb3c7b088997a9fc7c390437"
+  },
+  {
+    "path": "evaluation/lora/jagung_p3_s123_lora.png",
+    "size_bytes": 708107,
+    "sha256": "2b9fecf1252d9b2dccdeafe33dbba502cc7a95217c2301903823328192d89e66"
+  },
+  {
+    "path": "evaluation/lora/jagung_p3_s2026_lora.png",
+    "size_bytes": 569914,
+    "sha256": "ff28d5432b0acf942c8a9e1fe3d3382cf56a681becacf8f6abd553982c3a8eaf"
+  },
+  {
+    "path": "evaluation/lora/jagung_p3_s42_lora.png",
+    "size_bytes": 525594,
+    "sha256": "836995d8e64daa1df69e9b4c4fd0796792a9b6c74cd015c09bd55426359240d0"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p1_s123_lora.png",
+    "size_bytes": 731866,
+    "sha256": "e3731f9973895288bcecdc61c56eb16497f545cdced33db19d0c9ef943c172a3"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p1_s2026_lora.png",
+    "size_bytes": 723177,
+    "sha256": "35866979fb8fbfee7fc5f5e9f335ef578064b81dfe443af66bcf5d72d53f8c38"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p1_s42_lora.png",
+    "size_bytes": 720613,
+    "sha256": "81237b0bd9d9c6d6e940de68991102baada15ed45e826304474613c87264a2d4"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p2_s123_lora.png",
+    "size_bytes": 702042,
+    "sha256": "bdda378cd36e0c40d021ecf4d5eb58286bacba166c583b37f815c5a39d8ef773"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p2_s2026_lora.png",
+    "size_bytes": 672376,
+    "sha256": "24d484a24ee9524c1f7d5c88b5d2f28bf8c05085f8f8587c6696f81bea7bbae1"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p2_s42_lora.png",
+    "size_bytes": 679080,
+    "sha256": "84d95d8115a2d5322761a5fbaaeffdd7abb4ec6b1f3ff3c06c53897754cbeaa8"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p3_s123_lora.png",
+    "size_bytes": 703624,
+    "sha256": "f5c78d974f08fa93bc207a850dbe5086aae742c4db14047fe47125b481af16c0"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p3_s2026_lora.png",
+    "size_bytes": 665615,
+    "sha256": "356d4250fd662ee944569785d26c8416d4485e92556869cca0a7f69b85362a8a"
+  },
+  {
+    "path": "evaluation/lora/kacang_tanah_p3_s42_lora.png",
+    "size_bytes": 698970,
+    "sha256": "49dd243db2bf245ad26901f52eab9eb3163a667fe9258a3662f2b34fd7fc1549"
+  },
+  {
+    "path": "evaluation/lora/padi_p1_s123_lora.png",
+    "size_bytes": 584762,
+    "sha256": "8149e9ad6e7faa87f1cac18c44a379cf4ab25edf7d0128689fff2cbd7956f00d"
+  },
+  {
+    "path": "evaluation/lora/padi_p1_s2026_lora.png",
+    "size_bytes": 574112,
+    "sha256": "36d9ae5527a174a053cc5440026c228db4a6f31a00873579607b2312f6c14dce"
+  },
+  {
+    "path": "evaluation/lora/padi_p1_s42_lora.png",
+    "size_bytes": 590628,
+    "sha256": "c032c661be9b060fca00e5f5a0dcd562de8b3073261f0cf0e380b5a14f4d0699"
+  },
+  {
+    "path": "evaluation/lora/padi_p2_s123_lora.png",
+    "size_bytes": 611510,
+    "sha256": "7909bfb78a14a15587300171ed8c5d806ad49edf20013ed785348be8e93afe1e"
+  },
+  {
+    "path": "evaluation/lora/padi_p2_s2026_lora.png",
+    "size_bytes": 562638,
+    "sha256": "7e70b1c6f794ecacd120ad995a4d5748e18c95c4f893358cb7294ccdb6cec466"
+  },
+  {
+    "path": "evaluation/lora/padi_p2_s42_lora.png",
+    "size_bytes": 612652,
+    "sha256": "83a4459a8242e7e520f002f677617d1e15b82359ec44ec1e759ae0dba75d63f7"
+  },
+  {
+    "path": "evaluation/lora/padi_p3_s123_lora.png",
+    "size_bytes": 606082,
+    "sha256": "7f63d628cd52af2df0343ae32a0bfccfdd22ebd66896f1567ae793398ed4809b"
+  },
+  {
+    "path": "evaluation/lora/padi_p3_s2026_lora.png",
+    "size_bytes": 601238,
+    "sha256": "71a1f273ef01c6ff929a0ef0e7e49de7556146876f4f2936a52196b624a67770"
+  },
+  {
+    "path": "evaluation/lora/padi_p3_s42_lora.png",
+    "size_bytes": 589645,
+    "sha256": "53f26c17f4f5a6a86adb0b8151943cc89bafdd45b2bf97ecc3695570da0a5630"
+  },
+  {
+    "path": "final_training_report.json",
+    "size_bytes": 125842,
+    "sha256": "d01f8ce3de671d2e6694ef4e4e2f346c3742c479c74d214463914f8275edfecf"
+  },
+  {
+    "path": "final_training_report.md",
+    "size_bytes": 687,
+    "sha256": "6ddaa137e8fc35c117cff75fb5af99d0dc7ae72cd487d569ff3a7d7f0187c88c"
+  },
+  {
+    "path": "main_loss_history.csv",
+    "size_bytes": 99007,
+    "sha256": "3eb6ee3de506b65a625c23808baab41fb9749622c97faf9bf11d1e36a626f410"
+  },
+  {
+    "path": "main_training.log",
+    "size_bytes": 799050,
+    "sha256": "6321aaaf642bbe7f6587a1f5c3d43d6af6c3862aa6d328641c4aa8a51d5e032d"
+  },
+  {
+    "path": "main_validation.json",
+    "size_bytes": 94072,
+    "sha256": "0efa5d68c65c4f4cd0964e6d8b0b6fb5fe2ef5b27835b137e3efa862379b7698"
+  },
+  {
+    "path": "multisource_multicrop_lora.safetensors",
+    "size_bytes": 6414992,
+    "sha256": "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a"
+  },
+  {
+    "path": "multisource_multicrop_lora.sha256",
+    "size_bytes": 105,
+    "sha256": "acf77a590fd685340deda35fdb235989d6afe26685f8a8f2bb9a804e6b238a5e"
+  },
+  {
+    "path": "sanity/sanity_cabai.png",
+    "size_bytes": 586477,
+    "sha256": "0fb65d55e57bd018f9b566f5331cc1cef941f1a15cbec306568347aa192cb95d"
+  },
+  {
+    "path": "sanity/sanity_jagung.png",
+    "size_bytes": 706082,
+    "sha256": "3e49f09a75f8b70734b450a4ba9edb476390fb30e254e4e2218c6664a2578312"
+  },
+  {
+    "path": "sanity/sanity_kacang_tanah.png",
+    "size_bytes": 645172,
+    "sha256": "8e258110f58bff49db0ed06d08f5a7c8c4d20e9418351a5f6b72a79ca301a195"
+  },
+  {
+    "path": "sanity/sanity_manifest.json",
+    "size_bytes": 1375,
+    "sha256": "196d5c06fd5aa51dc929a200151da85eb11acb8c36c001f3439abc3ed0fb662e"
+  },
+  {
+    "path": "sanity/sanity_padi.png",
+    "size_bytes": 557453,
+    "sha256": "204c9e4101906c699969acdc710dc445adedd61422a8141c80d3988ee0b30801"
+  },
+  {
+    "path": "smoke_loss_history.csv",
+    "size_bytes": 5681,
+    "sha256": "c774dcdd8426868f5e8b6af524fc22c66546edd9a1aaa20c4f8a8f0ded087b26"
+  },
+  {
+    "path": "smoke_training.log",
+    "size_bytes": 53663,
+    "sha256": "97ef31bcb94e33bdb62e09c10979f50ad6612218ba09949bdbd6299ecb60dcb0"
+  },
+  {
+    "path": "smoke_validation.json",
+    "size_bytes": 7148,
+    "sha256": "96fd72c1d382a61bcfa2eae9d56cbdfaac30962f437968be87e847dd82f4a607"
+  },
+  {
+    "path": "training_config.json",
+    "size_bytes": 636,
+    "sha256": "74ea16d27b1a865b318f6e1fbc8337fa0aeb42500e6ba16140c559476005f581"
+  },
+  {
+    "path": "training_entrypoint_probe.log",
+    "size_bytes": 12374,
+    "sha256": "275b5c13c9724666fa83dd97cbfbf7cd65de395269841d10292bb6e400152c8f"
+  }
+]

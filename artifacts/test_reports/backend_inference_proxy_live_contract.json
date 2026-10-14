@@ -1,0 +1,57 @@
+﻿{
+    "schema_version":  1,
+    "tested_at":  "2026-08-20T18:27:14.7803129Z",
+    "scope":  "local_contract_smoke_only",
+    "real_stable_diffusion":  false,
+    "real_lora_loaded":  false,
+    "direct_inference_without_token_status":  401,
+    "backend_ready":  {
+                          "status":  "ready",
+                          "provider":  "mock",
+                          "device":  "cpu",
+                          "model_loaded":  true,
+                          "reason":  null
+                      },
+    "backend_model_info":  {
+                               "provider":  "mock",
+                               "lora_identifier":  "none",
+                               "supported_crops":  [
+                                                       "padi",
+                                                       "jagung",
+                                                       "cabai",
+                                                       "kacang_tanah"
+                                                   ]
+                           },
+    "request":  {
+                    "crop":  "padi",
+                    "land_type":  "sawah",
+                    "water_availability":  "cukup",
+                    "previous_crop":  "jagung",
+                    "weather_summary":  "Cerah berawan; suhu 28 C; kelembaban 80 persen",
+                    "seed":  42,
+                    "request_id":  "proxy-smoke-generate",
+                    "steps":  5,
+                    "guidance_scale":  7.5,
+                    "width":  512,
+                    "height":  512
+                },
+    "response":  {
+                     "success":  true,
+                     "request_id":  "proxy-smoke-generate",
+                     "crop":  "padi",
+                     "image_url":  "http://127.0.0.1:3100/api/visual/images/mock_f4bfaea9f9e57e01.png",
+                     "image_id":  "mock_f4bfaea9f9e57e01",
+                     "provider":  "mock",
+                     "is_mock":  true,
+                     "delivery_path":  "backend_proxy",
+                     "upstream_image_url_exposed":  false
+                 },
+    "image":  {
+                  "path":  "D:\\TaniAdaptif\\artifacts\\test_reports\\backend_proxy_mock_image.png",
+                  "bytes":  17026,
+                  "sha256":  "72deb2513730ac34d39cb7f7ccd0a211de5b4bfac6459b18f97fed12dacfa52c",
+                  "png_signature":  "89504e470d0a1a0a",
+                  "valid":  true
+              },
+    "passed":  true
+}

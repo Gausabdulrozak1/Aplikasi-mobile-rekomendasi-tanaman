@@ -1,0 +1,56 @@
+{
+  "status": "additional_review_batch_ready",
+  "review_batch": "additional_batch_v1",
+  "counts": {
+    "jagung": 50,
+    "cabai": 40,
+    "kacang_tanah": 35
+  },
+  "total": 125,
+  "source_stats": {
+    "mendeley_maize_nitrogen_g7xnn2bm4g_v1": {
+      "rounds": 1,
+      "downloaded": 72,
+      "technical_valid": 72,
+      "proxy_pass": 72,
+      "staged": 50
+    },
+    "mendeley_chili_growth_w9mr3vf56s_v1": {
+      "rounds": 1,
+      "downloaded": 60,
+      "technical_valid": 60,
+      "proxy_pass": 59,
+      "staged": 40,
+      "proxy_review": 1
+    },
+    "mendeley_groundnut_field_bsr2vzhrzr_v2": {
+      "rounds": 1,
+      "downloaded": 55,
+      "technical_valid": 55,
+      "proxy_pass": 55,
+      "staged": 35
+    }
+  },
+  "reference_scope_counts": {
+    "raw_inventory": 499,
+    "reviewed_candidates": 350,
+    "processed": 0
+  },
+  "source_report": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\additional_source_candidates.csv",
+  "semantic_report": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\additional_semantic_screening.csv",
+  "semantic_summary": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\additional_semantic_summary.md",
+  "source_documentation": "D:\\TaniAdaptif\\docs\\DATASET_ADDITIONAL_SOURCES.md",
+  "curation_mapping": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\curation_mapping.csv",
+  "manual_review_csv": "D:\\TaniAdaptif\\artifacts\\dataset_review\\manual_review_template.csv",
+  "review_progress": "D:\\TaniAdaptif\\artifacts\\dataset_review\\review_progress.json",
+  "backups": [
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\backups\\manual_review_template_20260813_112220Z_before_additional_batch_v1.csv",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\backups\\curation_mapping_20260813_112220Z_before_additional_batch_v1.csv",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\backups\\automated_semantic_review_20260813_112220Z_before_additional_batch_v1.csv",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\backups\\dataset_source_manifest_20260813_112220Z_before_additional_batch_v1.csv",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\backups\\review_progress_20260813_112220Z_before_additional_batch_v1.json"
+  ],
+  "review_url": "http://127.0.0.1:4173",
+  "default_filter": "additional_batch_v1",
+  "human_action": "Buka Dataset Review UI dan review batch additional_batch_v1."
+}

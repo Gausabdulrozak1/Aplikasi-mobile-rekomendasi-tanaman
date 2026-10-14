@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "source_artifact_zip": "D:\\TaniAdaptif\\artifacts\\kaggle_runs\\notebook6b00d019aa\\version_2_success_20260820\\taniadaptif_lora_artifacts.zip",
+  "source_artifact_sha256": "54ee68fccbb88be07a089365c2e62f9e6004e2774992973debe665d5dc0eb26a",
+  "validation": {
+    "valid": true,
+    "artifact_zip": "D:\\TaniAdaptif\\artifacts\\kaggle_runs\\notebook6b00d019aa\\version_2_success_20260820\\taniadaptif_lora_artifacts.zip",
+    "artifact_sha256": "54ee68fccbb88be07a089365c2e62f9e6004e2774992973debe665d5dc0eb26a",
+    "validated_at": "2026-08-20T16:23:06.139658+00:00",
+    "errors": [],
+    "evidence": {
+      "run_id": "20260820T143551Z",
+      "pipeline_status": "success",
+      "artifact_size_bytes": 51940573,
+      "zip_file_count": 100,
+      "model_filename": "multisource_multicrop_lora.safetensors",
+      "model_sha256": "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+      "safetensors": {
+        "size_bytes": 6414992,
+        "tensor_count": 256,
+        "header_bytes": 37512,
+        "data_bytes": 6377472
+      },
+      "dataset_package_sha256": "e232f79d2f8ae20b4fb765efb38435ce05e929406e88faba6b02aaaafd1ad42d",
+      "smoke": {
+        "status": "pass",
+        "steps": 100,
+        "elapsed_seconds": 250.79,
+        "loss_observations": 501
+      },
+      "main": {
+        "status": "success",
+        "steps": 1600,
+        "elapsed_seconds": 3346.29,
+        "loss_observations": 8001
+      },
+      "sanity_images_valid": 4,
+      "evaluation_images_valid": 72,
+      "evaluation_conditions": 36,
+      "human_template_blank_rows": 72,
+      "automated_metrics_are_proxy": true,
+      "human_evaluation_status": "pending_real_human_review",
+      "gpu": {
+        "name": "Tesla T4",
+        "count": 2,
+        "vram_gb": 14.56,
+        "torch_version": "2.10.0+cu128",
+        "cuda_version": "12.8"
+      },
+      "dataset_counts": {
+        "train": 312,
+        "validation": 77,
+        "total": 389,
+        "classes": {
+          "cabai": 97,
+          "jagung": 100,
+          "kacang_tanah": 97,
+          "padi": 95
+        }
+      },
+      "export_manifest_records": 97
+    }
+  },
+  "model_path": "D:\\TaniAdaptif\\artifacts\\models\\multisource_multicrop_lora_sd15\\multisource_multicrop_lora.safetensors",
+  "model_sha256": "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+  "smoke_loss": {
+    "observations": 501,
+    "first": 0.782,
+    "last": 0.288,
+    "mean": 0.19661802395209582,
+    "median": 0.129,
+    "minimum": 0.00205,
+    "maximum": 0.894,
+    "first_window_mean": 0.1987567,
+    "last_window_mean": 0.1919058,
+    "window_size": 100
+  },
+  "main_loss": {
+    "observations": 8001,
+    "first": 0.782,
+    "last": 0.00431,
+    "mean": 0.18600094613173354,
+    "median": 0.113,
+    "minimum": 0.00152,
+    "maximum": 0.994,
+    "first_window_mean": 0.1987567,
+    "last_window_mean": 0.180415,
+    "window_size": 100
+  },
+  "proxy_metrics": [
+    {
+      "variant": "base",
+      "class_id": "all",
+      "images": 36,
+      "brightness_proxy_mean": 90.883615,
+      "contrast_proxy_mean": 60.44408,
+      "entropy_proxy_mean": 9.008533
+    },
+    {
+      "variant": "base",
+      "class_id": "cabai",
+      "images": 9,
+      "brightness_proxy_mean": 86.21631,
+      "contrast_proxy_mean": 57.283649,
+      "entropy_proxy_mean": 8.95496
+    },
+    {
+      "variant": "base",
+      "class_id": "jagung",
+      "images": 9,
+      "brightness_proxy_mean": 95.177227,
+      "contrast_proxy_mean": 64.14582,
+      "entropy_proxy_mean": 9.157352
+    },
+    {
+      "variant": "base",
+      "class_id": "kacang_tanah",
+      "images": 9,
+      "brightness_proxy_mean": 88.729201,
+      "contrast_proxy_mean": 63.121285,
+      "entropy_proxy_mean": 9.003191
+    },
+    {
+      "variant": "base",
+      "class_id": "padi",
+      "images": 9,
+      "brightness_proxy_mean": 93.411722,
+      "contrast_proxy_mean": 57.225564,
+      "entropy_proxy_mean": 8.918629
+    },
+    {
+      "variant": "lora",
+      "class_id": "all",
+      "images": 36,
+      "brightness_proxy_mean": 97.651167,
+      "contrast_proxy_mean": 62.275424,
+      "entropy_proxy_mean": 9.104648
+    },
+    {
+      "variant": "lora",
+      "class_id": "cabai",
+      "images": 9,
+      "brightness_proxy_mean": 90.609732,
+      "contrast_proxy_mean": 72.087538,
+      "entropy_proxy_mean": 9.02357
+    },
+    {
+      "variant": "lora",
+      "class_id": "jagung",
+      "images": 9,
+      "brightness_proxy_mean": 101.362485,
+      "contrast_proxy_mean": 56.47459,
+      "entropy_proxy_mean": 9.04045
+    },
+    {
+      "variant": "lora",
+      "class_id": "kacang_tanah",
+      "images": 9,
+      "brightness_proxy_mean": 95.787634,
+      "contrast_proxy_mean": 55.278026,
+      "entropy_proxy_mean": 9.127264
+    },
+    {
+      "variant": "lora",
+      "class_id": "padi",
+      "images": 9,
+      "brightness_proxy_mean": 102.844818,
+      "contrast_proxy_mean": 65.261542,
+      "entropy_proxy_mean": 9.227308
+    }
+  ],
+  "human_evaluation_status": "pending_real_human_review",
+  "human_template_action": "preserved_existing"
+}

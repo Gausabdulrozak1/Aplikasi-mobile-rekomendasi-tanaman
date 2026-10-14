@@ -1,0 +1,45 @@
+{
+  "generated_at": "2026-08-21",
+  "status": "pass_with_renderer_limitation",
+  "document": {
+    "path": "D:/TaniAdaptif/thesis_output/BAB_IV_DRAFT_PRE_E2E.docx",
+    "bytes": 3349798,
+    "sha256": "fec92123024edc982844cb67fa2dc17b68bf4cf25c546337c59896b17a6ce93c",
+    "zip_integrity": "pass",
+    "core_title_exact": true
+  },
+  "word_layout_engine": {
+    "pages": 31,
+    "words": 5332,
+    "paragraphs": 647,
+    "tables": 13,
+    "figures": 6,
+    "sections": 11,
+    "table_4_12_rows_including_header": 23
+  },
+  "required_evidence": {
+    "model_run_present": true,
+    "model_sha256_present": true,
+    "exact_mcnemar_interpretation_present": true,
+    "e2e_gpu_placeholder_occurrences": 2,
+    "android_screenshot_placeholder_occurrences": 6
+  },
+  "wide_table_geometry_points": [
+    {"table": "4.6", "start_x": 138.55, "end_x": 739.50, "printable_right": 756.85, "fits": true},
+    {"table": "4.7", "start_x": 131.25, "end_x": 746.50, "printable_right": 756.85, "fits": true},
+    {"table": "4.9", "start_x": 141.25, "end_x": 736.55, "printable_right": 756.85, "fits": true},
+    {"table": "4.10", "start_x": 151.30, "end_x": 726.75, "printable_right": 756.85, "fits": true},
+    {"table": "4.12", "start_x": 151.30, "end_x": 726.75, "printable_right": 756.85, "fits": true}
+  ],
+  "visual_review": {
+    "word_pages_inspected": 31,
+    "figure_4_6_caption_single_line": true,
+    "word_copy_as_picture_preview_note": "The clipboard EMF preview can shift or crop content at the left edge. Word COM page geometry confirms every wide table remains inside the printable area.",
+    "pdf_export_note": "A PDF was not produced because the local Microsoft Word PDF and printer export paths hung, and LibreOffice was not installed. No PDF success is claimed."
+  },
+  "source_preservation": {
+    "source_thesis_overwritten": false,
+    "source_thesis_sha256": "f0568581e5b63113a4b38fb22fb6d5acbde02b0620324539a909188a44ed0d63",
+    "format_guide_sha256": "129fb90e836e1843ddfa37256033a35b7dbde26fff3a6feaf2d01691c3b7a8f8"
+  }
+}

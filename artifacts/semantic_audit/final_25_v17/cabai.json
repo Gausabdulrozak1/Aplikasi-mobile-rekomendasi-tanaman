@@ -1,0 +1,18 @@
+﻿{
+    "request_id":  "semantic-v17-cabai-42",
+    "selected_crop":  "cabai",
+    "express_crop":  "cabai",
+    "fastapi_crop":  "cabai",
+    "trigger_token":  "taniadaptif_cabai",
+    "final_prompt":  "taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, clear crop view",
+    "negative_prompt":  "illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+    "provider":  "diffusers",
+    "device":  "cuda",
+    "is_mock":  false,
+    "lora_sha256":  "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+    "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\final_25_v17\\cabai.png",
+    "image_bytes":  565556,
+    "width":  512,
+    "height":  512,
+    "status":  "PASS"
+}

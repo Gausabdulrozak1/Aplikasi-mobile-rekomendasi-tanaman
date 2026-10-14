@@ -10,6 +10,10 @@ class AppConfig {
     'MOCK_MODE',
     defaultValue: false,
   );
+  static const bool demoFallbackEnabled = bool.fromEnvironment(
+    'DEMO_FALLBACK_ENABLED',
+    defaultValue: true,
+  );
   static const String _backendOverride = String.fromEnvironment(
     'BACKEND_API_BASE_URL',
   );

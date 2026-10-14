@@ -1,5 +1,5 @@
 class GenerateVisualRequest {
-  final String crop;
+  final String selectedCrop;
   final String landType;
   final String waterAvailability;
   final String previousCrop;
@@ -12,13 +12,13 @@ class GenerateVisualRequest {
   final int height;
 
   const GenerateVisualRequest({
-    required this.crop,
+    required this.selectedCrop,
     required this.landType,
     required this.waterAvailability,
     required this.previousCrop,
     required this.weatherSummary,
     required this.requestId,
-    this.seed = 42,
+    this.seed,
     this.steps = 25,
     this.guidanceScale = 7.5,
     this.width = 512,
@@ -27,12 +27,12 @@ class GenerateVisualRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'crop': crop,
+      'selected_crop': selectedCrop,
       'land_type': landType,
       'water_availability': waterAvailability,
       'previous_crop': previousCrop,
       'weather_summary': weatherSummary,
-      'seed': seed,
+      if (seed != null) 'seed': seed,
       'request_id': requestId,
       'steps': steps,
       'guidance_scale': guidanceScale,
@@ -69,7 +69,7 @@ class GenerateVisualResponse {
     return GenerateVisualResponse(
       success: json['success'] == true,
       requestId: json['request_id']?.toString() ?? '',
-      crop: json['crop']?.toString() ?? '',
+      crop: json['selected_crop']?.toString() ?? json['crop']?.toString() ?? '',
       imageUrl: json['image_url']?.toString() ?? '',
       imageId: json['image_id']?.toString() ?? '',
       seed: _toInt(json['seed']),

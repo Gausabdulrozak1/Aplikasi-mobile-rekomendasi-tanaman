@@ -1,0 +1,38 @@
+﻿[
+    {
+        "probe":  "a",
+        "request_id":  "padi-v17-probe-a",
+        "prompt":  "taniadaptif_padi, documentary macro photograph of mature rice plants, dense heavy golden rice grain heads clearly visible, individual rice grains on drooping panicles, green paddy leaves, Indonesian rice field, natural daylight",
+        "negative_prompt":  "grass lawn, ornamental grass, weeds, hay, reeds, wheat, barley, oats, maize, corn, chili, peanut, no visible rice grains, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_prompt_probe\\a.png",
+        "bytes":  600708
+    },
+    {
+        "probe":  "b",
+        "request_id":  "padi-v17-probe-b",
+        "prompt":  "taniadaptif_padi, close-up agricultural photograph of ripe Asian rice Oryza sativa, many clearly visible golden rice grains clustered on drooping panicles, green rice leaves and flooded paddy in background, natural daylight",
+        "negative_prompt":  "grass lawn, ornamental grass, weeds, hay, reeds, wheat, barley, oats, maize, corn, chili, peanut, no visible rice grains, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_prompt_probe\\b.png",
+        "bytes":  588063
+    },
+    {
+        "probe":  "c",
+        "request_id":  "padi-v17-probe-c",
+        "prompt":  "taniadaptif_padi, realistic close-up photo of a farmer holding several ripe rice panicles covered with clearly visible golden rice grains, green cultivated paddy field in background, natural daylight",
+        "negative_prompt":  "grass lawn, ornamental grass, weeds, hay, reeds, wheat, barley, oats, maize, corn, chili, peanut, no visible rice grains, illustration, painting, drawing, CGI, blurry, text, logo, watermark",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_prompt_probe\\c.png",
+        "bytes":  491345
+    }
+]

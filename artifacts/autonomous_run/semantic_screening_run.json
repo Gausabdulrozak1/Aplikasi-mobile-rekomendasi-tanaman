@@ -1,0 +1,25 @@
+{
+  "status": "proxy_complete_human_review_still_required",
+  "method": "Pillow CPU technical-semantic proxy v1",
+  "method_version": "Pillow 10.4.0",
+  "thresholds": {
+    "blur_edge_variance_min": 50.0,
+    "entropy_min": 3.0,
+    "brightness_min": 30.0,
+    "brightness_max": 230.0,
+    "green_ratio_min": 0.015,
+    "close_up_green_ratio": 0.9,
+    "watermark_border_edge_ratio": 3.0,
+    "watermark_border_density_min": 0.18
+  },
+  "images_screened": 350,
+  "report": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\automated_semantic_review.csv",
+  "summary": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\automated_semantic_review_summary.md",
+  "contact_sheets": [
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\review_padi.jpg",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\review_jagung.jpg",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\review_cabai.jpg",
+    "D:\\TaniAdaptif\\artifacts\\dataset_review\\review_kacang_tanah.jpg"
+  ],
+  "human_review_required": true
+}

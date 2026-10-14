@@ -1,0 +1,72 @@
+﻿{
+    "schema_version":  1,
+    "run_id":  "20260820T143551Z",
+    "verified_at":  "2026-08-20T18:16:39.8878766Z",
+    "review_csv":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_evaluation_template_local.csv",
+    "review_csv_sha256":  "0fdfb5ec26f6f11cbfcea79cc6f46a778e92b90827da958201b8b9feb57b3aa7",
+    "optional_reviewer_notes_blank_count":  72,
+    "required_blank_cells":  [
+
+                             ],
+    "pair_errors":  [
+
+                    ],
+    "condition_counts_per_class":  {
+                                       "padi":  9,
+                                       "jagung":  9,
+                                       "kacang_tanah":  9,
+                                       "cabai":  9
+                                   },
+    "checks":  {
+                   "review_rows_exactly_72":  true,
+                   "completed_assessments_exactly_72":  true,
+                   "required_fields_nonblank":  true,
+                   "paired_conditions_exactly_36":  true,
+                   "each_pair_has_base_and_lora":  true,
+                   "prompt_seed_class_match_per_pair":  true,
+                   "nine_conditions_per_class":  true,
+                   "analyzer_complete":  true,
+                   "analyzer_csv_hash_matches":  true,
+                   "automated_scores_inserted_false":  true,
+                   "analysis_outputs_nonempty":  true,
+                   "model_sha256_unchanged":  true
+               },
+    "all_checks_passed":  true,
+    "analysis_outputs":  [
+                             {
+                                 "name":  "human_review_analysis.json",
+                                 "path":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_analysis.json",
+                                 "exists":  true,
+                                 "bytes":  19685,
+                                 "sha256":  "cc00d98ce965be585b066c0b492c98db74ff88bf32ca08d61e139e18a56c0080"
+                             },
+                             {
+                                 "name":  "human_review_analysis.csv",
+                                 "path":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_analysis.csv",
+                                 "exists":  true,
+                                 "bytes":  2001,
+                                 "sha256":  "ed1297494c335f4b590957fbf41e8da7b03ee2f2d4ccb7731a4f6997b8b61539"
+                             },
+                             {
+                                 "name":  "BAB_IV_HUMAN_REVIEW_RESULTS.md",
+                                 "path":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\BAB_IV_HUMAN_REVIEW_RESULTS.md",
+                                 "exists":  true,
+                                 "bytes":  1773,
+                                 "sha256":  "c1ee5d6caffc1cbc8c2209b2d1894bb24da524d26faea82d1c450de1cff83f82"
+                             }
+                         ],
+    "model":  {
+                  "path":  "D:\\TaniAdaptif\\artifacts\\models\\multisource_multicrop_lora_sd15\\multisource_multicrop_lora.safetensors",
+                  "bytes":  6414992,
+                  "sha256":  "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+                  "loaded_or_modified":  false
+              },
+    "provenance":  {
+                       "completion_source":  "reviewer_entered_local_ui",
+                       "reported_roles":  [
+                                              "Peneliti"
+                                          ],
+                       "automated_scores_inserted":  false,
+                       "reviewer_identity_independently_verified":  false
+                   }
+}

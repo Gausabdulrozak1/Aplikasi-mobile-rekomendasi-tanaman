@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../models/cuaca_model.dart';
@@ -8,6 +9,7 @@ import '../models/rekomendasi_model.dart';
 class StableDiffusionService {
   final Dio _dio;
   final String _clientToken;
+  int _requestSequence = 0;
 
   StableDiffusionService({Dio? dio, String? clientToken})
     : _clientToken = clientToken ?? AppConfig.backendVisualApiToken,
@@ -25,6 +27,7 @@ class StableDiffusionService {
 
   Future<GenerateVisualResponse> generate(GenerateVisualRequest request) async {
     try {
+      debugPrint('FLUTTER_REQUEST_CROP=${request.selectedCrop}');
       final response = await _dio.post(
         'visual/generate',
         data: request.toJson(),
@@ -35,7 +38,16 @@ class StableDiffusionService {
           },
         ),
       );
-      return GenerateVisualResponse.fromJson(_asMap(response.data));
+      final result = GenerateVisualResponse.fromJson(_asMap(response.data));
+      if (result.crop != request.selectedCrop) {
+        throw const StableDiffusionException(
+          'Komoditas gambar tidak sesuai dengan tanaman yang dipilih.',
+          technicalMessage: 'INFERENCE_CROP_MISMATCH',
+        );
+      }
+      return result;
+    } on StableDiffusionException {
+      rethrow;
     } on DioException catch (error) {
       throw StableDiffusionException.fromDio(error);
     } catch (error) {
@@ -76,14 +88,12 @@ class StableDiffusionService {
     required String jenisLahan,
     required String ketersediaanAir,
     required String tanamanSebelumnya,
-    int seed = 42,
+    int? seed,
     String? requestId,
   }) {
-    final resolvedRequestId =
-        requestId ??
-        'flutter-${tanaman.kode}-${DateTime.now().microsecondsSinceEpoch}';
+    final resolvedRequestId = requestId ?? _nextRequestId(tanaman.kode);
     return GenerateVisualRequest(
-      crop: tanaman.kode,
+      selectedCrop: tanaman.kode,
       landType: jenisLahan,
       waterAvailability: ketersediaanAir,
       previousCrop: tanamanSebelumnya,
@@ -91,6 +101,11 @@ class StableDiffusionService {
       requestId: resolvedRequestId,
       seed: seed,
     );
+  }
+
+  String _nextRequestId(String crop) {
+    _requestSequence += 1;
+    return 'flutter-$crop-${DateTime.now().microsecondsSinceEpoch}-$_requestSequence';
   }
 
   String _weatherSummary(CuacaModel cuaca) {

@@ -1,0 +1,66 @@
+{
+  "source": "ml_pipeline/data/raw/padi/public, ml_pipeline/data/raw/padi/local_aikmel, ml_pipeline/data/raw/jagung/publik, ml_pipeline/data/raw/cabai/publik, ml_pipeline/data/raw/kacang_tanah/publik",
+  "inventory": {
+    "json": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_all_classes.json",
+    "all_classes": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_all_classes.csv",
+    "per_class": {
+      "padi": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_padi.csv",
+      "jagung": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_jagung.csv",
+      "cabai": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_cabai.csv",
+      "kacang_tanah": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\inventory_kacang_tanah.csv"
+    },
+    "invalid": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\invalid_images.csv"
+  },
+  "duplicates": {
+    "exact": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\exact_duplicates.csv",
+    "near": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\near_duplicates.csv",
+    "cross_source_padi": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\cross_source_duplicates_padi.csv",
+    "cross_class": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\cross_class_duplicates.csv"
+  },
+  "file_name_collisions": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\file_name_collisions.csv",
+  "source_manifest": "D:\\TaniAdaptif\\ml_pipeline\\data\\dataset_source_manifest.csv",
+  "provenance_warnings": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\provenance_warnings.csv",
+  "class_balance": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\class_balance_report.csv",
+  "source_distribution": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\source_distribution.csv",
+  "report": {
+    "json": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\dataset_report.json",
+    "csv": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\dataset_records.csv",
+    "markdown": "D:\\TaniAdaptif\\ml_pipeline\\data\\reports\\dataset_report.md"
+  },
+  "summary": {
+    "total": 499,
+    "valid": 499,
+    "duplicate": 0,
+    "invalid": 0,
+    "by_class": {
+      "cabai": {
+        "total": 80,
+        "valid": 80,
+        "duplicate": 0,
+        "invalid": 0
+      },
+      "jagung": {
+        "total": 80,
+        "valid": 80,
+        "duplicate": 0,
+        "invalid": 0
+      },
+      "kacang_tanah": {
+        "total": 90,
+        "valid": 90,
+        "duplicate": 0,
+        "invalid": 0
+      },
+      "padi": {
+        "total": 249,
+        "valid": 249,
+        "duplicate": 0,
+        "invalid": 0
+      }
+    },
+    "by_source": {
+      "local_aikmel": 30,
+      "public": 469
+    }
+  }
+}

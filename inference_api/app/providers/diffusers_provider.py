@@ -82,9 +82,10 @@ class DiffusersImageGenerator(ImageGenerator):
             height=request.height,
             generator=generator,
         ).images[0]
-        image_id = f"sd15_{request_id}"
+        crop_identity = request.crop or "direct"
+        image_id = f"sd15_{crop_identity}_{request.seed}_{request_id}"
         image_path = self.output_dir / f"{image_id}.png"
-        image.save(image_path)
+        image.save(image_path, format="PNG")
 
         return GenerationResult(
             image_path=str(image_path),

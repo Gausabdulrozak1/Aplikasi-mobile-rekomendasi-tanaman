@@ -1,0 +1,36 @@
+﻿{
+    "schema_version":  1,
+    "run_id":  "20260820T143551Z",
+    "created_at":  "2026-08-20T18:14:14.8876244Z",
+    "purpose":  "pre-analysis final human review snapshot",
+    "files":  [
+                  {
+                      "name":  "human_evaluation_template_local.csv",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_evaluation_template_local.csv",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\input_snapshot\\human_evaluation_template_local.csv",
+                      "bytes":  16318,
+                      "sha256":  "0fdfb5ec26f6f11cbfcea79cc6f46a778e92b90827da958201b8b9feb57b3aa7"
+                  },
+                  {
+                      "name":  "human_review_progress.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_progress.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\input_snapshot\\human_review_progress.json",
+                      "bytes":  3439,
+                      "sha256":  "d34b6dc3283b9a51df88644c0ddd79b2391155c5050d4ef27163004143dd4efe"
+                  },
+                  {
+                      "name":  "human_review_completion.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_completion.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\input_snapshot\\human_review_completion.json",
+                      "bytes":  3237,
+                      "sha256":  "2128bf3d5f6110d983f7842f909458f56685ef0e0c003d1e9e17c503ecc473a0"
+                  },
+                  {
+                      "name":  "HUMAN_REVIEW_RESULTS.md",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\HUMAN_REVIEW_RESULTS.md",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\input_snapshot\\HUMAN_REVIEW_RESULTS.md",
+                      "bytes":  859,
+                      "sha256":  "9716744b5899cab538118fcbae39757c2eeeb28451f6241761a3ac2b47f2dc94"
+                  }
+              ]
+}

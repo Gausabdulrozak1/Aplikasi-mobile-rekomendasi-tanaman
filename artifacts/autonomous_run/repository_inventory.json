@@ -1,0 +1,453 @@
+﻿{
+    "generated_at":  "2026-08-04T22:29:10.7898093+08:00",
+    "repository":  "D:\\TaniAdaptif",
+    "file_count":  1268,
+    "total_bytes":  467002852,
+    "top_level":  [
+                      {
+                          "name":  ".agents",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  ".idea",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  ".pytest_cache",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  ".ruff_cache",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  ".venv",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "artifacts",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "backend-nodejs",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "backend-python",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "dataset",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "docs",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "dokumentasi",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "inference_api",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "ml_pipeline",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  "mobile-flutter",
+                          "type":  "directory"
+                      },
+                      {
+                          "name":  ".gitignore",
+                          "type":  "file"
+                      },
+                      {
+                          "name":  "pyproject.toml",
+                          "type":  "file"
+                      },
+                      {
+                          "name":  "README.md",
+                          "type":  "file"
+                      },
+                      {
+                          "name":  "STATUS.md",
+                          "type":  "file"
+                      },
+                      {
+                          "name":  "TASKS.md",
+                          "type":  "file"
+                      }
+                  ],
+    "extensions":  [
+                       {
+                           "extension":  ".jpg",
+                           "count":  849,
+                           "bytes":  298219512
+                       },
+                       {
+                           "extension":  ".png",
+                           "count":  53,
+                           "bytes":  51226661
+                       },
+                       {
+                           "extension":  ".py",
+                           "count":  48,
+                           "bytes":  236036
+                       },
+                       {
+                           "extension":  ".md",
+                           "count":  34,
+                           "bytes":  87703
+                       },
+                       {
+                           "extension":  ".pyc",
+                           "count":  25,
+                           "bytes":  339517
+                       },
+                       {
+                           "extension":  ".json",
+                           "count":  22,
+                           "bytes":  752699
+                       },
+                       {
+                           "extension":  ".csv",
+                           "count":  21,
+                           "bytes":  1145359
+                       },
+                       {
+                           "extension":  ".xml",
+                           "count":  19,
+                           "bytes":  107100
+                       },
+                       {
+                           "extension":  ".dart",
+                           "count":  14,
+                           "bytes":  72477
+                       },
+                       {
+                           "extension":  "[none]",
+                           "count":  13,
+                           "bytes":  1358996
+                       },
+                       {
+                           "extension":  ".txt",
+                           "count":  12,
+                           "bytes":  19409
+                       },
+                       {
+                           "extension":  ".xcconfig",
+                           "count":  10,
+                           "bytes":  2452
+                       },
+                       {
+                           "extension":  ".js",
+                           "count":  10,
+                           "bytes":  45293
+                       },
+                       {
+                           "extension":  ".gitignore",
+                           "count":  10,
+                           "bytes":  3713
+                       },
+                       {
+                           "extension":  ".yaml",
+                           "count":  9,
+                           "bytes":  15818
+                       },
+                       {
+                           "extension":  ".h",
+                           "count":  9,
+                           "bytes":  7218
+                       },
+                       {
+                           "extension":  ".swift",
+                           "count":  7,
+                           "bytes":  2246
+                       },
+                       {
+                           "extension":  ".plist",
+                           "count":  7,
+                           "bytes":  5112
+                       },
+                       {
+                           "extension":  ".gitkeep",
+                           "count":  7,
+                           "bytes":  8
+                       },
+                       {
+                           "extension":  ".ipynb",
+                           "count":  6,
+                           "bytes":  65435
+                       },
+                       {
+                           "extension":  ".stamp",
+                           "count":  4,
+                           "bytes":  798
+                       },
+                       {
+                           "extension":  ".cc",
+                           "count":  4,
+                           "bytes":  6122
+                       },
+                       {
+                           "extension":  ".cpp",
+                           "count":  4,
+                           "bytes":  14185
+                       },
+                       {
+                           "extension":  ".frag",
+                           "count":  4,
+                           "bytes":  37779
+                       },
+                       {
+                           "extension":  ".mjs",
+                           "count":  4,
+                           "bytes":  14291
+                       },
+                       {
+                           "extension":  ".properties",
+                           "count":  3,
+                           "bytes":  438
+                       },
+                       {
+                           "extension":  ".xcworkspacedata",
+                           "count":  3,
+                           "bytes":  460
+                       },
+                       {
+                           "extension":  ".iml",
+                           "count":  3,
+                           "bytes":  2833
+                       },
+                       {
+                           "extension":  ".kts",
+                           "count":  3,
+                           "bytes":  2805
+                       },
+                       {
+                           "extension":  ".ttf",
+                           "count":  2,
+                           "bytes":  515256
+                       },
+                       {
+                           "extension":  ".jsonl",
+                           "count":  2,
+                           "bytes":  2074
+                       },
+                       {
+                           "extension":  ".bin",
+                           "count":  2,
+                           "bytes":  234
+                       },
+                       {
+                           "extension":  ".otf",
+                           "count":  2,
+                           "bytes":  3290368
+                       },
+                       {
+                           "extension":  ".sh",
+                           "count":  2,
+                           "bytes":  1038
+                       },
+                       {
+                           "extension":  ".log",
+                           "count":  2,
+                           "bytes":  54705
+                       },
+                       {
+                           "extension":  ".pbxproj",
+                           "count":  2,
+                           "bytes":  51880
+                       },
+                       {
+                           "extension":  ".storyboard",
+                           "count":  2,
+                           "bytes":  4045
+                       },
+                       {
+                           "extension":  ".env",
+                           "count":  2,
+                           "bytes":  493
+                       },
+                       {
+                           "extension":  ".xcscheme",
+                           "count":  2,
+                           "bytes":  7740
+                       },
+                       {
+                           "extension":  ".cmake",
+                           "count":  2,
+                           "bytes":  1494
+                       },
+                       {
+                           "extension":  ".entitlements",
+                           "count":  2,
+                           "bytes":  608
+                       },
+                       {
+                           "extension":  ".xcsettings",
+                           "count":  2,
+                           "bytes":  468
+                       },
+                       {
+                           "extension":  ".tag",
+                           "count":  2,
+                           "bytes":  234
+                       },
+                       {
+                           "extension":  ".dill",
+                           "count":  2,
+                           "bytes":  108966664
+                       },
+                       {
+                           "extension":  ".xib",
+                           "count":  1,
+                           "bytes":  24072
+                       },
+                       {
+                           "extension":  ".manifest",
+                           "count":  1,
+                           "bytes":  616
+                       },
+                       {
+                           "extension":  ".html",
+                           "count":  1,
+                           "bytes":  1575
+                       },
+                       {
+                           "extension":  ".rc",
+                           "count":  1,
+                           "bytes":  3172
+                       },
+                       {
+                           "extension":  ".ico",
+                           "count":  1,
+                           "bytes":  33772
+                       },
+                       {
+                           "extension":  ".m",
+                           "count":  1,
+                           "bytes":  529
+                       },
+                       {
+                           "extension":  ".flutter-plugins-dependencies",
+                           "count":  1,
+                           "bytes":  4538
+                       },
+                       {
+                           "extension":  ".metadata",
+                           "count":  1,
+                           "bytes":  1706
+                       },
+                       {
+                           "extension":  ".lock",
+                           "count":  1,
+                           "bytes":  15455
+                       },
+                       {
+                           "extension":  ".example",
+                           "count":  1,
+                           "bytes":  239
+                       },
+                       {
+                           "extension":  ".toml",
+                           "count":  1,
+                           "bytes":  264
+                       },
+                       {
+                           "extension":  ".db",
+                           "count":  1,
+                           "bytes":  32768
+                       },
+                       {
+                           "extension":  ".drawio",
+                           "count":  1,
+                           "bytes":  29741
+                       },
+                       {
+                           "extension":  ".bat",
+                           "count":  1,
+                           "bytes":  2404
+                       },
+                       {
+                           "extension":  ".d",
+                           "count":  1,
+                           "bytes":  388
+                       },
+                       {
+                           "extension":  ".last_build_id",
+                           "count":  1,
+                           "bytes":  32
+                       },
+                       {
+                           "extension":  ".z",
+                           "count":  1,
+                           "bytes":  105936
+                       },
+                       {
+                           "extension":  ".filecache",
+                           "count":  1,
+                           "bytes":  831
+                       },
+                       {
+                           "extension":  ".java",
+                           "count":  1,
+                           "bytes":  1268
+                       },
+                       {
+                           "extension":  ".kt",
+                           "count":  1,
+                           "bytes":  134
+                       },
+                       {
+                           "extension":  ".jar",
+                           "count":  1,
+                           "bytes":  53636
+                       }
+                   ],
+    "key_directories":  [
+                            {
+                                "path":  "backend-nodejs",
+                                "exists":  true,
+                                "file_count":  16
+                            },
+                            {
+                                "path":  "backend-python",
+                                "exists":  true,
+                                "file_count":  4
+                            },
+                            {
+                                "path":  "inference_api",
+                                "exists":  true,
+                                "file_count":  21
+                            },
+                            {
+                                "path":  "mobile-flutter",
+                                "exists":  true,
+                                "file_count":  192
+                            },
+                            {
+                                "path":  "ml_pipeline",
+                                "exists":  true,
+                                "file_count":  605
+                            },
+                            {
+                                "path":  "docs",
+                                "exists":  true,
+                                "file_count":  17
+                            },
+                            {
+                                "path":  "artifacts",
+                                "exists":  true,
+                                "file_count":  381
+                            },
+                            {
+                                "path":  "dokumentasi",
+                                "exists":  true,
+                                "file_count":  4
+                            }
+                        ]
+}

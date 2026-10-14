@@ -9,6 +9,12 @@ const PNG_1X1 = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
   'base64',
 );
+const TRIGGER_TOKENS = {
+  padi: 'taniadaptif_padi',
+  jagung: 'taniadaptif_jagung',
+  cabai: 'taniadaptif_cabai',
+  kacang_tanah: 'taniadaptif_kacang_tanah',
+};
 
 let upstreamServer;
 let backendServer;
@@ -76,7 +82,12 @@ test.before(async () => {
         seed: 42,
         generation_time_seconds: 1.25,
         model: 'stable-diffusion-v1-5/stable-diffusion-v1-5',
-        metadata: { provider: 'diffusers', is_mock: false },
+        metadata: {
+          provider: 'diffusers',
+          is_mock: false,
+          crop: lastUpstreamRequest.body.crop,
+          trigger_token: TRIGGER_TOKENS[lastUpstreamRequest.body.crop],
+        },
       }));
       return;
     }
@@ -159,7 +170,7 @@ test('backend rate-limits the controlled visual route', async () => {
       method: 'POST',
       headers: { ...clientHeaders, 'content-type': 'application/json' },
       body: JSON.stringify({
-        crop: 'padi',
+        selected_crop: 'padi',
         land_type: 'sawah',
         water_availability: 'cukup',
         previous_crop: 'jagung',
@@ -202,7 +213,7 @@ test('backend generation proxy preserves request and hides upstream image URL', 
       'X-Request-ID': 'flutter-proxy-42',
     },
     body: JSON.stringify({
-      crop: 'padi',
+      selected_crop: 'padi',
       land_type: 'sawah',
       water_availability: 'cukup',
       previous_crop: 'jagung',
@@ -216,10 +227,102 @@ test('backend generation proxy preserves request and hides upstream image URL', 
   assert.equal(body.request_id, 'flutter-proxy-42');
   assert.equal(lastUpstreamRequest.body.request_id, 'flutter-proxy-42');
   assert.equal(lastUpstreamRequest.body.crop, 'padi');
+  assert.equal(lastUpstreamRequest.body.selected_crop, undefined);
+  assert.equal(body.selected_crop, 'padi');
+  assert.equal(body.metadata.selected_crop, 'padi');
   assert.equal(body.image_url, 'https://api.tani.test/api/visual/images/test.png');
   assert.equal(body.metadata.delivery_path, 'backend_proxy');
   assert.equal(body.metadata.upstream_image_url_exposed, false);
   assert.equal(body.image_url.includes(upstreamUrl), false);
+});
+
+test('backend preserves explicit seed and does not invent a missing seed', async () => {
+  const explicit = await fetch(`${backendUrl}/api/visual/generate`, {
+    method: 'POST',
+    headers: { ...clientHeaders, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      selected_crop: 'cabai',
+      land_type: 'tegalan',
+      water_availability: 'cukup',
+      previous_crop: 'padi',
+      weather_summary: 'Cerah',
+      seed: 42,
+    }),
+  });
+  assert.equal(explicit.status, 200);
+  assert.equal(lastUpstreamRequest.body.seed, 42);
+
+  const automatic = await fetch(`${backendUrl}/api/visual/generate`, {
+    method: 'POST',
+    headers: { ...clientHeaders, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      selected_crop: 'cabai',
+      land_type: 'tegalan',
+      water_availability: 'cukup',
+      previous_crop: 'padi',
+      weather_summary: 'Cerah',
+    }),
+  });
+  assert.equal(automatic.status, 200);
+  assert.equal(Object.hasOwn(lastUpstreamRequest.body, 'seed'), false);
+});
+
+test('backend preserves the explicit selected crop for all four commodities', async () => {
+  for (const crop of Object.keys(TRIGGER_TOKENS)) {
+    const response = await fetch(`${backendUrl}/api/visual/generate`, {
+      method: 'POST',
+      headers: { ...clientHeaders, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        selected_crop: crop,
+        land_type: 'sawah',
+        water_availability: 'cukup',
+        previous_crop: 'padi',
+        weather_summary: 'Cerah berawan',
+        seed: 42,
+      }),
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(lastUpstreamRequest.body.crop, crop);
+    assert.equal(lastUpstreamRequest.body.selected_crop, undefined);
+    assert.equal(body.selected_crop, crop);
+    assert.equal(body.metadata.crop, crop);
+    assert.equal(body.metadata.trigger_token, TRIGGER_TOKENS[crop]);
+  }
+});
+
+test('backend normalizes Kacang Tanah and rejects ambiguous crop input', async () => {
+  const normalized = await fetch(`${backendUrl}/api/visual/generate`, {
+    method: 'POST',
+    headers: { ...clientHeaders, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      selected_crop: 'Kacang Tanah',
+      land_type: 'tegalan',
+      water_availability: 'cukup',
+      previous_crop: 'padi',
+      weather_summary: 'Cerah',
+    }),
+  });
+  assert.equal(normalized.status, 200);
+  assert.equal((await normalized.json()).selected_crop, 'kacang_tanah');
+  assert.equal(lastUpstreamRequest.body.crop, 'kacang_tanah');
+
+  const conflict = await fetch(`${backendUrl}/api/visual/generate`, {
+    method: 'POST',
+    headers: { ...clientHeaders, 'content-type': 'application/json' },
+    body: JSON.stringify({ selected_crop: 'cabai', crop: 'padi' }),
+  });
+  assert.equal(conflict.status, 422);
+  assert.equal((await conflict.json()).error.code, 'SELECTED_CROP_CONFLICT');
+
+  const array = await fetch(`${backendUrl}/api/visual/generate`, {
+    method: 'POST',
+    headers: { ...clientHeaders, 'content-type': 'application/json' },
+    body: JSON.stringify({ selected_crop: ['padi', 'jagung'] }),
+  });
+  assert.equal(array.status, 422);
+  assert.equal((await array.json()).error.code, 'INVALID_SELECTED_CROP');
 });
 
 test('backend serves generated PNG through the same public API', async () => {

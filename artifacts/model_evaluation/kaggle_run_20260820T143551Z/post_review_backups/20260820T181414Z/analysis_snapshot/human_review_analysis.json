@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "status": "complete_validated_human_review",
+  "generated_at": "2026-08-20T18:15:17.396208+00:00",
+  "review_csv": "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_evaluation_template_local.csv",
+  "review_csv_sha256": "0fdfb5ec26f6f11cbfcea79cc6f46a778e92b90827da958201b8b9feb57b3aa7",
+  "validation": {
+    "valid": true,
+    "complete": true,
+    "review_csv": "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_evaluation_template_local.csv",
+    "expected_rows": 72,
+    "total_rows": 72,
+    "completed_rows": 72,
+    "partial_rows": 0,
+    "errors": [],
+    "summary": [
+      {
+        "variant": "base",
+        "class_id": "all",
+        "reviewed": 36,
+        "crop_correct_count": 31,
+        "crop_correct_percent": 86.11,
+        "field_context_quality_median": 4.5,
+        "visual_realism_score_median": 4.5,
+        "confusion_count": 5,
+        "target_confirmation_count": 31
+      },
+      {
+        "variant": "base",
+        "class_id": "cabai",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 5,
+        "visual_realism_score_median": 5,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      },
+      {
+        "variant": "base",
+        "class_id": "jagung",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 5,
+        "visual_realism_score_median": 5,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      },
+      {
+        "variant": "base",
+        "class_id": "kacang_tanah",
+        "reviewed": 9,
+        "crop_correct_count": 4,
+        "crop_correct_percent": 44.44,
+        "field_context_quality_median": 2,
+        "visual_realism_score_median": 2,
+        "confusion_count": 5,
+        "target_confirmation_count": 4
+      },
+      {
+        "variant": "base",
+        "class_id": "padi",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 4,
+        "visual_realism_score_median": 4,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      },
+      {
+        "variant": "lora",
+        "class_id": "all",
+        "reviewed": 36,
+        "crop_correct_count": 34,
+        "crop_correct_percent": 94.44,
+        "field_context_quality_median": 4.0,
+        "visual_realism_score_median": 4.0,
+        "confusion_count": 2,
+        "target_confirmation_count": 34
+      },
+      {
+        "variant": "lora",
+        "class_id": "cabai",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 5,
+        "visual_realism_score_median": 5,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      },
+      {
+        "variant": "lora",
+        "class_id": "jagung",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 4,
+        "visual_realism_score_median": 4,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      },
+      {
+        "variant": "lora",
+        "class_id": "kacang_tanah",
+        "reviewed": 9,
+        "crop_correct_count": 7,
+        "crop_correct_percent": 77.78,
+        "field_context_quality_median": 4,
+        "visual_realism_score_median": 4,
+        "confusion_count": 2,
+        "target_confirmation_count": 7
+      },
+      {
+        "variant": "lora",
+        "class_id": "padi",
+        "reviewed": 9,
+        "crop_correct_count": 9,
+        "crop_correct_percent": 100.0,
+        "field_context_quality_median": 4,
+        "visual_realism_score_median": 4,
+        "confusion_count": 0,
+        "target_confirmation_count": 9
+      }
+    ]
+  },
+  "review_provenance": {
+    "source": "reviewer_entered_csv",
+    "automated_scores_inserted": false,
+    "reviewer_identity_independently_verified": false,
+    "reported_role_counts": {
+      "Peneliti": 72
+    }
+  },
+  "methodology": {
+    "design": "paired_base_vs_lora",
+    "unit": "matched prompt and seed condition",
+    "crop_correct_test": "exact McNemar test on discordant pairs",
+    "ordinal_score_test": "exact two-sided sign test excluding ties",
+    "ordinal_primary_summary": "median",
+    "means_are_descriptive": true,
+    "p_values_are_exploratory": true,
+    "automated_proxy_metrics_are_separate": true
+  },
+  "overall": {
+    "paired_conditions": 36,
+    "base": {
+      "reviewed": 36,
+      "crop_correct": {
+        "count": 31,
+        "percent": 86.111111
+      },
+      "field_context_quality": {
+        "count": 36,
+        "mean": 4.027778,
+        "median": 4.5,
+        "standard_deviation": 1.275844,
+        "minimum": 1,
+        "maximum": 5
+      },
+      "visual_realism_score": {
+        "count": 36,
+        "mean": 4.027778,
+        "median": 4.5,
+        "standard_deviation": 1.275844,
+        "minimum": 1,
+        "maximum": 5
+      },
+      "class_confusion_counts": {
+        "none": 0,
+        "padi": 9,
+        "jagung": 9,
+        "cabai": 9,
+        "kacang_tanah": 4,
+        "mixed": 0,
+        "unclear": 5
+      },
+      "target_confirmation_count": 31,
+      "cross_class_or_unclear_count": 5
+    },
+    "lora": {
+      "reviewed": 36,
+      "crop_correct": {
+        "count": 34,
+        "percent": 94.444444
+      },
+      "field_context_quality": {
+        "count": 36,
+        "mean": 3.861111,
+        "median": 4.0,
+        "standard_deviation": 1.12511,
+        "minimum": 1,
+        "maximum": 5
+      },
+      "visual_realism_score": {
+        "count": 36,
+        "mean": 3.861111,
+        "median": 4.0,
+        "standard_deviation": 1.12511,
+        "minimum": 1,
+        "maximum": 5
+      },
+      "class_confusion_counts": {
+        "none": 0,
+        "padi": 9,
+        "jagung": 9,
+        "cabai": 9,
+        "kacang_tanah": 7,
+        "mixed": 0,
+        "unclear": 2
+      },
+      "target_confirmation_count": 34,
+      "cross_class_or_unclear_count": 2
+    },
+    "paired_comparison": {
+      "crop_correct": {
+        "base_correct_count": 31,
+        "lora_correct_count": 34,
+        "base_percent": 86.111111,
+        "lora_percent": 94.444444,
+        "lora_minus_base_percentage_points": 8.333333,
+        "lora_wins": 3,
+        "ties": 33,
+        "base_wins": 0,
+        "non_tied": 3,
+        "exact_p_value": 0.25,
+        "test": "exact_mcnemar_discordant_pairs"
+      },
+      "field_context_quality": {
+        "base_mean": 4.027778,
+        "lora_mean": 3.861111,
+        "base_median": 4.5,
+        "lora_median": 4.0,
+        "lora_minus_base_mean": -0.166667,
+        "lora_minus_base_median": 0.0,
+        "lora_wins": 6,
+        "ties": 21,
+        "base_wins": 9,
+        "non_tied": 15,
+        "exact_p_value": 0.6072387695,
+        "test": "exact_sign_test_ties_excluded"
+      },
+      "visual_realism_score": {
+        "base_mean": 4.027778,
+        "lora_mean": 3.861111,
+        "base_median": 4.5,
+        "lora_median": 4.0,
+        "lora_minus_base_mean": -0.166667,
+        "lora_minus_base_median": 0.0,
+        "lora_wins": 6,
+        "ties": 21,
+        "base_wins": 9,
+        "non_tied": 15,
+        "exact_p_value": 0.6072387695,
+        "test": "exact_sign_test_ties_excluded"
+      }
+    }
+  },
+  "by_class": {
+    "padi": {
+      "paired_conditions": 9,
+      "base": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 4.111111,
+          "median": 4.0,
+          "standard_deviation": 0.781736,
+          "minimum": 3,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 4.111111,
+          "median": 4.0,
+          "standard_deviation": 0.781736,
+          "minimum": 3,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 9,
+          "jagung": 0,
+          "cabai": 0,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "lora": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 3.888889,
+          "median": 4.0,
+          "standard_deviation": 0.927961,
+          "minimum": 3,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 3.888889,
+          "median": 4.0,
+          "standard_deviation": 0.927961,
+          "minimum": 3,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 9,
+          "jagung": 0,
+          "cabai": 0,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "paired_comparison": {
+        "crop_correct": {
+          "base_correct_count": 9,
+          "lora_correct_count": 9,
+          "base_percent": 100.0,
+          "lora_percent": 100.0,
+          "lora_minus_base_percentage_points": 0.0,
+          "lora_wins": 0,
+          "ties": 9,
+          "base_wins": 0,
+          "non_tied": 0,
+          "exact_p_value": 1.0,
+          "test": "exact_mcnemar_discordant_pairs"
+        },
+        "field_context_quality": {
+          "base_mean": 4.111111,
+          "lora_mean": 3.888889,
+          "base_median": 4.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": -0.222222,
+          "lora_minus_base_median": 0.0,
+          "lora_wins": 0,
+          "ties": 7,
+          "base_wins": 2,
+          "non_tied": 2,
+          "exact_p_value": 0.5,
+          "test": "exact_sign_test_ties_excluded"
+        },
+        "visual_realism_score": {
+          "base_mean": 4.111111,
+          "lora_mean": 3.888889,
+          "base_median": 4.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": -0.222222,
+          "lora_minus_base_median": 0.0,
+          "lora_wins": 0,
+          "ties": 7,
+          "base_wins": 2,
+          "non_tied": 2,
+          "exact_p_value": 0.5,
+          "test": "exact_sign_test_ties_excluded"
+        }
+      }
+    },
+    "jagung": {
+      "paired_conditions": 9,
+      "base": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 5.0,
+          "median": 5.0,
+          "standard_deviation": 0.0,
+          "minimum": 5,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 5.0,
+          "median": 5.0,
+          "standard_deviation": 0.0,
+          "minimum": 5,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 9,
+          "cabai": 0,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "lora": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 3.666667,
+          "median": 4.0,
+          "standard_deviation": 1.224745,
+          "minimum": 2,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 3.666667,
+          "median": 4.0,
+          "standard_deviation": 1.224745,
+          "minimum": 2,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 9,
+          "cabai": 0,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "paired_comparison": {
+        "crop_correct": {
+          "base_correct_count": 9,
+          "lora_correct_count": 9,
+          "base_percent": 100.0,
+          "lora_percent": 100.0,
+          "lora_minus_base_percentage_points": 0.0,
+          "lora_wins": 0,
+          "ties": 9,
+          "base_wins": 0,
+          "non_tied": 0,
+          "exact_p_value": 1.0,
+          "test": "exact_mcnemar_discordant_pairs"
+        },
+        "field_context_quality": {
+          "base_mean": 5.0,
+          "lora_mean": 3.666667,
+          "base_median": 5.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": -1.333333,
+          "lora_minus_base_median": -1.0,
+          "lora_wins": 0,
+          "ties": 3,
+          "base_wins": 6,
+          "non_tied": 6,
+          "exact_p_value": 0.03125,
+          "test": "exact_sign_test_ties_excluded"
+        },
+        "visual_realism_score": {
+          "base_mean": 5.0,
+          "lora_mean": 3.666667,
+          "base_median": 5.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": -1.333333,
+          "lora_minus_base_median": -1.0,
+          "lora_wins": 0,
+          "ties": 3,
+          "base_wins": 6,
+          "non_tied": 6,
+          "exact_p_value": 0.03125,
+          "test": "exact_sign_test_ties_excluded"
+        }
+      }
+    },
+    "cabai": {
+      "paired_conditions": 9,
+      "base": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 4.666667,
+          "median": 5.0,
+          "standard_deviation": 0.5,
+          "minimum": 4,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 4.666667,
+          "median": 5.0,
+          "standard_deviation": 0.5,
+          "minimum": 4,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 0,
+          "cabai": 9,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "lora": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 9,
+          "percent": 100.0
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 4.333333,
+          "median": 5.0,
+          "standard_deviation": 1.322876,
+          "minimum": 1,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 4.333333,
+          "median": 5.0,
+          "standard_deviation": 1.322876,
+          "minimum": 1,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 0,
+          "cabai": 9,
+          "kacang_tanah": 0,
+          "mixed": 0,
+          "unclear": 0
+        },
+        "target_confirmation_count": 9,
+        "cross_class_or_unclear_count": 0
+      },
+      "paired_comparison": {
+        "crop_correct": {
+          "base_correct_count": 9,
+          "lora_correct_count": 9,
+          "base_percent": 100.0,
+          "lora_percent": 100.0,
+          "lora_minus_base_percentage_points": 0.0,
+          "lora_wins": 0,
+          "ties": 9,
+          "base_wins": 0,
+          "non_tied": 0,
+          "exact_p_value": 1.0,
+          "test": "exact_mcnemar_discordant_pairs"
+        },
+        "field_context_quality": {
+          "base_mean": 4.666667,
+          "lora_mean": 4.333333,
+          "base_median": 5.0,
+          "lora_median": 5.0,
+          "lora_minus_base_mean": -0.333333,
+          "lora_minus_base_median": 0.0,
+          "lora_wins": 0,
+          "ties": 8,
+          "base_wins": 1,
+          "non_tied": 1,
+          "exact_p_value": 1.0,
+          "test": "exact_sign_test_ties_excluded"
+        },
+        "visual_realism_score": {
+          "base_mean": 4.666667,
+          "lora_mean": 4.333333,
+          "base_median": 5.0,
+          "lora_median": 5.0,
+          "lora_minus_base_mean": -0.333333,
+          "lora_minus_base_median": 0.0,
+          "lora_wins": 0,
+          "ties": 8,
+          "base_wins": 1,
+          "non_tied": 1,
+          "exact_p_value": 1.0,
+          "test": "exact_sign_test_ties_excluded"
+        }
+      }
+    },
+    "kacang_tanah": {
+      "paired_conditions": 9,
+      "base": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 4,
+          "percent": 44.444444
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 2.333333,
+          "median": 2.0,
+          "standard_deviation": 1.224745,
+          "minimum": 1,
+          "maximum": 4
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 2.333333,
+          "median": 2.0,
+          "standard_deviation": 1.224745,
+          "minimum": 1,
+          "maximum": 4
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 0,
+          "cabai": 0,
+          "kacang_tanah": 4,
+          "mixed": 0,
+          "unclear": 5
+        },
+        "target_confirmation_count": 4,
+        "cross_class_or_unclear_count": 5
+      },
+      "lora": {
+        "reviewed": 9,
+        "crop_correct": {
+          "count": 7,
+          "percent": 77.777778
+        },
+        "field_context_quality": {
+          "count": 9,
+          "mean": 3.555556,
+          "median": 4.0,
+          "standard_deviation": 1.013794,
+          "minimum": 2,
+          "maximum": 5
+        },
+        "visual_realism_score": {
+          "count": 9,
+          "mean": 3.555556,
+          "median": 4.0,
+          "standard_deviation": 1.013794,
+          "minimum": 2,
+          "maximum": 5
+        },
+        "class_confusion_counts": {
+          "none": 0,
+          "padi": 0,
+          "jagung": 0,
+          "cabai": 0,
+          "kacang_tanah": 7,
+          "mixed": 0,
+          "unclear": 2
+        },
+        "target_confirmation_count": 7,
+        "cross_class_or_unclear_count": 2
+      },
+      "paired_comparison": {
+        "crop_correct": {
+          "base_correct_count": 4,
+          "lora_correct_count": 7,
+          "base_percent": 44.444444,
+          "lora_percent": 77.777778,
+          "lora_minus_base_percentage_points": 33.333333,
+          "lora_wins": 3,
+          "ties": 6,
+          "base_wins": 0,
+          "non_tied": 3,
+          "exact_p_value": 0.25,
+          "test": "exact_mcnemar_discordant_pairs"
+        },
+        "field_context_quality": {
+          "base_mean": 2.333333,
+          "lora_mean": 3.555556,
+          "base_median": 2.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": 1.222222,
+          "lora_minus_base_median": 1.0,
+          "lora_wins": 6,
+          "ties": 3,
+          "base_wins": 0,
+          "non_tied": 6,
+          "exact_p_value": 0.03125,
+          "test": "exact_sign_test_ties_excluded"
+        },
+        "visual_realism_score": {
+          "base_mean": 2.333333,
+          "lora_mean": 3.555556,
+          "base_median": 2.0,
+          "lora_median": 4.0,
+          "lora_minus_base_mean": 1.222222,
+          "lora_minus_base_median": 1.0,
+          "lora_wins": 6,
+          "ties": 3,
+          "base_wins": 0,
+          "non_tied": 6,
+          "exact_p_value": 0.03125,
+          "test": "exact_sign_test_ties_excluded"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+﻿class_id,pairs,base_correct,lora_correct,base_context_median,lora_context_median,base_realism_median,lora_realism_median,base_unclear,lora_unclear
+Padi,9,9/9,9/9,4.0,4.0,4.0,4.0,0,0
+Jagung,9,9/9,9/9,5.0,4.0,5.0,4.0,0,0
+Cabai,9,9/9,9/9,5.0,5.0,5.0,5.0,0,0
+Kacang tanah,9,4/9,7/9,2.0,4.0,2.0,4.0,5,2

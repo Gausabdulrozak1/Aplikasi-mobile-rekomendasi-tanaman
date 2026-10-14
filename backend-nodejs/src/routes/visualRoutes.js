@@ -11,6 +11,52 @@ const logger = require('../utils/logger');
 const router = express.Router();
 const SAFE_REQUEST_ID = /^[A-Za-z0-9._-]{1,64}$/;
 const SAFE_PNG_NAME = /^[A-Za-z0-9._-]{1,180}\.png$/;
+const SUPPORTED_CROPS = new Set(['padi', 'jagung', 'cabai', 'kacang_tanah']);
+
+function normalizeSelectedCrop(value) {
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim().toLowerCase().replace(/[\s-]+/g, '_');
+  return SUPPORTED_CROPS.has(normalized) ? normalized : null;
+}
+
+function selectedCropFor(body) {
+  const hasSelected = Object.prototype.hasOwnProperty.call(body || {}, 'selected_crop');
+  const hasLegacy = Object.prototype.hasOwnProperty.call(body || {}, 'crop');
+  const selected = normalizeSelectedCrop(body?.selected_crop);
+  const legacy = normalizeSelectedCrop(body?.crop);
+  if ((!hasSelected && !hasLegacy) || (hasSelected && !selected) || (hasLegacy && !legacy)) {
+    throw new inferenceService.InferenceServiceError(
+      422,
+      'INVALID_SELECTED_CROP',
+      'selected_crop harus salah satu dari padi, jagung, cabai, atau kacang_tanah.',
+      false,
+    );
+  }
+  if (selected && legacy && selected !== legacy) {
+    throw new inferenceService.InferenceServiceError(
+      422,
+      'SELECTED_CROP_CONFLICT',
+      'selected_crop dan crop lama tidak boleh berbeda.',
+      false,
+    );
+  }
+  return selected || legacy;
+}
+
+function assertUpstreamCrop(result, selectedCrop) {
+  const responseCrop = normalizeSelectedCrop(result?.crop);
+  const metadataCrop = result?.metadata?.crop === undefined
+    ? selectedCrop
+    : normalizeSelectedCrop(result.metadata.crop);
+  if (responseCrop !== selectedCrop || metadataCrop !== selectedCrop) {
+    throw new inferenceService.InferenceServiceError(
+      502,
+      'INFERENCE_CROP_MISMATCH',
+      'Layanan inference mengembalikan komoditas yang berbeda dari pilihan pengguna.',
+      false,
+    );
+  }
+}
 
 function requestIdFor(req) {
   const candidates = [req.body?.request_id, req.get('X-Request-ID')];
@@ -103,15 +149,23 @@ router.get('/model-info', async (req, res) => {
 router.post('/generate', limitVisualRequests, async (req, res) => {
   const requestId = req.visualRequestId;
   try {
-    const payload = { ...req.body, request_id: requestId };
+    const selectedCrop = selectedCropFor(req.body);
+    const payload = { ...req.body, crop: selectedCrop, request_id: requestId };
+    delete payload.selected_crop;
+    logger.info(`EXPRESS_SELECTED_CROP=${selectedCrop} request_id=${requestId}`);
     const result = await inferenceService.generate(payload, requestId);
+    assertUpstreamCrop(result, selectedCrop);
     const fileName = generatedFileName(result.image_url);
     return res.json({
       ...result,
       request_id: requestId,
+      crop: selectedCrop,
+      selected_crop: selectedCrop,
       image_url: `${publicBaseUrl(req)}/api/visual/images/${encodeURIComponent(fileName)}`,
       metadata: {
         ...(result.metadata || {}),
+        crop: selectedCrop,
+        selected_crop: selectedCrop,
         delivery_path: 'backend_proxy',
         upstream_image_url_exposed: false,
       },

@@ -1,0 +1,78 @@
+﻿{
+    "schema_version":  1,
+    "run_id":  "20260820T143551Z",
+    "created_at":  "2026-08-20T18:18:19.9274939Z",
+    "purpose":  "validated post-review analysis snapshot",
+    "review_csv_sha256":  "0fdfb5ec26f6f11cbfcea79cc6f46a778e92b90827da958201b8b9feb57b3aa7",
+    "model_reference":  {
+                            "path":  "D:\\TaniAdaptif\\artifacts\\models\\multisource_multicrop_lora_sd15\\multisource_multicrop_lora.safetensors",
+                            "bytes":  6414992,
+                            "sha256":  "0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a",
+                            "copied":  false
+                        },
+    "files":  [
+                  {
+                      "name":  "human_evaluation_template_local.csv",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_evaluation_template_local.csv",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\human_evaluation_template_local.csv",
+                      "bytes":  16318,
+                      "sha256":  "0fdfb5ec26f6f11cbfcea79cc6f46a778e92b90827da958201b8b9feb57b3aa7"
+                  },
+                  {
+                      "name":  "human_review_progress.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_progress.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\human_review_progress.json",
+                      "bytes":  3439,
+                      "sha256":  "d34b6dc3283b9a51df88644c0ddd79b2391155c5050d4ef27163004143dd4efe"
+                  },
+                  {
+                      "name":  "human_review_completion.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_completion.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\human_review_completion.json",
+                      "bytes":  3617,
+                      "sha256":  "382341715980af2831b2fa1dfc7a9f1daf73592b3d373fa683aaf579363b7d87"
+                  },
+                  {
+                      "name":  "HUMAN_REVIEW_RESULTS.md",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\HUMAN_REVIEW_RESULTS.md",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\HUMAN_REVIEW_RESULTS.md",
+                      "bytes":  857,
+                      "sha256":  "2ff1c0c37cee44eb6769c6a5025eff007102039bd417be547f708d368dd76ff0"
+                  },
+                  {
+                      "name":  "human_review_analysis.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_analysis.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\human_review_analysis.json",
+                      "bytes":  19685,
+                      "sha256":  "cc00d98ce965be585b066c0b492c98db74ff88bf32ca08d61e139e18a56c0080"
+                  },
+                  {
+                      "name":  "human_review_analysis.csv",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\human_review_analysis.csv",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\human_review_analysis.csv",
+                      "bytes":  2001,
+                      "sha256":  "ed1297494c335f4b590957fbf41e8da7b03ee2f2d4ccb7731a4f6997b8b61539"
+                  },
+                  {
+                      "name":  "BAB_IV_HUMAN_REVIEW_RESULTS.md",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\BAB_IV_HUMAN_REVIEW_RESULTS.md",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\BAB_IV_HUMAN_REVIEW_RESULTS.md",
+                      "bytes":  1773,
+                      "sha256":  "c1ee5d6caffc1cbc8c2209b2d1894bb24da524d26faea82d1c450de1cff83f82"
+                  },
+                  {
+                      "name":  "post_review_verification.json",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_verification.json",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\post_review_verification.json",
+                      "bytes":  3887,
+                      "sha256":  "b5fce0024eea991c33d801e00831062a0acb5a324164acf4ea76b5b01aa917bd"
+                  },
+                  {
+                      "name":  "POST_REVIEW_ANALYSIS_REPORT.md",
+                      "source":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\POST_REVIEW_ANALYSIS_REPORT.md",
+                      "backup":  "D:\\TaniAdaptif\\artifacts\\model_evaluation\\kaggle_run_20260820T143551Z\\post_review_backups\\20260820T181414Z\\analysis_snapshot\\POST_REVIEW_ANALYSIS_REPORT.md",
+                      "bytes":  5166,
+                      "sha256":  "c12006268e2e5462cc6adf3d99ef574bb7a2875096881b5961e31d5a6ceb9b67"
+                  }
+              ]
+}

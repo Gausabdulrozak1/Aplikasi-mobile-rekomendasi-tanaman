@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "timestamp_utc": "2026-08-13T16:10:38.255652+00:00",
+  "status": "passed",
+  "python_version": "3.11.9",
+  "python_executable": "D:\\TaniAdaptif\\.venv-ml-local\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "dependencies": {
+    "torch": "2.4.1",
+    "torch-directml": "0.2.5.dev240914"
+  },
+  "device": "privateuseone:0",
+  "device_name": "AMD Radeon(TM) Graphics\u0000",
+  "device_count": 1,
+  "tensor_operation_passed": true,
+  "forward_passed": true,
+  "backward_passed": true,
+  "optimizer_step_passed": true,
+  "unsupported_operation_detected": false,
+  "timings_seconds": {
+    "tensor_operation": 0.20985830000063288,
+    "forward": 0.1673010999984399,
+    "backward": 0.13709280000330182,
+    "optimizer": 0.03243569999904139
+  },
+  "warnings": [],
+  "memory_before": {
+    "total_physical_bytes": 7866884096,
+    "available_physical_bytes": 789651456,
+    "memory_load_percent": 89
+  },
+  "memory_after": {
+    "total_physical_bytes": 7866884096,
+    "available_physical_bytes": 357830656,
+    "memory_load_percent": 95
+  },
+  "error": null,
+  "traceback": null
+}

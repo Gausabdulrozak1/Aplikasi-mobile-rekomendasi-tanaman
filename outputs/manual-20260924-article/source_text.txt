@@ -1,0 +1,943 @@
+FILE: D:\SKRIPSI\SKRIPSI.docx
+PARAGRAPHS: 767 TABLES: 22 SECTIONS: 3
+SECTION 0: page=7560310x10692130 margins=1440180,1080135,1080135,1440180
+SECTION 1: page=7560310x10692130 margins=1440180,1080135,1080135,1440180
+SECTION 2: page=7560310x10692130 margins=1440180,1080135,1080135,1440180
+
+--- BODY ---
+P0 [Normal]: SKRIPSI
+P1 [Normal]: RANCANG BANGUN APLIKASI MOBILE BERBASIS STABLE DIFFUSION DENGAN FINE-TUNING LORA DAN API BMKG UNTUK
+     SIMULASI ROTASI TANAM ADAPTIF IKLIM DI WILAYAH AIKMEL
+P9 [No Spacing]: GAUS ABDUL ROZAK
+P10 [No Spacing]: NIM. 220602210
+P18 [No Spacing]: PROGRAM STUDI INFORMATIKA
+P19 [No Spacing]: FAKULTAS TEKNIK
+P20 [No Spacing]: UNIVERSITAS HAMZANWADI
+P21 [No Spacing]: 2026
+P22 [HEADING1]: SKRIPSI
+P23 [Normal]: RANCANG BANGUN APLIKASI MOBILE BERBASIS STABLE DIFFUSION DENGAN FINE-TUNING LORA DAN API BMKG UNTUK
+ SIMULASI ROTASI TANAM ADAPTIF IKLIM DI WILAYAH AIKMEL
+P30 [No Spacing]: GAUS ABDUL ROZAK
+P31 [No Spacing]: NIM. 220602210
+P38 [No Spacing]: PROGRAM STUDI INFORMATIKA
+P39 [No Spacing]: FAKULTAS TEKNIK
+P40 [No Spacing]: UNIVERSITAS HAMZANWADI
+P41 [No Spacing]: 2026
+P43 [HEADING1]: HALAMAN PERNYATAAN
+P44 [Normal]: Saya menyatakan dengan sesungguhnya bahwa Skripsi yang saya susun sebagai syarat untuk memperoleh gelar Sarjana Komputer pada Program Studi Informatika Fakultas Teknik Universitas Hamzanwadi seluruhnya merupakan hasil karya sendiri.
+P45 [Normal]: Adapun bagian-bagian tertentu dalam penulisan Skripsi yang saya kutip dari hasil karya orang lain telah dituliskan sumbernya secara jelas sesuai dengan norma, kaidah, dan etika penulisan.
+P46 [Normal]: Apabila di kemudian hari ditemukan seluruh atau sebagian Skripsi ini bukan hasil karya sendiri atau adanya plagiat dalam bagian-bagian tertentu, saya bersedia menerima sanksi pencabutan gelar akademik yang saya sandang dan sanksi-sanksi lainnya sesuai dengan peraturan perundangan yang berlaku.
+P47 [Normal]: Selong, 25 Agustus 2026
+P49 [Normal]: Yang membuat pernyataan
+P52 [Normal]: Gaus Abdul Rozak
+P53 [Normal]: 220602210
+P56 [HEADING1]: HALAMAN PERSETUJUAN
+P57 [Normal]: RANCANG BANGUN APLIKASI MOBILE BERBASIS STABLE DIFFUSION DENGAN FINE-TUNING LORA DAN API BMKG UNTUK SIMULASI ROTASI TANAM ADAPTIF IKLIM DI WILAYAH AIKMEL
+P60 [Normal]: GAUS ABDUL ROZAK
+P61 [Normal]: NIM. 220602210
+P64 [Normal]: Pancor, 25 Agustus 2026
+P69 [Normal]: Mengetahui,
+P70 [Normal]: Koordinator Program Studi Teknik Informatika
+P74 [Normal]: ARIS SUDIANTO, M.Kom
+P75 [Normal]: NUPTK. 7943764665110050
+P80 [HEADING1]: HALAMAN PENGESAHAN
+P81 [Normal]: RANCANG BANGUN APLIKASI MOBILE BERBASIS STABLE DIFFUSION DENGAN FINE-TUNING LORA DAN API BMKG UNTUK SIMULASI ROTASI TANAM ADAPTIF IKLIM DI WILAYAH AIKMEL
+P82 [Normal]: GAUS ABDUL ROZAK
+NIM. 220602210
+P83 [Normal]: Skripsi ini dipertanggungjawabkan di depan Dewan Penguji Skripsi
+P84 [Normal]: Fakultas Teknik Universitas Hamzanwadi
+P85 [Normal]: Pada Tanggal 9 September 2026
+P86 [Normal]: DEWAN PENGUJI
+P88 [Normal]: Selong, 9 September 2026
+P89 [Normal]: Mengetahui dan Mengesahkan,
+P90 [Normal]: Dekan,
+P93 [Normal]: Dr. H. Muhammad Djamaluddin, BE. M.Kom
+NUPTK. 7447751652130110
+P94 [HEADING1]: ABSTRAK
+P95 [Normal]: Sektor pertanian memiliki keterkaitan erat dengan kondisi cuaca sehingga penentuan pola tanam perlu mempertimbangkan informasi lingkungan secara terstruktur. Penelitian ini bertujuan merancang dan membangun aplikasi mobile TaniAdaptif untuk simulasi rotasi tanam adaptif iklim di wilayah Aikmel dengan mengintegrasikan data cuaca BMKG, kondisi lahan, rule-based engine, serta Stable Diffusion 1.5 dengan fine-tuning Low-Rank Adaptation (LoRA). Metode yang digunakan adalah Research and Development (R&D) yang meliputi identifikasi kebutuhan, pengumpulan data, perancangan, pengembangan, pengujian, dan penyempurnaan produk. Aplikasi dikembangkan menggunakan Flutter pada Android dengan backend Express, sedangkan rekomendasi tanaman ditentukan melalui decision table berdasarkan data cuaca, jenis lahan, ketersediaan air, dan tanaman sebelumnya. Stable Diffusion dengan LoRA digunakan hanya untuk menghasilkan simulasi visual empat komoditas, yaitu padi, jagung, cabai, dan kacang tanah. Dataset fine-tuning terdiri atas 389 gambar yang dibagi menjadi 312 data pelatihan dan 77 data validasi. Hasil pengujian menunjukkan seluruh 30 kombinasi aturan menghasilkan keluaran pada empat kelas komoditas yang ditetapkan. Evaluasi visual terhadap 36 pasangan gambar menunjukkan kesesuaian komoditas meningkat dari 86,11% pada model dasar menjadi 94,44% setelah menggunakan LoRA, namun perbedaannya belum signifikan berdasarkan Exact McNemar dengan p=0,25. Pengujian fungsional dan integrasi juga menunjukkan komponen utama sistem dapat berjalan sesuai rancangan, termasuk jalur end-to-end pada lingkungan GPU dan perangkat Android. Dengan demikian, TaniAdaptif berhasil mengintegrasikan rekomendasi berbasis aturan dan simulasi visual generatif dalam satu aplikasi, dengan batasan bahwa hasilnya tidak ditujukan sebagai validasi agronomi atau prediksi hasil panen.
+P96 [Normal]: Kata kunci: API BMKG, Fine-Tuning LoRA, Rotasi Tanam, Rule-Based Engine, Stable Diffusion
+P99 [HEADING1]: ABSTRACT
+P100 [Normal]: Agriculture is closely related to weather conditions; therefore, crop rotation planning needs to consider environmental information in a structured manner. This study aims to design and develop TaniAdaptif, a mobile application for climate-adaptive crop rotation simulation in the Aikmel area by integrating BMKG weather data, land conditions, a rule-based engine, and Stable Diffusion 1.5 with Low-Rank Adaptation (LoRA) fine-tuning. The Research and Development (R&D) method was applied through the stages of needs identification, data collection, product design, development, testing, and refinement. The application was developed using Flutter for Android with an Express backend, while crop recommendations were determined through a decision table based on weather data, land type, water availability, and the previous crop. Stable Diffusion with LoRA was used only to generate visual simulations of four commodities: rice, corn, chili, and peanut. The fine-tuning dataset consisted of 389 images, divided into 312 training images and 77 validation images. Testing showed that all 30 rule combinations produced outputs within the four predefined commodity classes. Visual evaluation of 36 image pairs showed that commodity correctness increased from 86.11% for the base model to 94.44% after applying LoRA; however, the difference was not statistically significant based on the exact McNemar test (p=0.25). Functional and integration testing also showed that the main system components operated according to the design, including the end-to-end path in a GPU environment and on an Android device. In conclusion, TaniAdaptif successfully integrates rule-based crop recommendations and generative visual simulation in a single application, while its outputs are not intended as agronomic validation or crop-yield prediction.
+P101 [Normal]: Keywords:BMKG API, Crop Rotation, Fine-Tuning LoRA, Rule-Based Engine, Stable Diffusion
+P103 [HEADING1]: KATA PENGANTAR
+P104 [No Spacing]: Puji syukur panjatkan kehadirat Tuhan Yang Maha Esa karena atas rahmat dan hidayah-Nya sehingga penulis dapat menyelesaikan skripsi yang berjudul “Rancang Bangun Aplikasi Mobile Berbasis Stable Diffusion Dengan Fine-Tuning Lora dan API BMKG untuk Simulasi Rotasi Tanam Adaptif Iklim Di Wilayah Aikmel”. Dalam penulisan skripsi ini menulis menyadari bahwa tanpa bimbingan dan bantuan dari berbagai pihak, skripsi ini tidak akan selesai karena itu penulis mengucapkan terimakasih kepada:
+P105 [List Paragraph]: Ibu Dr. Ir. Hj. Sitti Rohmi Djalilah, M.Pd., selaku Rektor Universitas Hamzanwadi.
+P106 [List Paragraph]: Bapak Dr. H. Muhammad Djamaluddin, BE. M.Kom., selaku Dekan Fakultas Teknik Universitas Hamzanwadi.
+P107 [List Paragraph]: Bapak Aris Sudianto, M.Kom., selaku Koordinator Program Studi Teknik Informatika Fakultas Teknik Universitas Hamzanwadi.
+P108 [List Paragraph]: Bapak Jumawal, M.Kom, dan Bapak Lalu Kerta Wijaya, M.Pd. selaku dosen pembimbing skripsi yang telah memberikan bimbingan dan masukan kepada penulis.
+P109 [Normal]:   [TAB] Penulis menyadari bahwa skripsi ini masih memiliki banyak kekurangan dalam penyusunannya, oleh karena itu kritik dan saran dari pembaca sangat diharapkan. Semoga proposal skripsi ini memberikan manfaat bagi semua pihak. 
+P110 [Normal]: Selong, 25 Agustus 2026
+P111 [Normal]: Penulis,
+P115 [Normal]: GAUS ABDUL ROZAK
+P116 [Normal]: NIM. 220602210
+P120 [HEADING1]: DAFTAR ISI
+P121 [toc 1]: SKRIPSI [TAB] i
+P122 [toc 1]: HALAMAN PERNYATAAN [TAB] ii
+P123 [toc 1]: HALAMAN PERSETUJUAN [TAB] iii
+P124 [toc 1]: HALAMAN PENGESAHAN [TAB] iv
+P125 [toc 1]: ABSTRAK [TAB] v
+P126 [toc 1]: ABSTRACT [TAB] vi
+P127 [toc 1]: KATA PENGANTAR [TAB] vii
+P128 [toc 1]: DAFTAR ISI [TAB] viii
+P129 [toc 1]: DAFTAR TABEL [TAB] xii
+P130 [toc 1]: DAFTAR GAMBAR [TAB] xiii
+P131 [toc 1]: LAMPIRAN [TAB] xiv
+P132 [toc 1]: BAB I PENDAHULUAN [TAB] 1
+P133 [toc 2]: 1.1 Latar Belakang Masalah [TAB] 1
+P134 [toc 2]: 1.2 Rumusan Masalah [TAB] 3
+P135 [toc 2]: 1.3 Batasan Masalah [TAB] 3
+P136 [toc 2]: 1.4 Tujuan dan Manfaat Penelitian [TAB] 5
+P137 [toc 3]: 1.4.1 Tujuan Penelitian [TAB] 5
+P138 [toc 3]: 1.4.2 Manfaat Penelitian [TAB] 5
+P139 [toc 2]: 1.5 Sistematika Penulisan [TAB] 6
+P140 [toc 1]: BAB II TINJAUAN PUSTAKA [TAB] 8
+P141 [toc 2]: 2.1 Penelitian Terkait [TAB] 8
+P142 [toc 2]: 2.2 Landasan Teori [TAB] 14
+P143 [toc 3]: 2.2.1 Rotasi Tanam dan Adaptasi Iklim [TAB] 14
+P144 [toc 3]: 2.2.2 Cuaca, Iklim, dan Data BMKG [TAB] 15
+P145 [toc 3]: 2.2.3 Aplikasi Mobile [TAB] 15
+P146 [toc 3]: 2.2.4 Flutter [TAB] 16
+P147 [toc 3]: 2.2.5 API dan REST API [TAB] 16
+P148 [toc 3]: 2.2.6 Stable Diffusion [TAB] 16
+P149 [toc 3]: 2.2.7 Fine-Tuning dan Low-Rank Adaptation (LoRA) [TAB] 16
+P150 [toc 3]: 2.2.8 Sistem Pendukung Keputusan dan Rule-Based System [TAB] 17
+P151 [toc 3]: 2.2.9 Unified Modeling Language (UML) [TAB] 17
+P152 [toc 3]: 2.2.10 Flowchart [TAB] 18
+P153 [toc 3]: 2.2.11 Use Case Diagram [TAB] 19
+P154 [toc 3]: 2.2.12 Activity Diagram [TAB] 20
+P155 [toc 3]: 2.2.13 Class Diagram [TAB] 21
+P156 [toc 3]: 2.2.14 Entity Relationship Diagram (ERD) [TAB] 22
+P157 [toc 3]: 2.2.15 Black Box Testing [TAB] 23
+P158 [toc 3]: 2.2.16 Inference dan Evaluasi Teknis Model [TAB] 24
+P159 [toc 1]: BAB III METODE PENELITIAN [TAB] 25
+P160 [toc 2]: 3.1 Gambaran Umum Objek Penelitian [TAB] 25
+P161 [toc 3]: 3.1.1 Metode Penelitian [TAB] 25
+P162 [toc 3]: 3.1.2 Jenis dan Sumber Data [TAB] 29
+P163 [toc 3]: 3.1.3 Metode Pengumpulan Data [TAB] 30
+P164 [toc 2]: 3.2 Lokasi dan Waktu Penelitian [TAB] 31
+P165 [toc 2]: 3.3 Analisis Sistem [TAB] 31
+P166 [toc 3]: 3.3.1 Analisis Sistem yang Berjalan [TAB] 32
+P167 [toc 3]: 3.3.2 Analisis Sistem yang Diusulkan [TAB] 33
+P168 [toc 2]: 3.4 Analisis Kebutuhan Sistem [TAB] 35
+P169 [toc 3]: 3.4.1 Kebutuhan Perangkat Keras (Hardware) [TAB] 35
+P170 [toc 3]: 3.4.2 Kebutuhan Perangkat Lunak (Software) [TAB] 36
+P171 [toc 3]: 3.4.3 Kebutuhan Brainware [TAB] 37
+P172 [toc 2]: 3.5 Perancangan Sistem [TAB] 38
+P173 [toc 3]: 3.5.1 Use Case Diagram [TAB] 38
+P174 [toc 3]: 3.5.2 Activity Diagram [TAB] 39
+P175 [toc 3]: 3.5.3 Class Diagram [TAB] 41
+P176 [toc 3]: 3.5.4 Arsitektur Sistem [TAB] 41
+P177 [toc 3]: 3.5.5 Perancangan Rule-Based Engine dan Decision Table [TAB] 42
+P178 [toc 3]: 3.5.6 Perancangan Fine-Tuning Stable Diffusion dengan LoRA [TAB] 44
+P179 [toc 3]: 3.5.7 Rancangan Antarmuka [TAB] 45
+P180 [toc 1]: BAB IV HASIL DAN PEMBAHASAN [TAB] 51
+P181 [toc 2]: 4.1 Hasil Perancangan Sistem [TAB] 51
+P182 [toc 3]: 4.1.1 Hasil Impelementasi Arsitektur Sistem [TAB] 51
+P183 [toc 3]: 4.1.2 Hasil Implementasi Aplikasi Mobile [TAB] 53
+P184 [toc 3]: 4.1.3 Hasil Implementasi Rule-Based Engine dan Rekomendasi [TAB] 54
+P185 [toc 3]: 4.1.4 Hasil Implementasi Simulasi Visual [TAB] 56
+P186 [toc 3]: 4.1.5 Hasil Penyimpanan Riwayat [TAB] 56
+P187 [toc 2]: 4.2 Pengujian Sistem [TAB] 57
+P188 [toc 2]: 4.3 Pembahasan [TAB] 59
+P189 [toc 3]: 4.3.1 Ketercapaian Tujuan Penelitian [TAB] 59
+P190 [toc 3]: 4.3.2 Pembahasan Integrasi BMKG [TAB] 60
+P191 [toc 3]: 4.3.3 Pembahasan Rule-Based Recommendation [TAB] 61
+P192 [toc 3]: 4.3.4 Pembahasan Implementasi Aplikasi [TAB] 61
+P193 [toc 3]: 4.3.5 Pembahasan Fine-Tuning dan Evaluasi LoRA [TAB] 62
+P194 [toc 3]: 4.3.6 Pembahasan Pengujian dan Keandalan Bukti [TAB] 63
+P195 [toc 3]: 4.3.7 Keterbatasan Penelitian [TAB] 63
+P196 [toc 1]: BAB V PENUTUP [TAB] 64
+P197 [toc 2]: 5.1 Kesimpulan [TAB] 64
+P198 [toc 2]: 5.2 Saran [TAB] 65
+P199 [toc 1]: DAFTAR PUSTAKA [TAB] 67
+P200 [toc 1]: LAMPIRAN [TAB] 71
+P202 [HEADING1]: DAFTAR TABEL
+P203 [table of figures]: Tabel 2.1 Flowchart [TAB] 18
+P204 [table of figures]: Tabel 2.2 Use Case Diagram [TAB] 19
+P205 [table of figures]: Tabel 2.3 Activity Diagram [TAB] 20
+P206 [table of figures]: Tabel 2.4 Class Diagram [TAB] 22
+P207 [table of figures]: Tabel 2.5 Entity Relationship Diagram (ERD) [TAB] 23
+P208 [table of figures]: Tabel 3.1  Jenis dan Sumber Data [TAB] 29
+P209 [table of figures]: Tabel 3.2 Permasalahan Sistem yang Berjalan [TAB] 32
+P210 [table of figures]: Tabel 3.3 Perbandingan Sistem Yang berjalan dan Yang Diusulkan [TAB] 34
+P211 [table of figures]: Tabel 3.4 Kebutuhan Perangkat Keras [TAB] 36
+P212 [table of figures]: Tabel 3.5 Kebutuhan Perangkat Lunak [TAB] 36
+P213 [table of figures]: Tabel 3.6 Kebutuhan Brainware [TAB] 38
+P214 [table of figures]: Tabel 3.7 Decision Tabel Rekomendasi Rotasi Tanam [TAB] 43
+P215 [table of figures]: Tabel 3.8 Konfigurasi Fine-Tuning LoRA [TAB] 45
+P216 [table of figures]: Tabel 4.1 Ringkasan Hasil Implementasi Komponen Sistem [TAB] 52
+P217 [table of figures]: Tabel 4.2 Hasil Black Box Testing [TAB] 58
+P221 [HEADING1]: DAFTAR GAMBAR
+P223 [table of figures]: Gambar 3.1 Alur Penelitian [TAB] 26
+P224 [table of figures]: Gambar 3.2 Analisis Sistem Yang Diusulkan [TAB] 34
+P225 [table of figures]:  Gambar 3.3 Use Case Diagram [TAB] 39
+P226 [table of figures]:  Gambar 3.4 Activity Diagram Proses Rekomendasi dan Simulasi Visual [TAB] 40
+P227 [table of figures]:  Gambar 3.5 Class Diagram Aplikasi [TAB] 41
+P228 [table of figures]:  Gambar 3.6 Arsitektur Sitem [TAB] 42
+P229 [table of figures]:  Gambar 3.7 Flowchart Rule-Based Engine [TAB] 44
+P230 [table of figures]:  Gambar 3.8 Halaman Beranda dan Informasi Cuaca [TAB] 46
+P231 [table of figures]:  Gambar 3.9 Halaman Input Kondisi Lahan [TAB] 47
+P232 [table of figures]:  Gambar 3.10 Halaman Hasil Rekomendasi [TAB] 48
+P233 [table of figures]:  Gambar 3.11 Halaman Simulasi Visual [TAB] 49
+P234 [table of figures]:  Gambar 3.12 Halaman Riwayat Rekomendasi [TAB] 50
+P235 [table of figures]:  Gambar 4.1 Halaman Aplikasi Mobile [TAB] 53
+P236 [table of figures]:  Gambar 4.2 Halaman Input Kondisi Lahan Rule-Based Engine [TAB] 54
+P237 [table of figures]:  Gambar 4.3 Halaman Hasil Rekomendasi [TAB] 55
+P238 [table of figures]:  Gambar 4.4 Halaman Hasil Simulasi Visual [TAB] 56
+P239 [table of figures]:  Gambar 4.5 Halaman Riwayat [TAB] 57
+P251 [HEADING1]: LAMPIRAN
+P252 [table of figures]: Lampiran 1.1 Ringkasan Hasil Pengujian Perangkat Lunak [TAB] 71
+P253 [table of figures]: Lampiran 1.2 Ringkasan Respon Live BMKG Wilayah Aikmel [TAB] 71
+P254 [table of figures]: Lampiran 1.3 Ringkasan Kontrak Decision Table [TAB] 72
+P255 [table of figures]: Lampiran 1.4 Distribusi Dataset Final [TAB] 73
+P256 [table of figures]: Lampiran 1.5 Ringkasan Training Lokal [TAB] 73
+P257 [table of figures]: Lampiran 1.6 Integrasi dan Normalisasi Data BMKG [TAB] 74
+P258 [table of figures]: Lampiran 1.7 Rule-Based Engine Rekomendasi Tanaman [TAB] 75
+P259 [table of figures]: Lampiran 1.8 Endpoint dan Proxy Inference pada Express [TAB] 75
+P260 [table of figures]: Lampiran 1.9 Request Flutter ke Backend Express [TAB] 76
+P263 [HEADING1]: BAB I
+PENDAHULUAN
+P264 [Heading 2]:   [TAB] Latar Belakang Masalah
+P265 [Normal]: Sektor pertanian merupakan salah satu bidang yang memiliki keterkaitan erat dengan kondisi cuaca dan iklim. Perubahan kondisi cuaca dapat memengaruhi ketersediaan air, waktu tanam, serta penentuan jenis tanaman yang akan dibudidayakan. Oleh karena itu, penyesuaian pola tanam terhadap kondisi lingkungan menjadi salah satu bentuk adaptasi yang dapat dilakukan dalam kegiatan pertanian[1]. Pemanfaatan informasi curah hujan dan kondisi cuaca juga dapat digunakan sebagai salah satu bahan pertimbangan dalam menentukan waktu tanam yang sesuai[2]. Kondisi tersebut menunjukkan bahwa informasi cuaca memiliki peran penting dalam mendukung penyusunan pola tanam yang lebih adaptif terhadap perubahan kondisi lingkungan.
+P266 [Normal]: Perkembangan teknologi informasi memungkinkan data cuaca diperoleh dan dimanfaatkan secara lebih mudah melalui layanan digital. Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) menyediakan informasi cuaca berdasarkan wilayah yang dapat diakses dan diintegrasikan ke dalam aplikasi. Pemanfaatan data BMKG pada sistem berbasis perangkat lunak memungkinkan informasi cuaca tidak hanya ditampilkan kepada pengguna, tetapi juga dapat diproses sebagai salah satu masukan dalam menghasilkan rekomendasi. Penelitian sebelumnya menunjukkan bahwa aplikasi berbasis Android dapat digunakan untuk menyajikan informasi cuaca sebagai pendukung kegiatan pertanian[3]. Namun, informasi cuaca yang diperoleh dari suatu layanan belum secara langsung menghasilkan rekomendasi rotasi tanaman karena masih diperlukan proses pengolahan bersama dengan kondisi lahan dan informasi tanaman sebelumnya.
+P267 [Normal]: Wilayah Aikmel digunakan sebagai konteks penerapan sistem dalam penelitian ini. Sistem dirancang untuk mengambil informasi cuaca pada wilayah Aikmel dan menggabungkannya dengan input kondisi lahan yang terdiri atas jenis lahan, ketersediaan air, serta tanaman sebelumnya. Data tersebut kemudian diproses menggunakan rule-based engine berbasis decision table untuk menghasilkan rekomendasi rotasi tanaman. Pendekatan berbasis aturan digunakan agar proses penentuan rekomendasi dapat dilakukan berdasarkan kondisi yang telah ditetapkan dan setiap keluaran dapat ditelusuri kembali berdasarkan aturan yang digunakan. Pendekatan sistem pendukung keputusan dalam bidang pertanian sebelumnya telah digunakan untuk menentukan kesesuaian lahan maupun pemilihan tanaman berdasarkan sejumlah kriteria[4]. Akan tetapi, penelitian tersebut menggunakan metode pengambilan keputusan yang berbeda dan belum mengintegrasikan data cuaca BMKG, aplikasi mobile, serta simulasi visual berbasis model generatif dalam satu sistem.
+P268 [Normal]: Selain rekomendasi dalam bentuk informasi teks, penyajian visual dapat digunakan untuk memberikan gambaran mengenai tanaman yang direkomendasikan. Salah satu teknologi yang dapat digunakan untuk menghasilkan gambar berdasarkan deskripsi teks adalah Stable Diffusion. Stable Diffusion merupakan model generatif text-to-image yang dapat menghasilkan gambar berdasarkan prompt dan dapat disesuaikan dengan karakteristik dataset tertentu melalui proses fine-tuning. Penelitian sebelumnya telah menerapkan Stable Diffusion dengan fine-tuning untuk menghasilkan visual dengan karakteristik khusus sesuai dataset yang digunakan[5]. Teknik Low-Rank Adaptation (LoRA) juga telah diterapkan pada Stable Diffusion untuk menyesuaikan model terhadap kebutuhan visual tertentu dengan jumlah parameter yang dilatih lebih terbatas dibandingkan pelatihan ulang seluruh model[6]. Hal tersebut menunjukkan bahwa Stable Diffusion dengan LoRA dapat digunakan sebagai pendekatan untuk menyesuaikan model generatif terhadap objek visual yang lebih spesifik.
+P269 [Normal]: Berdasarkan permasalahan tersebut, penelitian ini mengembangkan aplikasi mobile yang mengintegrasikan data cuaca dari BMKG dengan kondisi lahan untuk menghasilkan rekomendasi rotasi tanaman pada wilayah Aikmel. Proses rekomendasi dilakukan menggunakan rule-based engine, sedangkan Stable Diffusion yang telah melalui proses fine-tuning menggunakan LoRA digunakan untuk menghasilkan simulasi visual berdasarkan tanaman yang direkomendasikan. Dengan demikian, Stable Diffusion tidak digunakan untuk menentukan keputusan rotasi tanaman, melainkan sebagai modul visualisasi yang bekerja setelah rekomendasi dihasilkan oleh sistem. Pemisahan fungsi tersebut dilakukan agar proses rekomendasi tetap bersifat terstruktur dan dapat ditelusuri, sedangkan teknologi generatif digunakan sebagai pendukung penyajian hasil dalam bentuk visual.
+P270 [Heading 2]:   [TAB] Rumusan Masalah
+P271 [Normal]: Berdasarkan latar belakang yang telah diuraikan, rumusan masalah dalam penelitian ini adalah sebagai berikut:
+P272 [List Paragraph]: Bagaimana merancang dan membangun aplikasi mobile untuk simulasi rotasi tanam adaptif iklim di wilayah Aikmel dengan mengintegrasikan data cuaca dari API BMKG, kondisi lahan, dan rule-based engine?
+P273 [List Paragraph]: Bagaimana menerapkan fine-tuning Low-Rank Adaptation (LoRA) pada Stable Diffusion untuk menghasilkan simulasi visual tanaman padi, jagung, cabai, dan kacang tanah berdasarkan hasil rekomendasi sistem?
+P274 [List Paragraph]: Bagaimana hasil pengujian fungsional aplikasi dan evaluasi teknis model Stable Diffusion hasil fine-tuning LoRA dalam mendukung proses simulasi rotasi tanam adaptif iklim?
+P275 [Heading 2]:   [TAB] Batasan Masalah
+P276 [Normal]: Agar penelitian lebih terarah dan tidak meluas, batasan masalah dalam penelitian ini adalah sebagai berikut:
+P277 [List Paragraph]: Penelitian difokuskan pada perancangan dan pembangunan aplikasi mobile berbasis Android untuk simulasi rotasi tanam adaptif iklim di wilayah Aikmel, Kecamatan Aikmel, Kabupaten Lombok Timur.
+P278 [List Paragraph]: Aplikasi dikembangkan menggunakan Flutter sebagai framework utama untuk membangun antarmuka dan fungsi aplikasi mobile.
+P279 [List Paragraph]: Data cuaca yang digunakan dalam sistem diperoleh dari layanan data cuaca BMKG berdasarkan wilayah yang tersedia pada layanan tersebut dan digunakan sebagai salah satu input dalam proses rekomendasi.
+P280 [List Paragraph]: Variabel yang digunakan dalam proses rekomendasi dibatasi pada kondisi cuaca dari BMKG, jenis lahan, ketersediaan air, dan tanaman sebelumnya.
+P281 [List Paragraph]: Komoditas yang digunakan dalam sistem dibatasi pada empat jenis tanaman, yaitu padi, jagung, cabai, dan kacang tanah. Keempat komoditas tersebut digunakan sebagai batas objek pada proses rekomendasi, penyusunan dataset visual, fine-tuning LoRA, dan pengujian sistem.
+P282 [List Paragraph]: Stable Diffusion digunakan sebagai model generatif untuk menghasilkan simulasi visual tanaman dan kondisi lahan berdasarkan hasil rekomendasi sistem, bukan sebagai metode untuk menentukan tanaman yang direkomendasikan.
+P283 [List Paragraph]: Proses penyesuaian Stable Diffusion dilakukan menggunakan teknik fine-tuning Low-Rank Adaptation (LoRA) dengan dataset visual yang telah melalui proses kurasi dan dibagi berdasarkan kelas komoditas yang digunakan dalam penelitian.
+P284 [List Paragraph]: Proses fine-tuning LoRA dan inference Stable Diffusion dilakukan pada lingkungan komputasi yang memiliki dukungan GPU, sedangkan aplikasi mobile berfungsi sebagai antarmuka untuk mengirim permintaan dan menerima hasil simulasi visual.
+P285 [List Paragraph]: Penelitian tidak membahas prediksi hasil panen, estimasi produktivitas tanaman, prediksi iklim jangka panjang, analisis kesuburan tanah secara laboratorium, maupun validasi agronomi secara mendalam.
+P286 [List Paragraph]: Pengujian sistem difokuskan pada pengujian fungsional aplikasi menggunakan Black Box Testing, pengujian integrasi antar komponen sistem, verifikasi proses fine-tuning LoRA, serta evaluasi teknis hasil pembangkitan gambar.
+P287 [Heading 2]:   [TAB] Tujuan dan Manfaat Penelitian
+P288 [Normal]: Tujuan dan manfaat penelitian adalah aspek penting dalam suatu penelitian, tujuan penelitian bertujuan untuk menemukan, memahami, dan membangun pengetahuan baru dalam aspek hal yang peneliti teliti. Sementara, manfaat penelitian yakni memperluas pemahaman dan menemukan solusi-solusi konkret untuk masalah dalam berbagai aspek yang diteliti. Adapun tujuan dan manfaat penelitian sebagai berikut:
+P289 [Heading 3]:  Tujuan Penelitian
+P290 [Normal]: Tujuan yang ingin dicapai dalam penelitian ini adalah sebagai berikut:
+P291 [List Paragraph]: Merancang dan membangun aplikasi mobile untuk simulasi rotasi tanam adaptif iklim di wilayah Aikmel dengan mengintegrasikan data cuaca dari API BMKG, kondisi lahan, dan rule-based engine.
+P292 [List Paragraph]: Menerapkan fine-tuning Low-Rank Adaptation (LoRA) pada Stable Diffusion untuk menghasilkan simulasi visual tanaman padi, jagung, cabai, dan kacang tanah berdasarkan hasil rekomendasi yang dihasilkan oleh sistem.
+P293 [List Paragraph]: Menguji fungsionalitas aplikasi dan mengevaluasi secara teknis model Stable Diffusion hasil fine-tuning LoRA melalui pengujian sistem, pengujian integrasi, serta pengujian hasil pembangkitan simulasi visual.
+P294 [Heading 3]: Manfaat Penelitian
+P295 [Normal]: Manfaat yang diharapkan dari penelitian ini adalah sebagai berikut:
+P296 [List Paragraph]: Secara teoritis, penelitian ini diharapkan dapat menambah referensi mengenai penerapan teknologi informasi dalam bidang pertanian, khususnya integrasi aplikasi mobile, data cuaca dari BMKG, rule-based engine, dan model generatif Stable Diffusion dengan teknik fine-tuning LoRA. Penelitian ini juga diharapkan dapat menjadi referensi bagi penelitian selanjutnya mengenai pengembangan sistem rekomendasi berbasis aturan yang dikombinasikan dengan teknologi generatif untuk menghasilkan simulasi visual.
+P297 [List Paragraph]: Secara praktis, penelitian ini menghasilkan aplikasi mobile yang mengintegrasikan informasi cuaca wilayah Aikmel, kondisi lahan, mekanisme rekomendasi rotasi tanaman, dan simulasi visual dalam satu sistem. Aplikasi yang dibangun dapat digunakan sebagai prototipe untuk menunjukkan bagaimana data cuaca dan kondisi lahan dapat diproses menggunakan rule-based engine menjadi rekomendasi pada komoditas padi, jagung, cabai, dan kacang tanah. Selain itu, penelitian ini menghasilkan model LoRA yang dapat digunakan bersama Stable Diffusion untuk membangkitkan simulasi visual berdasarkan hasil rekomendasi sistem. Hasil penelitian juga dapat menjadi dasar bagi pengembangan selanjutnya, seperti penambahan komoditas, variabel lahan, sumber data, maupun metode evaluasi yang lebih luas.
+P298 [Heading 2]:   [TAB] Sistematika Penulisan
+P299 [Normal]: Sistematika penulisan skripsi ini disusun sebagai berikut:
+P300 [Normal]: BAB I [TAB]  [TAB] : PENDAHULUAN
+P301 [Normal]: Bab ini membahas latar belakang masalah yang menjadi dasar dilakukannya penelitian, rumusan masalah, batasan masalah, tujuan dan manfaat penelitian, serta sistematika penulisan. Bagian ini memberikan gambaran awal mengenai permasalahan yang diteliti, ruang lingkup penelitian, dan tujuan yang ingin dicapai.
+P302 [Normal]: BAB II  [TAB]  [TAB] : TINJAUAN PUSTAKA
+P303 [Normal]: Bab ini membahas penelitian terkait yang memiliki keterkaitan dengan pengembangan aplikasi mobile dalam bidang pertanian, pemanfaatan data cuaca BMKG, sistem pendukung keputusan atau rule-based system, Stable Diffusion, serta fine-tuning LoRA. Selain itu, bab ini memuat landasan teori yang digunakan sebagai dasar dalam perancangan, pengembangan, dan pengujian sistem.
+P304 [Normal]: BAB III  [TAB]  [TAB] : METODE PENELITIAN
+P305 [Normal]: Bab ini membahas gambaran umum objek penelitian, lokasi dan waktu penelitian, analisis sistem yang berjalan dan sistem yang diusulkan, analisis kebutuhan sistem yang meliputi perangkat keras, perangkat lunak, dan brainware, serta perancangan sistem. Perancangan mencakup pemodelan sistem, arsitektur aplikasi, struktur penyimpanan data, integrasi API BMKG, rule-based engine, Stable Diffusion dengan fine-tuning LoRA, serta rancangan antarmuka aplikasi.
+P306 [Normal]: BAB IV [TAB]  [TAB] : HASIL DAN PEMBAHASAN
+P307 [Normal]: Bab ini membahas hasil implementasi sistem berdasarkan rancangan yang telah dibuat pada BAB III. Pembahasan meliputi implementasi aplikasi mobile, integrasi data cuaca BMKG, implementasi rule-based engine, hasil fine-tuning LoRA, hasil pembangkitan simulasi visual, pengujian fungsional aplikasi, pengujian integrasi komponen sistem, serta evaluasi teknis terhadap hasil yang diperoleh.
+P308 [Normal]: BAB V [TAB]  [TAB] : PENUTUP
+P309 [Normal]: Bab ini berisi kesimpulan yang disusun berdasarkan hasil penelitian dan mengacu pada rumusan masalah yang telah ditetapkan, serta saran yang dapat digunakan sebagai bahan pengembangan untuk penelitian selanjutnya.
+P311 [HEADING1]: 
+TINJAUAN PUSTAKA
+P312 [Heading 2]:   [TAB] Penelitian Terkait
+P313 [Normal]: Dalam penelitian ini, penulis menggunakan beberapa acuan pada penelitian sebelumnya, yaitu sebagai berikut:
+P314 [List Paragraph]: Penelitian yang dilakukan oleh Suhartini, Hadian Mandala Putra, Muhammad Saipul, dan Lalu Kerta Wijaya pada tahun 2023 dengan judul “Sistem Informasi Berbasis Web Untuk Pemetaan Geografis Lahan Pertanian (Studi Kasus: Desa Darmasari Kecamatan Sikur Lombok Timur)” membahas pengembangan sistem informasi geografis berbasis web untuk memetakan lahan pertanian. Sistem tersebut digunakan untuk menyajikan informasi geografis lahan pertanian di Desa Darmasari, Kecamatan Sikur, Kabupaten Lombok Timur. Keterkaitan dengan penelitian saat ini terletak pada pemanfaatan teknologi informasi dalam konteks pertanian dan penggunaan wilayah di Kabupaten Lombok Timur sebagai konteks penerapan sistem. Namun, penelitian tersebut berfokus pada pemetaan geografis lahan pertanian berbasis web, sedangkan penelitian ini mengembangkan aplikasi mobile yang mengintegrasikan data cuaca BMKG, kondisi lahan, rule-based engine, dan simulasi visual berbasis Stable Diffusion dengan fine-tuning LoRA di wilayah Aikmel[7].
+P315 [List Paragraph]: Penelitian yang dilakukan oleh Amri Muliawan Nur, Aris Sudianto, Salmiah, dan Suhartini pada tahun 2022 dengan judul “Pemetaan Lokasi Penjualan Pupuk dan Obat-Obatan Pertanian di Kabupaten Sumbawa Berbasis GIS (Geographic Information System)” mengembangkan sistem informasi geografis berbasis web yang menampilkan lokasi toko penjualan pupuk dan obat-obatan pertanian. Sistem tersebut dirancang untuk menyediakan informasi lokasi dalam bentuk visualisasi peta sehingga informasi yang berkaitan dengan kebutuhan pertanian dapat diakses secara digital. Keterkaitannya dengan penelitian saat ini adalah sama-sama menerapkan teknologi informasi untuk mengolah dan menyajikan informasi dalam bidang pertanian. Perbedaannya, penelitian tersebut berorientasi pada pemetaan lokasi sarana pertanian, sedangkan penelitian ini berorientasi pada pengolahan data cuaca dan kondisi lahan menjadi rekomendasi rotasi tanaman serta simulasi visual[8].
+P316 [List Paragraph]: Penelitian Muhammad Holid Fajar dan Anita Fira Waluyo pada tahun 2024 yang berjudul “Sistem Monitoring dan Penyiraman Otomatis Pada Bibit Sawit Berbasis Android” membahas pengembangan sistem monitoring kelembapan tanah dan penyiraman otomatis yang dapat dipantau menggunakan aplikasi Android. Sistem menggunakan soil moisture sensor, NodeMCU ESP8266, Firebase Realtime Database, dan aplikasi Android sebagai media pemantauan. Penelitian ini menunjukkan bahwa perangkat mobile dapat diintegrasikan dengan sumber data lingkungan untuk memberikan informasi kondisi tanaman secara real-time. Keterkaitannya dengan penelitian saat ini terdapat pada penggunaan platform mobile dan data kondisi lingkungan dalam konteks pertanian. Namun, penelitian tersebut menggunakan sensor IoT dan berfokus pada monitoring serta penyiraman bibit sawit, sedangkan penelitian ini memperoleh informasi cuaca melalui BMKG, menghasilkan rekomendasi empat komoditas menggunakan rule-based engine, dan menghasilkan simulasi visual menggunakan Stable Diffusion LoRA[9].
+P317 [List Paragraph]: Penelitian yang dilakukan oleh Indra Gunawan, Muhamad Sadali, Hamzan Ahmadi, Lalu Kerta Wijaya, dan Siti Ermawati pada tahun 2025 dengan judul “Implementasi Internet of Things (IoT) untuk Monitoring Kualitas Tanah Tanaman Herbal dengan Integrasi QR Code” membahas pembangunan prototipe untuk memantau kualitas tanah tanaman herbal. Parameter yang digunakan meliputi pH tanah, kelembapan tanah, suhu tanah, suhu udara, dan kelembapan udara yang diperoleh menggunakan sensor berbasis IoT. Data kemudian dikirimkan ke server untuk ditampilkan melalui sistem monitoring. Keterkaitan penelitian tersebut dengan penelitian saat ini terletak pada pemanfaatan data kondisi lingkungan dan integrasi beberapa komponen teknologi dalam sistem pertanian. Perbedaannya, penelitian tersebut memperoleh data melalui perangkat sensor dan difokuskan pada monitoring kualitas tanah tanaman herbal, sedangkan penelitian ini menggunakan data cuaca BMKG dan input kondisi lahan untuk menjalankan mekanisme rekomendasi rotasi tanaman serta simulasi visual[10].
+P318 [List Paragraph]: Penelitian Indra Gunawan, M. Nurul Wathani, Zulkipli, dan Sappatin pada tahun 2026 dengan judul “Pengembangan Web Dashboard Monitoring Kadar Nitrogen, Fosfat, Kalium (NPK), PH Tanah Berbasis Artificial Intelligence (AI) dan Internet of Things (IoT)” mengembangkan sistem monitoring kondisi tanah melalui sensor NPK dan pH yang terhubung dengan ESP32 dan Firebase. Data yang diperoleh ditampilkan melalui web dashboard, kemudian AI digunakan untuk memberikan interpretasi kondisi kesuburan dan rekomendasi pemupukan. Penelitian tersebut relevan karena menunjukkan integrasi data lingkungan, sistem informasi, dan mekanisme rekomendasi dalam konteks pertanian. Namun, sumber data penelitian tersebut berasal dari sensor IoT dan rekomendasi berkaitan dengan kondisi tanah serta pemupukan, sedangkan penelitian ini menggunakan data cuaca BMKG bersama kondisi lahan dan rule-based engine untuk menentukan rekomendasi rotasi tanaman. Selain itu, AI generatif pada penelitian ini tidak digunakan sebagai pengambil keputusan, tetapi sebagai modul simulasi visual setelah rekomendasi dihasilkan[11].
+P319 [List Paragraph]: Penelitian Aldegunda Naisali, Yoseph Pius Kurniawan Kelen, Risald Syarifuddin, dan Dian Grace Ludji pada tahun 2025 dengan judul “Sistem Pendukung Keputusan Pemilihan Tanaman Pangan Berbasis Web dengan Fuzzy Weighted Product” mengembangkan sistem pendukung keputusan berbasis web untuk menentukan tanaman pangan menggunakan Fuzzy Multi Attribute Decision Making dan metode Weighted Product. Kriteria yang digunakan mencakup luas tanam, luas panen, produktivitas, produksi, jenis tanah, dan permintaan pasar. Alternatif tanaman yang dianalisis mencakup beberapa tanaman pangan seperti padi, jagung, dan kacang tanah. Persamaan dengan penelitian saat ini terdapat pada penggunaan mekanisme komputasional untuk menghasilkan rekomendasi tanaman berdasarkan sejumlah kriteria. Perbedaannya, penelitian tersebut menggunakan metode Fuzzy Weighted Product dan berbasis web, sedangkan penelitian ini menggunakan rule-based engine, memperoleh data cuaca melalui BMKG, dikembangkan dalam bentuk aplikasi mobile, dan menyediakan simulasi visual hasil rekomendasi[12].
+P320 [List Paragraph]: Penelitian yang dilakukan oleh Achmad Muzakki, Arni Muarifah Amri, Muhammad Ilham Alhari, dan Firlana Sadam tahun 2025 dalam penelitiannya yang berjudul "Implementasi Aplikasi Smart Farm Berbasis Android Menggunakan Metode Waterfall". Penelitian tersebut membahas pengembangan aplikasi Smart Farm berbasis Android untuk meningkatkan efisiensi operasional dan akurasi pencatatan data pada peternakan. Aplikasi ini memiliki fitur pencatatan ternak, jadwal pakan, serta pembuatan laporan produksi. Metodologi yang digunakan adalah model Waterfall dengan pengumpulan data melalui observasi lapangan kepada pemilik peternakan. Hasil menunjukkan bahwa aplikasi ini memudahkan pemantauan kondisi ternak dan pengelolaan pakan secara real time. Keterkaitan dengan penelitian saat ini adalah sama-sama mengembangkan aplikasi mobile berbasis Android untuk mendukung kegiatan pertanian dengan pendekatan pengembangan perangkat lunak yang terstruktur. Namun, penelitian tersebut berfokus pada manajemen peternakan dan belum mengintegrasikan data cuaca dari API BMKG, rekomendasi rotasi tanam, maupun teknologi generative AI seperti Stable Diffusion untuk menghasilkan simulasi visual kondisi lahan dan tanaman[13].
+P321 [List Paragraph]: Penelitian yang dilakukan oleh Benny Hartanto, Ningrum Astriawati, Supartini, dan Damar Kuncoro Yekti tahun 2022 dalam penelitiannya yang berjudul “Pencarian dan Pemanfaatan Informasi Data Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)” membahas bagaimana data meteorologi dan klimatologi dari BMKG dicari, diolah, dan dimanfaatkan oleh masyarakat, termasuk untuk mendukung sektor pertanian. Penelitian ini menegaskan bahwa informasi cuaca dari BMKG memiliki pengaruh yang sangat krusial sebagai indikator dalam menentukan keberhasilan kegiatan pertanian. Keterkaitan dengan penelitian saat ini adalah sama-sama menempatkan data BMKG sebagai variabel utama dan sumber informasi cuaca untuk mendukung keputusan pertanian. Namun, penelitian tersebut masih berfokus pada proses pencarian, pengamatan, dan diseminasi informasi cuaca BMKG secara umum, sedangkan penelitian ini mengintegrasikan data BMKG secara otomatis melalui REST API ke dalam aplikasi mobile untuk menggerakkan sistem rekomendasi rotasi tanam secara real-time[14]. 
+P322 [List Paragraph]: Penelitian yang dilakukan oleh Diny Syarifah Sany, Finsa Nurpandi, dan Fauzan Zikri pada tahun 2025 dengan judul “Sistem Rekomendasi Tanaman Edible dari Sampah Organik Rumah Tangga Berbasis Android Menggunakan Cosine Similarity” membahas pengembangan sistem rekomendasi tanaman berbasis Android yang menggunakan kandungan unsur hara dari kombinasi sampah organik rumah tangga sebagai dasar rekomendasi. Sistem menggunakan metode cosine similarity untuk membandingkan profil unsur hara dengan kebutuhan nutrisi tanaman, sehingga menghasilkan tanaman yang memiliki tingkat kesesuaian tertinggi. Sistem yang dikembangkan berjalan pada perangkat Android dan dapat digunakan secara offline. Keterkaitan penelitian tersebut dengan penelitian saat ini terletak pada pemanfaatan aplikasi mobile untuk menghasilkan rekomendasi tanaman secara komputasional. Perbedaannya, penelitian tersebut menentukan rekomendasi berdasarkan kesamaan kandungan nutrisi sampah organik, sedangkan penelitian ini menggunakan data cuaca BMKG, jenis lahan, ketersediaan air, dan tanaman sebelumnya melalui rule-based engine untuk menentukan rekomendasi rotasi tanam. Penelitian ini juga menambahkan Stable Diffusion dengan fine-tuning LoRA sebagai modul simulasi visual setelah rekomendasi diperoleh[15].
+P323 [List Paragraph]: Penelitian yang dilakukan oleh Naufal Alip Pratama dan Devi Afriyantari Puspa Putri pada tahun 2022 dengan judul “Perancangan Aplikasi Bercocok Tanam Pada Kawasan Perkotaan Berbasis Android” membahas perancangan aplikasi Android untuk membantu masyarakat dalam melakukan kegiatan bercocok tanam pada kawasan perkotaan. Aplikasi yang dikembangkan menggunakan Flutter sebagai framework dan Firebase sebagai basis data. Sistem menyediakan informasi cuaca, informasi tanaman, panduan bercocok tanam, serta forum diskusi antar pengguna. Pengujian dilakukan menggunakan Black Box Testing dan usability testing untuk mengetahui fungsi dan penerimaan aplikasi. Keterkaitan penelitian tersebut dengan penelitian saat ini terletak pada penggunaan aplikasi Android, Flutter, informasi cuaca, dan pengujian fungsional dalam konteks pertanian. Perbedaannya, penelitian tersebut berfokus pada panduan kegiatan urban farming dan interaksi pengguna, sedangkan penelitian ini menggunakan data cuaca BMKG dan kondisi lahan untuk menghasilkan rekomendasi rotasi tanaman melalui rule-based engine, kemudian menggunakan Stable Diffusion dengan fine-tuning LoRA untuk menghasilkan simulasi visual[16].
+P324 [Normal]: Berdasarkan sepuluh penelitian terkait tersebut, dapat diketahui bahwa teknologi informasi telah banyak diterapkan dalam bidang pertanian melalui pemetaan lahan dan sarana pertanian, monitoring tanaman dan kondisi lingkungan berbasis Internet of Things (IoT), pemanfaatan data cuaca, sistem pendukung keputusan pemilihan tanaman, serta pengembangan aplikasi mobile untuk mendukung kegiatan pertanian. Namun, penelitian-penelitian tersebut masih berfokus pada komponen dan tujuan yang berbeda, seperti pemantauan kondisi lingkungan, penyajian dan prediksi data cuaca, pemilihan tanaman, maupun penyediaan informasi pertanian; berdasarkan penelitian yang telah ditelaah, belum ditemukan sistem yang mengintegrasikan data cuaca BMKG berbasis wilayah, kondisi lahan berupa jenis lahan dan ketersediaan air, tanaman sebelumnya, rule-based engine berbasis decision table, aplikasi mobile Android, serta Stable Diffusion yang disesuaikan melalui fine-tuning LoRA sebagai modul simulasi visual dalam satu alur sistem. Oleh karena itu, penelitian ini mengembangkan aplikasi TaniAdaptif yang mengintegrasikan komponen-komponen tersebut untuk menghasilkan rekomendasi rotasi tanam adaptif iklim di wilayah Aikmel, dengan rule-based engine sebagai mekanisme penentu rekomendasi tanaman dan Stable Diffusion dengan fine-tuning LoRA sebagai modul untuk menghasilkan simulasi visual setelah rekomendasi diperoleh.
+P325 [Heading 2]:   [TAB] Landasan Teori
+P326 [Normal]: Landasan teori dalam penelitian ini digunakan sebagai dasar dalam menjelaskan konsep, metode, dan teknologi yang mendukung proses perancangan, pengembangan, serta pengujian aplikasi TaniAdaptif. Teori yang dibahas meliputi rotasi tanam dan adaptasi iklim, cuaca dan data BMKG, aplikasi mobile, Flutter, API dan REST API, Stable Diffusion, fine-tuning dan Low-Rank Adaptation (LoRA), sistem pendukung keputusan dan rule-based system, Unified Modeling Language (UML), Flowchart, Use Case Diagram, Activity Diagram, Class Diagram, Entity Relationship Diagram (ERD), Black Box Testing, serta inference dan evaluasi teknis model.
+P327 [Heading 3]: Rotasi Tanam dan Adaptasi Iklim
+P328 [Normal]: Rotasi tanam merupakan pola penanaman beberapa jenis tanaman secara bergantian pada lahan yang sama dalam periode atau musim tanam yang berbeda. Penerapan rotasi tanaman dapat digunakan untuk meningkatkan keberagaman sistem budidaya serta mengurangi ketergantungan pada penanaman satu jenis komoditas secara terus-menerus. Penelitian Yu dkk. menunjukkan bahwa diversifikasi melalui rotasi tanaman dapat berkontribusi terhadap ketahanan sistem pertanian dalam menghadapi perubahan kondisi lingkungan dan iklim[17]. Dalam konteks adaptasi iklim, penentuan pola tanam perlu mempertimbangkan kondisi lingkungan yang dapat berubah, termasuk ketersediaan air dan kondisi cuaca. Penyesuaian pola dan waktu tanam merupakan salah satu bentuk strategi adaptasi dalam kegiatan pertanian[1]. Pada penelitian ini, rotasi tanam adaptif iklim dimaknai sebagai mekanisme penyusunan rekomendasi tanaman berikutnya dengan mempertimbangkan informasi cuaca, jenis lahan, ketersediaan air, dan tanaman sebelumnya. Komoditas yang digunakan dibatasi pada padi, jagung, cabai, dan kacang tanah. Sistem tidak melakukan prediksi produktivitas tanaman maupun validasi agronomi secara mendalam, tetapi menghasilkan rekomendasi berdasarkan aturan yang telah ditetapkan.
+P329 [Heading 3]: Cuaca, Iklim, dan Data BMKG
+P330 [Normal]: Cuaca menggambarkan kondisi atmosfer yang terjadi pada suatu tempat dalam periode yang relatif pendek, sedangkan iklim menggambarkan kecenderungan kondisi atmosfer dalam periode yang lebih panjang. Dalam kegiatan pertanian, perubahan kondisi cuaca dan iklim dapat menjadi salah satu faktor yang perlu dipertimbangkan dalam penyesuaian pola dan waktu tanam[1]. Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) menyediakan berbagai informasi meteorologi dan geofisika yang dapat dimanfaatkan melalui layanan data terbuka. Sahrial dan Muslim menunjukkan bahwa data terbuka BMKG dapat diakses dan diintegrasikan ke dalam aplikasi melalui mekanisme pertukaran data sehingga informasi dari BMKG dapat diproses oleh sistem perangkat lunak[18].
+P331 [Heading 3]: Aplikasi Mobile
+P332 [Normal]: Aplikasi mobile merupakan perangkat lunak yang dirancang untuk dijalankan pada perangkat bergerak seperti smartphone. Penggunaan aplikasi mobile memungkinkan suatu sistem menyediakan fungsi pengolahan dan penyajian informasi melalui perangkat yang dapat digunakan secara fleksibel. Dalam bidang pertanian, aplikasi Android telah dimanfaatkan untuk menyajikan informasi cuaca dan mendukung aktivitas pertanian[3]. Pengembangan aplikasi mobile dapat dilakukan melalui pendekatan native maupun cross-platform. Diansyah dan Syafrinal membandingkan pengembangan aplikasi menggunakan Android Studio dan Flutter serta menunjukkan bahwa Flutter memungkinkan pengembangan aplikasi mobile melalui pendekatan cross-platform dengan efisiensi pengembangan yang baik[19].
+P333 [Heading 3]: Flutter
+P334 [Normal]: Flutter merupakan framework yang digunakan untuk pengembangan aplikasi mobile dengan pendekatan cross-platform. Flutter menggunakan bahasa pemrograman Dart dan memungkinkan komponen antarmuka serta logika aplikasi dikembangkan dalam satu basis kode. Berdasarkan penelitian Diansyah dan Syafrinal, penggunaan Flutter dapat memberikan efisiensi dalam proses pengembangan dan pemeliharaan aplikasi dibandingkan pengembangan yang bergantung sepenuhnya pada platform tertentu[19].
+P335 [Heading 3]: API dan REST API
+P336 [Normal]: Application Programming Interface (API) merupakan antarmuka yang memungkinkan suatu aplikasi berkomunikasi dan bertukar data dengan aplikasi atau layanan lainnya. Dalam pengembangan sistem modern, API dapat digunakan untuk memisahkan fungsi antara aplikasi klien dan layanan pada sisi server sehingga masing-masing komponen dapat dikembangkan secara terpisah. REST API merupakan salah satu pendekatan yang digunakan dalam komunikasi antara klien dan server melalui protokol HTTP. Herdiyatmoko menjelaskan penerapan REST API pada sistem backend untuk menyediakan layanan yang dapat diakses oleh aplikasi lain melalui endpoint tertentu[20].
+P337 [Heading 3]: Stable Diffusion
+P338 [Normal]: Stable Diffusion adalah model generatif text-to-image yang dibangun di atas arsitektur Latent Diffusion Model (LDM), yaitu model difusi yang bekerja pada ruang laten sehingga mampu menghasilkan gambar beresolusi tinggi dengan kebutuhan komputasi yang lebih efisien dibandingkan model difusi pada ruang piksel [21]. Model ini menerjemahkan deskripsi teks (prompt) menjadi gambar dan dapat disesuaikan dengan konteks tertentu melalui proses fine-tuning [5].
+P339 [Heading 3]: Fine-Tuning dan Low-Rank Adaptation (LoRA)
+P340 [Normal]: Fine-tuning adalah proses melatih kembali model yang sudah terlatih menggunakan dataset spesifik agar model beradaptasi dengan tugas atau domain tertentu. Low-Rank Adaptation (LoRA) merupakan teknik fine-tuning yang efisien karena membekukan bobot model asli dan menyisipkan matriks dekomposisi berperingkat rendah yang dapat dilatih, sehingga jumlah parameter yang dilatih dan kebutuhan memori GPU berkurang secara signifikan tanpa menurunkan kualitas keluaran [22]. Penerapan LoRA pada Stable Diffusion telah dibuktikan mampu menghasilkan gambar yang sesuai dengan dataset terbatas tanpa memerlukan sumber daya komputasi yang besar [6].
+P341 [Heading 3]: Sistem Pendukung Keputusan dan Rule-Based System
+P342 [Normal]: Sistem pendukung keputusan adalah sistem yang membantu pengguna mengambil keputusan berdasarkan kriteria dan data tertentu, sebagaimana diterapkan pada penentuan kesesuaian lahan tanaman padi [4], dan pemilihan tanaman pangan [12]. Salah satu pendekatannya adalah rule-based system, yaitu sistem yang mengambil keputusan berdasarkan himpunan aturan yang disusun dalam bentuk decision table. Pendekatan ini bersifat transparan karena setiap keluaran dapat ditelusuri kembali ke aturan yang memicunya, sehingga sesuai untuk sistem rekomendasi berskala kecil yang harus mudah dipertanggungjawabkan.
+P343 [Heading 3]: Unified Modeling Language (UML)
+P344 [Normal]: Unified Modeling Language (UML) merupakan bahasa pemodelan yang digunakan untuk menggambarkan dan mendokumentasikan sistem perangkat lunak. UML menyediakan berbagai diagram yang dapat digunakan untuk menggambarkan fungsi, interaksi, struktur, serta aktivitas yang terdapat pada suatu sistem. Tilley menjelaskan penggunaan model dan diagram dalam proses analisis serta perancangan sistem untuk membantu menerjemahkan kebutuhan sistem ke dalam bentuk rancangan yang terstruktur[23]. Dalam penelitian ini digunakan use case diagram dan activity diagram. Use case diagram digunakan untuk menggambarkan hubungan antara pengguna dengan fungsi yang tersedia pada sistem, sedangkan activity diagram digunakan untuk menggambarkan aliran aktivitas mulai dari pengambilan data cuaca, input kondisi lahan, proses rekomendasi, hingga pembangkitan simulasi visual.
+P345 [Heading 3]: Flowchart
+P346 [Normal]: Flowchart merupakan diagram yang digunakan untuk menggambarkan urutan langkah atau aliran proses dalam suatu sistem secara visual. Flowchart menggunakan simbol-simbol tertentu yang memiliki fungsi untuk menunjukkan awal dan akhir proses, aktivitas atau pengolahan data, masukan dan keluaran, pengambilan keputusan, serta arah aliran proses. Penggunaan flowchart membantu menggambarkan logika sistem secara terstruktur sehingga alur suatu proses dapat dipahami dengan lebih mudah sebelum diterapkan ke dalam program. Dalam penelitian ini, flowchart digunakan untuk menggambarkan alur proses rule-based engine dalam menentukan rekomendasi tanaman berdasarkan kondisi cuaca, jenis lahan, ketersediaan air, dan tanaman sebelumnya.
+P347 [Caption]: Tabel 2.1 Flowchart
+P349 [Heading 3]:  Use Case Diagram
+P350 [Normal]: Use Case Diagram merupakan salah satu diagram dalam Unified Modeling Language (UML) yang digunakan untuk menggambarkan interaksi antara aktor dengan sistem serta fungsi-fungsi yang dapat dilakukan oleh aktor tersebut. Use Case Diagram memberikan gambaran mengenai kebutuhan fungsional sistem dari sudut pandang pengguna sehingga hubungan antara pengguna dan layanan yang disediakan sistem dapat dipahami secara terstruktur. Dalam penelitian ini, Use Case Diagram digunakan untuk menggambarkan interaksi antara pengguna, layanan BMKG, dan layanan Stable Diffusion + LoRA dengan aplikasi TaniAdaptif. Pengguna dapat melihat informasi cuaca, memasukkan kondisi lahan, memperoleh rekomendasi tanaman, meminta simulasi visual, dan melihat riwayat rekomendasi. Layanan BMKG berperan dalam menyediakan data cuaca yang digunakan dalam proses rekomendasi, sedangkan layanan Stable Diffusion + LoRA digunakan untuk menghasilkan simulasi visual berdasarkan tanaman yang telah direkomendasikan oleh sistem.
+P351 [Caption]: Tabel 2.2 Use Case Diagram
+P353 [Heading 3]:  Activity Diagram
+P354 [Normal]: Activity Diagram merupakan salah satu diagram dalam Unified Modeling Language (UML) yang digunakan untuk menggambarkan aliran aktivitas atau urutan proses yang terjadi dalam suatu sistem. Activity Diagram menunjukkan hubungan antaraktivitas, aliran proses, kondisi pengambilan keputusan, serta awal dan akhir suatu proses sehingga mekanisme kerja sistem dapat dipahami secara terstruktur. Dalam penelitian ini, Activity Diagram digunakan untuk menggambarkan proses utama aplikasi TaniAdaptif yang dimulai dari pengambilan data cuaca, pengisian kondisi lahan oleh pengguna, pengolahan data menggunakan rule-based engine untuk menghasilkan rekomendasi tanaman, hingga proses pembangkitan simulasi visual menggunakan Stable Diffusion dengan LoRA.
+P355 [Caption]: Tabel 2.3 Activity Diagram
+P357 [Heading 3]:  Class Diagram
+P358 [Normal]: Class Diagram merupakan salah satu diagram dalam Unified Modeling Language (UML) yang digunakan untuk menggambarkan struktur kelas dalam suatu sistem beserta atribut, operasi, dan hubungan antar kelas. Class Diagram memberikan gambaran struktur statis sistem sehingga dapat digunakan sebagai dasar dalam perancangan dan implementasi perangkat lunak. Dalam penelitian ini, Class Diagram digunakan untuk menggambarkan struktur kelas yang mendukung proses utama aplikasi TaniAdaptif, meliputi pengelolaan data cuaca, input kondisi lahan, proses rekomendasi tanaman menggunakan rule-based engine, pembangkitan simulasi visual menggunakan Stable Diffusion dengan LoRA, serta penyimpanan riwayat rekomendasi.
+P360 [Caption]: Tabel 2.4 Class Diagram
+P362 [Heading 3]:  Entity Relationship Diagram (ERD)
+P363 [Normal]: Entity Relationship Diagram (ERD) adalah diagram yang memodelkan struktur data melalui entitas, atribut, dan relasi antarentitas sebagai dasar perancangan basis data[24]. Dalam penelitian ini, ERD digunakan untuk menggambarkan struktur data yang berkaitan dengan kondisi lahan, data cuaca, rekomendasi, riwayat, dan informasi simulasi visual. Struktur data disesuaikan dengan kebutuhan penyimpanan aktual aplikasi.
+P364 [Caption]: Tabel 2.5 Entity Relationship Diagram (ERD)
+P366 [Heading 3]:  Black Box Testing
+P367 [Normal]: Black Box Testing adalah metode pengujian perangkat lunak yang berfokus pada fungsionalitas sistem tanpa memeriksa struktur kode di dalamnya. Dua teknik yang umum digunakan adalah Equivalence Partitioning, yang membagi domain input ke dalam kelas valid dan tidak valid, serta Boundary Value Analysis, yang menguji nilai pada batas kelas input [25]. Kedua teknik tersebut digunakan dalam penelitian ini untuk memverifikasi bahwa setiap fitur aplikasi berjalan sesuai kebutuhan fungsional.
+P368 [Heading 3]:  Inference dan Evaluasi Teknis Model
+P369 [Normal]: Inference merupakan tahap penggunaan model yang telah selesai dilatih atau disesuaikan untuk menghasilkan keluaran berdasarkan masukan baru. Pada Stable Diffusion, inference dilakukan dengan memberikan prompt sebagai kondisi yang mengarahkan proses pembangkitan gambar. Model kemudian melakukan proses difusi balik secara bertahap hingga menghasilkan representasi visual[21]. Proses inference pada model generatif memiliki sifat stokastik sehingga hasil yang dihasilkan dapat berbeda pada proses pembangkitan yang berbeda. Oleh karena itu, perbandingan antarmodel perlu dilakukan menggunakan kondisi eksperimen yang setara. Dalam penelitian Mukaromah dan Mulyono, model Stable Diffusion sebelum dan setelah proses fine-tuning dievaluasi untuk mengetahui perubahan hasil pembangkitan pada domain yang telah dipelajari[6]. Dalam penelitian ini, evaluasi teknis dilakukan dengan membandingkan Stable Diffusion dasar dengan Stable Diffusion yang telah menggunakan bobot LoRA. Parameter eksperimen seperti prompt, seed, jumlah langkah inference, dan konfigurasi pembangkitan dibuat konsisten pada kondisi yang dibandingkan. Hasil evaluasi digunakan untuk melihat perubahan kemampuan model dalam menghasilkan simulasi visual empat komoditas setelah proses fine-tuning.
+P370 [HEADING1]: 
+METODE PENELITIAN
+P371 [Heading 2]:   [TAB] Gambaran Umum Objek Penelitian
+P372 [Normal]: Objek penelitian ini adalah wilayah pertanian di Kecamatan Aikmel, Kabupaten Lombok Timur, Nusa Tenggara Barat, yang digunakan sebagai konteks penerapan aplikasi TaniAdaptif. Wilayah tersebut dipilih sebagai objek penelitian karena penelitian berfokus pada penerapan simulasi rotasi tanam yang mempertimbangkan kondisi cuaca dan kondisi lahan dalam kegiatan pertanian. Kondisi yang menjadi perhatian dalam penelitian meliputi informasi cuaca wilayah, jenis lahan, ketersediaan air, serta tanaman yang telah ditanam sebelumnya. Keempat kondisi tersebut menjadi gambaran keadaan yang digunakan dalam penelitian untuk menggambarkan kebutuhan penerapan sistem pada wilayah Aikmel. Komoditas yang menjadi ruang lingkup objek penelitian terdiri atas padi, jagung, cabai, dan kacang tanah. Dengan demikian, objek penelitian dalam skripsi ini tidak diarahkan pada pengukuran produktivitas atau hasil panen, tetapi pada kondisi dan kebutuhan informasi yang berkaitan dengan penyusunan simulasi rotasi tanam di wilayah penelitian.
+P373 [Heading 3]: Metode Penelitian
+P374 [Normal]: Metode yang digunakan dalam penelitian ini adalah Research and Development (R&D). Metode R&D merupakan pendekatan penelitian yang digunakan untuk menghasilkan atau mengembangkan suatu produk melalui tahapan yang sistematis, mulai dari identifikasi kebutuhan, perancangan, pengembangan, hingga evaluasi terhadap produk yang dihasilkan[26]. Metode ini dipilih karena penelitian tidak hanya melakukan analisis terhadap suatu permasalahan, tetapi menghasilkan produk berupa aplikasi mobile yang mengintegrasikan data cuaca BMKG, rule-based engine, dan Stable Diffusion dengan fine-tuning Low-Rank Adaptation (LoRA). Pendekatan R&D juga dapat diterapkan dalam pengembangan sistem ketika proses penelitian mencakup pengembangan dan evaluasi terhadap artefak perangkat lunak yang dihasilkan[27].
+P376 [Caption]: Gambar 3.1 Alur Penelitian
+P377 [Normal]:  [TAB] Adapun tahapan penelitian yang di lakukan sebagai berikut:
+P378 [List Paragraph]: Identifikasi Kebutuhan
+P379 [List Paragraph]: Tahap pertama dilakukan dengan mengidentifikasi kebutuhan sistem berdasarkan permasalahan dan tujuan penelitian. Pada tahap ini ditentukan ruang lingkup aplikasi, wilayah penerapan, sumber informasi cuaca, variabel yang digunakan dalam proses rekomendasi, komoditas tanaman, serta fungsi teknologi yang digunakan. Empat komoditas yang menjadi ruang lingkup penelitian adalah padi, jagung, cabai, dan kacang tanah.
+P380 [List Paragraph]: Pengumpulan Data
+P381 [List Paragraph]: Tahap kedua dilakukan dengan mengumpulkan data dan informasi yang diperlukan dalam pengembangan sistem. Data yang digunakan meliputi informasi cuaca dari BMKG, data kondisi lahan yang menjadi masukan aplikasi, referensi ilmiah yang digunakan dalam penyusunan aturan rekomendasi, serta dataset visual untuk proses fine-tuning Stable Diffusion.
+P382 [List Paragraph]: Perancangan Produk
+P383 [List Paragraph]: Tahap perancangan produk dilakukan untuk menentukan bentuk dan mekanisme kerja sistem sebelum proses implementasi. Perancangan meliputi arsitektur sistem, alur proses aplikasi, pemodelan sistem menggunakan UML, struktur penyimpanan data, rancangan antarmuka, serta rancangan rule-based engine. Pada tahap ini juga disusun decision table sebagai dasar hubungan antara kondisi masukan dan rekomendasi tanaman. Selain itu, dirancang mekanisme komunikasi antara aplikasi mobile, layanan data cuaca, proses rekomendasi, dan layanan inference Stable Diffusion. Perancangan dilakukan agar setiap komponen mempunyai fungsi dan hubungan yang jelas sebelum diterapkan ke dalam sistem.
+P384 [List Paragraph]: Pengembangan Produk
+P385 [List Paragraph]: Tahap pengembangan merupakan proses penerapan hasil rancangan menjadi produk yang dapat dijalankan. Aplikasi mobile dikembangkan menggunakan Flutter pada platform Android. Proses pengembangan mencakup implementasi antarmuka, integrasi informasi cuaca BMKG, implementasi rule-based engine, pengelolaan data dan riwayat rekomendasi, serta komunikasi antara aplikasi dengan layanan pendukung. Pengembangan juga dilakukan terhadap komponen generatif melalui proses fine-tuning Stable Diffusion menggunakan LoRA. Dataset yang telah melalui tahap persiapan digunakan untuk menyesuaikan model terhadap karakteristik visual empat komoditas penelitian. Hasil dari proses tersebut berupa bobot LoRA yang selanjutnya digunakan bersama Stable Diffusion pada tahap inference.
+P386 [List Paragraph]: Pengujian Produk
+P387 [List Paragraph]: Setelah komponen sistem berhasil dikembangkan dan diintegrasikan, dilakukan pengujian untuk mengetahui apakah produk berfungsi sesuai dengan rancangan. Pengujian aplikasi dilakukan menggunakan Black Box Testing dengan memeriksa masukan, proses, dan keluaran dari fungsi-fungsi utama sistem tanpa melihat struktur kode program. Pengujian juga dilakukan terhadap integrasi antarkomponen, seperti proses pengambilan data cuaca, proses rekomendasi menggunakan rule-based engine, komunikasi dengan layanan inference, serta penampilan hasil simulasi visual pada aplikasi. Pada komponen Stable Diffusion LoRA dilakukan evaluasi teknis terhadap proses fine-tuning dan hasil inference. Pengujian tersebut digunakan untuk memperoleh bukti bahwa aplikasi dan model yang dikembangkan dapat menjalankan fungsi yang telah dirancang.
+P388 [List Paragraph]: Penyempurnaan Produk
+P389 [List Paragraph]: Tahap penyempurnaan dilakukan berdasarkan hasil pengujian. Apabila ditemukan fungsi yang tidak berjalan sesuai dengan rancangan, kesalahan integrasi, atau ketidaksesuaian keluaran sistem, dilakukan perbaikan pada komponen terkait kemudian dilakukan pengujian kembali. Proses ini dilakukan sampai fungsi utama sistem dapat berjalan sesuai dengan kebutuhan penelitian. Penyempurnaan tidak dimaksudkan sebagai pengembangan produk secara terus-menerus hingga tahap komersialisasi, melainkan sebagai proses koreksi terhadap produk penelitian sebelum hasil akhirnya dianalisis dan dibahas. Produk akhir yang diperoleh berupa aplikasi mobile beserta komponen sistem pendukung dan bobot LoRA hasil fine-tuning yang telah melalui pengujian teknis.
+P390 [Heading 3]: Jenis dan Sumber Data
+P391 [Normal]: Data yang digunakan dalam penelitian ini meliputi data cuaca BMKG untuk wilayah Aikmel sebagai salah satu masukan pada proses rekomendasi, data kondisi lahan berupa jenis lahan, ketersediaan air, dan tanaman sebelumnya yang dimasukkan melalui aplikasi, serta dataset visual padi, jagung, cabai, dan kacang tanah yang telah melalui proses pemeriksaan dan kurasi untuk digunakan dalam fine-tuning Stable Diffusion dengan teknik LoRA. Data cuaca dan kondisi lahan selanjutnya diproses menggunakan rule-based engine berdasarkan decision table yang disusun dengan mengacu pada literatur ilmiah dan sumber resmi agar menghasilkan rekomendasi tanaman sesuai kondisi masukan. Selain itu, penelitian ini menggunakan referensi ilmiah terkait tanaman, pola tanam, kebutuhan lahan dan air, aplikasi mobile, rule-based system, Stable Diffusion, LoRA, dan pengujian perangkat lunak. Selama proses pengembangan juga dihasilkan data teknis berupa training log, nilai loss, bobot LoRA, hasil inference, serta hasil pengujian fungsi dan integrasi sistem yang digunakan sebagai bahan evaluasi terhadap produk yang dikembangkan. Untuk memperjelas jenis dan sumber data, dapat disajikan pada tabel berikut.
+P392 [Caption]: Tabel 3.1  Jenis dan Sumber Data
+P394 [Heading 3]: Metode Pengumpulan Data
+P395 [Normal]: Teknik pengumpulan data dalam penelitian ini dilakukan melalui studi literatur, pengambilan data cuaca dari layanan BMKG, pengumpulan dan kurasi dataset visual, input kondisi lahan pada aplikasi, serta dokumentasi teknis selama proses pengembangan dan pengujian sistem. Studi literatur digunakan untuk memperoleh dasar teori serta referensi dalam penyusunan rule-based engine, sedangkan data cuaca BMKG digunakan sebagai salah satu variabel dalam proses rekomendasi. Data kondisi lahan berupa jenis lahan, ketersediaan air, dan tanaman sebelumnya diperoleh melalui input pada aplikasi dan digunakan sebagai variabel operasional sistem.
+P396 [Normal]: Dataset visual yang terdiri atas padi, jagung, cabai, dan kacang tanah dikumpulkan kemudian melalui proses pemeriksaan, pengelompokan, dan kurasi sebelum digunakan pada proses fine-tuning Stable Diffusion dengan LoRA. Selain itu, dokumentasi teknis dilakukan terhadap proses pengembangan aplikasi, pelatihan model, hasil inference, serta pengujian sistem dalam bentuk training log, nilai loss, bobot LoRA, tangkapan layar, dan hasil pengujian. Seluruh data tersebut digunakan sebagai dasar dalam proses pengembangan, evaluasi, dan pembahasan hasil penelitian.
+P397 [Heading 2]: Lokasi dan Waktu Penelitian
+P398 [Normal]: Penelitian ini menggunakan wilayah Aikmel, Kecamatan Aikmel, Kabupaten Lombok Timur, Nusa Tenggara Barat sebagai konteks penerapan sistem. Wilayah tersebut digunakan dalam penentuan lokasi data cuaca BMKG dan skenario rekomendasi rotasi tanaman pada aplikasi. Kegiatan pengembangan aplikasi, pengolahan dataset, perancangan rule-based engine, serta pengujian sistem dilakukan menggunakan perangkat komputer, sedangkan proses fine-tuning dan inference Stable Diffusion dengan LoRA dilakukan pada lingkungan komputasi berbasis cloud yang memiliki dukungan GPU. Dengan demikian, lokasi penelitian tidak digunakan sebagai tempat pengumpulan data responden, tetapi sebagai wilayah acuan penerapan sistem dan pengambilan informasi cuaca.
+P399 [Normal]: Penelitian dilaksanakan pada tahun 2026 melalui beberapa tahapan, yaitu identifikasi kebutuhan, pengumpulan data, perancangan produk, pengembangan aplikasi, persiapan dataset, fine-tuning LoRA, integrasi sistem, pengujian, dan penyempurnaan produk. Pelaksanaan setiap tahapan disesuaikan dengan kebutuhan pengembangan sampai aplikasi dan komponen pendukungnya dapat diuji sesuai dengan tujuan penelitian.
+P400 [Heading 2]:   [TAB] Analisis Sistem
+P401 [Normal]: Analisis sistem dilakukan untuk mengetahui kondisi sistem yang berjalan serta menentukan kebutuhan dan bentuk sistem yang diusulkan dalam penelitian. Analisis ini digunakan sebagai dasar dalam merancang aplikasi TaniAdaptif agar permasalahan pada proses penyediaan informasi cuaca, pengolahan kondisi lahan, penentuan rekomendasi tanaman, dan penyajian simulasi visual dapat diidentifikasi dengan jelas. Analisis sistem dalam penelitian ini terdiri atas analisis sistem yang berjalan dan analisis sistem yang diusulkan. Analisis sistem yang berjalan digunakan untuk menggambarkan kondisi proses dan keterbatasan sebelum aplikasi dikembangkan, sedangkan analisis sistem yang diusulkan digunakan untuk menggambarkan proses dan komponen yang akan diterapkan dalam aplikasi TaniAdaptif.
+P402 [Heading 3]: Analisis Sistem yang Berjalan
+P403 [Normal]: Pada kondisi sebelum sistem yang diusulkan dikembangkan, informasi cuaca, kondisi lahan, proses penentuan tanaman, dan visualisasi tanaman belum berada dalam satu alur aplikasi yang terintegrasi. Informasi cuaca dapat diperoleh melalui layanan BMKG, sedangkan informasi mengenai jenis lahan, ketersediaan air, dan tanaman sebelumnya merupakan kondisi yang harus dipertimbangkan secara terpisah. Data tersebut belum secara otomatis diolah menjadi rekomendasi rotasi tanaman melalui mekanisme berbasis aturan.
+P404 [Normal]: Selain itu, proses pembangkitan visual menggunakan model generatif merupakan proses yang terpisah dari pengolahan data cuaca dan rekomendasi tanaman. Dengan kondisi tersebut, informasi cuaca hanya berfungsi sebagai informasi kondisi lingkungan dan belum terhubung langsung dengan mekanisme rekomendasi maupun simulasi visual. Riwayat hasil rekomendasi juga belum dikelola dalam satu aplikasi yang sama.
+P405 [Caption]: Tabel 3.2 Permasalahan Sistem yang Berjalan
+P407 [Heading 3]: Analisis Sistem yang Diusulkan
+P408 [Normal]: Sistem yang diusulkan berupa aplikasi mobile berbasis Android yang mengintegrasikan data cuaca BMKG, kondisi lahan, rule-based engine, penyimpanan data, dan Stable Diffusion dengan LoRA. Sistem dirancang agar seluruh proses mulai dari pengambilan data cuaca sampai penyajian simulasi visual dapat dilakukan melalui satu alur aplikasi.
+P409 [Normal]: Proses dimulai ketika aplikasi mengambil informasi cuaca untuk wilayah Aikmel dari layanan BMKG. Selanjutnya, pengguna memasukkan kondisi lahan berupa jenis lahan, ketersediaan air, dan tanaman sebelumnya. Data cuaca dan kondisi lahan kemudian diproses menggunakan rule-based engine. Aturan yang terdapat pada decision table digunakan untuk menentukan rekomendasi dari empat komoditas, yaitu padi, jagung, cabai, dan kacang tanah. Setelah rekomendasi diperoleh, hasil tersebut ditampilkan pada aplikasi dan digunakan sebagai salah satu dasar dalam pembentukan prompt untuk simulasi visual. Permintaan simulasi selanjutnya dikirimkan ke layanan inference Stable Diffusion yang telah menggunakan bobot LoRA. Gambar yang dihasilkan dikirim kembali ke aplikasi untuk ditampilkan sebagai simulasi visual dari rekomendasi tanaman. Hasil rekomendasi juga dapat disimpan sebagai riwayat sehingga dapat diakses kembali melalui aplikasi. Alur sistem yang diusulkan dapat digambarkan sebagai berikut:
+P410 [Caption]: 
+ Gambar 3.2 Analisis Sistem Yang Diusulkan
+P411 [Normal]:  [TAB] Perbandingan sistem yang berjalan dan sistem yang diusulkan disajikan pada Tabel 3.3.
+P412 [Caption]: Tabel 3.3 Perbandingan Sistem Yang berjalan dan Yang Diusulkan
+P414 [Heading 2]:   [TAB] Analisis Kebutuhan Sistem
+P415 [Normal]: Analisis kebutuhan sistem dilakukan untuk menentukan perangkat dan sumber daya yang diperlukan dalam proses pengembangan, pengoperasian, serta pengujian aplikasi. Kebutuhan sistem dalam penelitian ini terdiri atas kebutuhan perangkat keras, perangkat lunak, dan brainware. Penentuan kebutuhan tersebut disesuaikan dengan karakteristik aplikasi mobile, proses pengolahan data cuaca, mekanisme rekomendasi berbasis aturan, serta proses fine-tuning dan inference Stable Diffusion dengan LoRA.
+P416 [Heading 3]: Kebutuhan Perangkat Keras (Hardware)
+P417 [Normal]: Perangkat keras yang digunakan dalam penelitian disesuaikan dengan kebutuhan setiap proses. Pengembangan aplikasi, pengelolaan kode program, penyusunan dataset, dan pengujian komponen sistem dilakukan menggunakan komputer atau laptop. Sementara itu, proses fine-tuning dan inference Stable Diffusion membutuhkan kemampuan komputasi yang lebih tinggi sehingga digunakan lingkungan komputasi berbasis cloud yang memiliki dukungan GPU. Kebutuhan perangkat keras dalam penelitian ini disajikan pada Tabel 3.4. berikut:
+P420 [Caption]: Tabel 3.4 Kebutuhan Perangkat Keras
+P422 [Heading 3]: Kebutuhan Perangkat Lunak (Software)
+P423 [Normal]: Perangkat lunak yang digunakan dalam penelitian ini meliputi Flutter dan Dart untuk pengembangan aplikasi mobile, Visual Studio Code sebagai lingkungan pengembangan, Android SDK untuk kompilasi dan pengujian aplikasi Android, serta Node.js untuk layanan backend dan komunikasi data melalui HTTP/REST berformat JSON. Pengolahan dataset dan proses fine-tuning Stable Diffusion 1.5 menggunakan teknik LoRA dilakukan dengan Python serta pustaka PyTorch, Diffusers, Transformers, Accelerate, PEFT, bitsandbytes, dan safetensors. Proses pelatihan dijalankan pada Kaggle Notebook yang menyediakan dukungan GPU, sedangkan integrasi data cuaca BMKG dan rule-based engine diterapkan sesuai kebutuhan sistem. Kebutuhan perangkat lunak dalam penelitian ini disajikan pada Tabel 3.5. berikut:
+P424 [Caption]: Tabel 3.5 Kebutuhan Perangkat Lunak
+P426 [Heading 3]: Kebutuhan Brainware
+P427 [Normal]: Brainware dalam penelitian ini terdiri atas peneliti dan pengguna. Peneliti berperan dalam analisis kebutuhan, perancangan, implementasi aplikasi, penyusunan rule-based engine, pengelolaan dataset, fine-tuning LoRA, integrasi sistem, pengujian, dokumentasi, serta pemeliharaan kode program. Sementara itu, pengguna berinteraksi dengan aplikasi untuk melihat informasi cuaca, memasukkan kondisi lahan, memperoleh rekomendasi tanaman, menjalankan simulasi visual, dan melihat riwayat rekomendasi. Kebutuhan sumber daya manusia yang terlibat dalam penelitian ini disajikan pada Tabel 3.6.
+P428 [Caption]: Tabel 3.6 Kebutuhan Brainware
+P430 [Heading 2]:   [TAB] Perancangan Sistem
+P431 [Normal]: Perancangan sistem dilakukan sebagai dasar sebelum proses implementasi aplikasi. Tahap ini digunakan untuk menggambarkan hubungan antara pengguna, proses yang terdapat di dalam aplikasi, sumber data eksternal, serta komponen pendukung sistem. Perancangan meliputi pemodelan menggunakan use case diagram dan activity diagram, arsitektur sistem, struktur penyimpanan data, perancangan rule-based engine, perancangan proses fine-tuning LoRA, serta rancangan antarmuka aplikasi.
+P432 [Heading 3]: Use Case Diagram
+P433 [Normal]: Use case diagram menggambarkan interaksi antara pengguna dengan fungsi utama aplikasi serta layanan eksternal yang digunakan. Pengguna dapat melihat informasi cuaca, memasukkan kondisi lahan berupa jenis lahan, ketersediaan air, dan tanaman sebelumnya, memperoleh rekomendasi tanaman, meminta simulasi visual, serta melihat riwayat rekomendasi. Data cuaca diperoleh dari layanan BMKG dan diproses bersama data kondisi lahan melalui rule-based engine untuk menghasilkan rekomendasi padi, jagung, cabai, atau kacang tanah. Berdasarkan hasil tersebut, aplikasi membentuk prompt dan mengirimkannya ke layanan inference Stable Diffusion yang telah menggunakan bobot LoRA untuk menghasilkan simulasi visual yang kemudian ditampilkan pada aplikasi, sedangkan hasil rekomendasi dapat disimpan dan dilihat kembali melalui fitur riwayat.
+P434 [Caption]: 
+Gambar 3.3 Use Case Diagram
+P435 [Heading 3]: Activity Diagram
+P436 [Normal]: Activity diagram digunakan untuk menggambarkan urutan aktivitas yang terjadi selama proses penggunaan sistem. Pada penelitian ini, diagram aktivitas difokuskan pada proses utama aplikasi, yaitu pengambilan data cuaca, pengisian kondisi lahan, proses rekomendasi menggunakan rule-based engine, serta pembangkitan simulasi visual menggunakan Stable Diffusion dengan LoRA. Proses dimulai ketika pengguna membuka fitur rekomendasi pada aplikasi. Sistem kemudian mengambil data cuaca untuk wilayah Aikmel melalui layanan BMKG. Setelah data cuaca diperoleh, pengguna memasukkan kondisi lahan yang terdiri atas jenis lahan, ketersediaan air, dan tanaman sebelumnya. Sistem melakukan validasi terhadap data masukan untuk memastikan seluruh variabel yang dibutuhkan telah tersedia. Apabila data kondisi lahan belum lengkap, sistem meminta pengguna melengkapi input terlebih dahulu. Apabila seluruh data telah sesuai, data cuaca dan kondisi lahan diteruskan ke rule-based engine. Sistem kemudian membandingkan kombinasi masukan dengan aturan pada decision table untuk menentukan rekomendasi tanaman. Hasil rekomendasi dapat berupa padi, jagung, cabai, atau kacang tanah sesuai dengan kondisi yang memenuhi aturan.
+P437 [Normal]: Setelah rekomendasi diperoleh, sistem menampilkan hasil tersebut pada aplikasi. Pengguna selanjutnya dapat memilih untuk meminta simulasi visual. Apabila simulasi visual dipilih, sistem membentuk prompt berdasarkan hasil rekomendasi kemudian mengirimkan permintaan ke layanan inference Stable Diffusion yang telah memuat bobot LoRA. Gambar yang dihasilkan diterima kembali oleh aplikasi dan ditampilkan sebagai simulasi visual. Hasil rekomendasi dan informasi terkait kemudian dapat disimpan pada riwayat aplikasi. Alur aktivitas sistem dapat digambarkan sebagai berikut:
+P438 [Caption]: 
+Gambar 3.4 Activity Diagram Proses Rekomendasi dan Simulasi Visual
+P439 [Heading 3]: Class Diagram
+P440 [Normal]: Class Diagram menggambarkan struktur kelas yang digunakan dalam sistem TaniAdaptif. Struktur tersebut mencakup kelas yang menangani data cuaca, kondisi lahan, proses rekomendasi, simulasi visual, dan riwayat. Kelas AplikasiMobile berfungsi sebagai penghubung interaksi pengguna dengan fungsi utama sistem. Data cuaca dan kondisi lahan menjadi masukan bagi RuleEngine untuk menghasilkan objek Rekomendasi. Rekomendasi yang telah dihasilkan kemudian digunakan oleh LayananInference untuk menghasilkan simulasi visual menggunakan Stable Diffusion dengan LoRA. Hasil rekomendasi dan simulasi visual selanjutnya dapat disimpan dan ditampilkan kembali melalui fitur Riwayat.
+P441 [Caption]: 
+Gambar 3.5 Class Diagram Aplikasi
+P442 [Heading 3]: Arsitektur Sistem
+P443 [Normal]: Arsitektur sistem terdiri atas aplikasi mobile Flutter, layanan backend, API BMKG, rule-based engine, penyimpanan lokal, dan layanan inference Stable Diffusion dengan LoRA. Aplikasi digunakan untuk menampilkan cuaca Aikmel, menerima input jenis lahan, ketersediaan air, dan tanaman sebelumnya, serta menampilkan rekomendasi, simulasi visual, dan riwayat. Data cuaca dari BMKG digabungkan dengan kondisi lahan, kemudian diproses oleh rule-based engine berdasarkan decision table untuk menentukan rekomendasi padi, jagung, cabai, atau kacang tanah. Hasil rekomendasi selanjutnya digunakan untuk membentuk prompt yang dikirim ke layanan inference berbasis GPU untuk menghasilkan gambar menggunakan Stable Diffusion dan bobot LoRA. Gambar kemudian dikirim kembali ke aplikasi, sedangkan riwayat rekomendasi disimpan secara lokal. Pemisahan rule-based engine dan Stable Diffusion dilakukan agar proses penentuan rekomendasi dan pembangkitan visual memiliki fungsi yang jelas dan dapat diuji secara terpisah. Secara umum, arsitektur sistem dapat digambarkan sebagai berikut:
+P444 [Caption]: 
+Gambar 3.6 Arsitektur Sitem
+P445 [Heading 3]: Perancangan Rule-Based Engine dan Decision Table
+P446 [Normal]: Rule-based engine digunakan untuk menentukan rekomendasi rotasi tanaman berdasarkan kombinasi data cuaca, jenis lahan, ketersediaan air, dan tanaman sebelumnya. Data cuaca dari BMKG terlebih dahulu diringkas menjadi kategori kondisi cuaca yang digunakan oleh sistem, kemudian dibandingkan dengan aturan pada decision table. Pendekatan ini dipilih agar setiap rekomendasi dapat ditelusuri berdasarkan kondisi yang memicu aturan dan tidak bergantung pada model generatif. Variabel masukan terdiri atas kondisi cuaca, jenis lahan, ketersediaan air, dan tanaman sebelumnya. Jenis lahan dibagi menjadi sawah, tegalan/ladang, dan kebun campur; ketersediaan air terdiri atas cukup, terbatas, dan kurang; sedangkan tanaman sebelumnya meliputi padi, jagung, cabai, kacang tanah, atau kosong. Keluaran sistem dibatasi pada padi, jagung, cabai, dan kacang tanah. Struktur variabel tersebut juga telah menjadi dasar decision table pada rancangan sebelumnya. Decision Tabel Rekomendasi Rotasi Tanam dan Flowchart Rule-Based Engine disajikan dalam tabel dan gambar sebagai berikut:
+P447 [Caption]: Tabel 3.7 Decision Tabel Rekomendasi Rotasi Tanam
+P449 [Caption]: 
+Gambar 3.7 Flowchart Rule-Based Engine
+P450 [Heading 3]: Perancangan Fine-Tuning Stable Diffusion dengan LoRA
+P451 [Normal]: Proses fine-tuning dilakukan untuk menyesuaikan Stable Diffusion 1.5 terhadap karakteristik visual empat komoditas, yaitu padi, jagung, cabai, dan kacang tanah. Teknik yang digunakan adalah Low-Rank Adaptation (LoRA) sehingga proses pelatihan tidak mengubah seluruh parameter model dasar. Model hasil fine-tuning digunakan khusus untuk menghasilkan simulasi visual, sedangkan rekomendasi tanaman tetap ditentukan oleh rule-based engine.
+P452 [Normal]: Dataset yang telah melalui proses kurasi terdiri atas 389 gambar, kemudian dibagi menjadi 312 gambar data pelatihan dan 77 gambar data validasi. Setiap kelas menggunakan trigger token khusus, yaitu taniadaptif_padi, taniadaptif_jagung, taniadaptif_cabai, dan taniadaptif_kacang_tanah. Gambar beserta caption digunakan sebagai masukan dalam proses pelatihan agar model dapat mempelajari hubungan antara teks dan karakter visual masing-masing komoditas. Konfigurasi utama fine-tuning ditunjukkan pada tabel berikut:
+P453 [Caption]: Tabel 3.8 Konfigurasi Fine-Tuning LoRA
+P454 [Heading 3]: Rancangan Antarmuka
+P455 [Normal]: Perancangan antarmuka sistem dilakukan untuk memberikan gambaran awal mengenai susunan komponen dan alur interaksi pada aplikasi TaniAdaptif sebelum tahap implementasi. Rancangan dibuat dalam bentuk wireframe sederhana agar fokus pada struktur informasi dan fungsi setiap halaman, bukan pada tampilan visual akhir aplikasi. Antarmuka yang dirancang meliputi halaman beranda dan informasi cuaca, input kondisi lahan, hasil rekomendasi, simulasi visual, serta riwayat rekomendasi.
+P456 [List Paragraph]: Rancangan Halaman Beranda dan Informasi Cuaca
+P457 [List Paragraph]: Halaman beranda merupakan halaman awal yang menampilkan informasi cuaca wilayah Aikmel sebagai konteks utama sebelum proses rekomendasi dilakukan. Rancangan halaman ini memuat identitas aplikasi, lokasi wilayah, informasi kondisi cuaca, prakiraan cuaca, ringkasan kondisi, tombol untuk melanjutkan ke proses rekomendasi, serta navigasi menuju fitur utama lainnya. Tombol Lanjut ke Input Kondisi digunakan untuk mengarahkan pengguna ke halaman pengisian kondisi lahan.
+P458 [Caption]: 
+Gambar 3.8 Halaman Beranda dan Informasi Cuaca
+P459 [List Paragraph]: Rancangan Halaman Input Kondisi Lahan
+P460 [List Paragraph]: Halaman input kondisi lahan digunakan untuk memasukkan variabel yang diperlukan dalam proses rekomendasi tanaman. Pada halaman ini pengguna memilih jenis lahan, ketersediaan air, dan tanaman sebelumnya. Sistem juga menampilkan ringkasan kondisi cuaca yang telah diperoleh dari BMKG sebagai informasi pendukung sebelum proses rekomendasi dijalankan. Setelah seluruh data terisi, pengguna menekan tombol Proses Rekomendasi untuk meneruskan data ke rule-based engine.
+P461 [Caption]: 
+Gambar 3.9 Halaman Input Kondisi Lahan
+P462 [List Paragraph]: Rancangan Halaman Hasil Rekomendasi
+P463 [List Paragraph]: Halaman hasil rekomendasi digunakan untuk menampilkan keluaran dari proses rule-based engine setelah data cuaca dan kondisi lahan diproses. Informasi yang ditampilkan meliputi nama tanaman yang direkomendasikan serta alasan singkat rekomendasi berdasarkan kondisi input dan aturan pada decision table. Pada halaman ini juga disediakan tombol Lihat Simulasi Visual untuk melanjutkan ke proses pembangkitan gambar menggunakan Stable Diffusion LoRA, serta tombol Simpan ke Riwayat untuk menyimpan hasil rekomendasi.
+P464 [Caption]: 
+Gambar 3.10 Halaman Hasil Rekomendasi
+P465 [List Paragraph]: Rancangan Halaman Simulasi Visual
+P466 [List Paragraph]: Halaman simulasi visual digunakan untuk menampilkan gambar hasil inference Stable Diffusion yang telah menggunakan bobot LoRA. Gambar dibangkitkan berdasarkan prompt yang disusun dari hasil rekomendasi sistem. Pada halaman ini ditampilkan nama tanaman yang direkomendasikan, area hasil simulasi visual, informasi singkat mengenai proses pembangkitan, serta tombol untuk menyimpan hasil gambar.
+P467 [Caption]: 
+Gambar 3.11 Halaman Simulasi Visual
+P468 [List Paragraph]: Rancangan Halaman Riwayat Rekomendasi
+P469 [List Paragraph]: Halaman riwayat rekomendasi digunakan untuk menampilkan hasil rekomendasi yang telah disimpan sebelumnya. Informasi yang ditampilkan meliputi tanaman yang direkomendasikan, jenis lahan, ketersediaan air, dan tanaman sebelumnya. Setiap data riwayat dapat dipilih untuk melihat kembali detail rekomendasi dan, apabila tersedia, hasil simulasi visual yang berkaitan dengan rekomendasi tersebut.
+P470 [Caption]: 
+Gambar 3.12 Halaman Riwayat Rekomendasi
+P471 [Normal]: Secara keseluruhan, rancangan antarmuka aplikasi disusun mengikuti urutan proses utama sistem. Halaman beranda berfungsi sebagai titik awal untuk menampilkan informasi cuaca wilayah Aikmel, kemudian pengguna diarahkan menuju halaman input kondisi lahan untuk memasukkan jenis lahan, ketersediaan air, dan tanaman sebelumnya. Data tersebut selanjutnya diproses oleh rule-based engine dan hasilnya ditampilkan pada halaman rekomendasi dalam bentuk nama tanaman serta alasan singkat. Apabila pengguna ingin melihat representasi visual dari rekomendasi tersebut, sistem menyediakan halaman simulasi visual yang terhubung dengan layanan Stable Diffusion LoRA. Seluruh hasil rekomendasi yang disimpan kemudian dapat dilihat kembali melalui halaman riwayat.
+P473 [HEADING1]: 
+HASIL DAN PEMBAHASAN
+P474 [Heading 2]:   [TAB] Hasil Perancangan Sistem
+P475 [Normal]: Hasil penelitian pada bab ini disusun berdasarkan tahapan Research and Development (R&D) yang telah dijelaskan pada BAB III, khususnya tahap pengembangan produk, pengujian produk, dan penyempurnaan. Produk yang dihasilkan berupa aplikasi mobile TaniAdaptif yang menghubungkan data cuaca BMKG, input kondisi lahan, rule-based engine, penyimpanan lokal, serta layanan simulasi visual berbasis Stable Diffusion 1.5 dengan bobot LoRA. Pemisahan tanggung jawab antarkomponen dipertahankan dalam implementasi rule-based engine menentukan rekomendasi tanaman, sedangkan stable diffusion dan LoRA hanya menghasilkan simulasi visual dari tanaman yang sudah direkomendasikan.
+P476 [Normal]: Implementasi perangkat lunak dilakukan pada beberapa lapisan. Flutter menjadi antarmuka Android, Express menjadi backend publik aplikasi sekaligus pemilik rule-based engine dan proxy inference, API BMKG menjadi sumber data cuaca wilayah aikmel, FastAPI menyediakan kontrak inference, dan layanan GPU disiapkan untuk memuat Stable Diffusion 1.5 beserta LoRA final. Laptop pengembangan tidak menjalankan trainin atau stable diffusion. Training final dijalankan pada GPU Kaggle, sedangkan laptop hanya digunakan untuk pengembangan aplikasi, validasi artefak, pengujian CPU, dan penyusunan. Laporan.
+P477 [Heading 3]: Hasil Impelementasi Arsitektur Sistem
+P478 [Normal]: Alur implementasi dimulai ketika flutter meminta informasi cuaca kepada express. Backend mengambil data BMKG berdasarkan kode ADM4 Aikmel, menormalkan respons, dan mengirimkan data yang diperlukan aplikasi. Setelah pengguna mengisi jenis lahan, ketersediaan air, dan tanaman sebelumnya, backend menggabungkan input tersebut dengan kategori curah hujan untuk memlilih aturan. Keluaran rule-based engine memuat tanaman priotitas, alternatif, alasan, ringkasan input dan rule ID. Hasil ini dapat ditampilkan tanpa menunggu layanan generatif.
+P479 [Normal]: Jika pengguna meminta simulasi visual, flutter membentuk payload terstruktur dari rekomendasi dan mengirimkannya kembali ke express. Express melakukan autentikasi, pembatasan laju, dan proxy ke Fast API tanpa membuka url internal atau token komoditas dan, pada lingkungan GPU yang nyata, akan menjalankan Stable Diffusion 1.5 dengan LoRA. Hasil PNG diteruskan melalui endpoint Express agar Flutter tetap hanya bergantung pada satu backend publik. Ringkasan status setiap komponen ditampilkan pada Tabel 4.1.
+P480 [Caption]: Tabel 4.1 Ringkasan Hasil Implementasi Komponen Sistem
+P482 [Normal]:  [TAB] Arsitektur tersebut menjaga rekomendasi tetap dapat digunakan ketika layanan visual gagal. Widget test membuktikan bahwa rekomendasi Jagung tetap terlihat saat permintaan visual menghasilkan error. Dengan demikian, fungsi keputusan tidak bergantung pada ketersediaan GPU. Hal ini juga membatasi dampak kegagalan model generatif pada fungsi utama aplikasi.
+P483 [Heading 3]: Hasil Implementasi Aplikasi Mobile
+P484 [Normal]: Aplikasi Flutter terdiri atas splash screen, dashboard, form kondisi lahan, dan halaman hasil rekomendasi. Dashboard memanggil repository untuk mengambil data cuaca melalui backend. Repository terlebih dahulu mencoba jaringan, menyimpan respons yang berhasil, dan dapat mengembalikan cache lokal disertai pemberitahuan ketika jaringan gagal. Antarmuka menyediakan refresh dan pesan kesalahan yang dapat ditindaklanjuti tanpa menutup aplikasi.
+P485 [Caption]: 
+Gambar 4.1 Halaman Aplikasi Mobile
+P486 [Heading 3]: Hasil Implementasi Rule-Based Engine dan Rekomendasi
+P487 [Normal]: 
+Gambar 4.2 Halaman Input Kondisi Lahan Rule-Based Engine
+P488 [Normal]: Implementasi rule-based engine menggunakan 30 kunci utama yang merupakan kombinasi tiga kategori curah hujan, dua kategori air untuk pencarian aturan, dan lima nilai tanaman sebelumnya. Jenis lahan tidak menjadi bagian dari kunci tabel utama, tetapi digunakan untuk menyesuaikan prioritas. Pada lahan non-sawah, padi dapat dipindahkan ke urutan alternatif tanpa dihapus dari daftar apabila memang berasal dari aturan.
+P489 [Normal]: 
+       Gambar 4.3 Halaman Hasil Rekomendasi
+P490 [Normal]:  [TAB] Halaman hasil menampilkan ringkasan cuaca, daftar tanaman berdasarkan urutan prioritas, alasan rekomendasi, kalender satu bulan, serta kontrol untuk membuat simulasi visual. Kegagalan visual ditampilkan sebagai status terpisah sehingga hasil rule-based engine tidak hilang. Model data Flutter juga menyimpan request ID dan provenance respons visual untuk membantu penelusuran alur. Setiap hasil memuat recommendedCrop, daftar rekomendasi berurutan, alasan, inputSummary, kunci aturan, indikator penggunaan default, dan rule ID. Rule ID dibentuk dari kunci serta jenis lahan sehingga keluaran dapat ditelusuri. Fungsi kalender menggunakan tanaman prioritas yang sama untuk membentuk empat rentang mingguan: persiapan lahan, penanaman, perawatan awal, serta pemupukan dan monitoring. Minggu pertama memakai ringkasan harian BMKG yang tersedia. Minggu kedua sampai keempat merupakan proyeksi rata-rata dengan tingkat keyakinan rendah. Aplikasi menampilkan catatan metodologi agar kalender tidak dibaca sebagai prakiraan BMKG empat minggu.
+P491 [Heading 3]: Hasil Implementasi Simulasi Visual
+P492 [Normal]: FastAPI telah menyediakan health, readiness, model info, generation, validasi input, timeout, retry terbatas, penguncian satu proses generasi, validasi hash LoRA, serta pemeriksaan CUDA. Provider Diffusers dirancang gagal tertutup jika CUDA tidak tersedia atau hash model tidak sama dengan model final. Express menyimpan token inference privat, menerapkan token klien sementara dan rate limit, menyembunyikan URL upstream, serta melayani PNG melalui domain backend.
+P493 [Caption]: 
+Gambar 4.4 Halaman Hasil Simulasi Visual
+P494 [Heading 3]: Hasil Penyimpanan Riwayat
+P495 [Normal]: Penyimpanan lokal menggunakan SharedPreferences untuk cache cuaca, cache rekomendasi, dan riwayat visual. Setiap entri riwayat visual memuat request ID, tanaman, URL gambar backend, seed, model, prompt, waktu, dan ringkasan konteks. Daftar dibatasi pada 20 entri terbaru. Pengujian menyimpan 25 fixture dan membuktikan entri request-24 sampai request-5 dipertahankan sesuai urutan terbaru.
+P496 [Caption]: 
+Gambar 4.5 Halaman Riwayat
+P497 [Heading 2]:   [TAB] Pengujian Sistem
+P498 [Normal]: Pengujian sistem menggabungkan Black Box Testing berbasis kontrak, unit/integration test otomatis, pemeriksaan artefak, dan respons live yang terdokumentasi. Pengujian berfokus pada masukan, keluaran, status error, dan perilaku komponen tanpa menjadikan struktur internal sebagai kriteria pengguna. Test otomatis digunakan sebagai bukti teknis, bukan sebagai UAT. Tidak ada responden petani, wawancara, kuesioner pengguna, atau validasi ahli yang dilaporkan.
+P499 [Caption]: Tabel 4.2 Hasil Black Box Testing
+P501 [Heading 2]:   [TAB] Pembahasan
+P502 [Normal]: Pembahasan pada bab ini dilakukan untuk menginterpretasikan hasil implementasi dan pengujian sistem yang telah diperoleh serta mengaitkannya dengan tujuan penelitian dan penelitian terkait. Pembahasan mencakup ketercapaian tujuan penelitian, integrasi data BMKG, penerapan rule-based recommendation, implementasi aplikasi, proses fine-tuning dan evaluasi LoRA, pengujian serta keandalan bukti, dan keterbatasan penelitian. Pembahasan dilakukan berdasarkan hasil yang diperoleh pada penelitian sehingga setiap kesimpulan yang disampaikan disesuaikan dengan ruang lingkup dan hasil pengujian yang telah dilakukan. 
+P503 [Heading 3]: Ketercapaian Tujuan Penelitian
+P504 [Normal]: Tujuan pertama adalah merancang dan membangun aplikasi mobile yang mengintegrasikan API BMKG, kondisi lahan, dan rule-based engine. Tujuan ini tercapai pada tingkat implementasi dan pengujian perangkat lunak. Flutter dapat mengambil cuaca melalui Express, menerima input lahan, menampilkan rekomendasi, serta mempertahankan hasil ketika visual gagal. Backend dapat menormalisasi respons BMKG dan memproses 30 kunci aturan secara deterministik. Bukti perangkat fisik final masih belum tersedia, sehingga ketercapaian tidak diperluas menjadi klaim keberhasilan operasional lapangan.
+P505 [Normal]: Tujuan kedua adalah menerapkan fine-tuning LoRA pada Stable Diffusion untuk menghasilkan simulasi visual empat komoditas. Tujuan ini tercapai pada tingkat training dan evaluasi model. Smoke test 100 langkah dan main training 1.600 langkah selesai pada GPU Kaggle. Model final telah divalidasi berdasarkan ukuran, jumlah tensor, dan SHA-256. Model menghasilkan 72 gambar evaluasi serta empat gambar sanity pada runtime GPU training, penggunaan model melalui aplikasi Android terbukti end-to-end pada host inference.
+P506 [Normal]: Tujuan ketiga adalah menguji fungsionalitas aplikasi dan mengevaluasi model secara teknis. Pengujian otomatis mencakup 125 test Python, 23 test backend, 13 test Flutter, dan 18 test UI review. Evaluasi visual teknis mencakup 72 penilaian berpasangan. Dengan demikian, tujuan ketiga tercapai untuk pengujian perangkat lunak, artefak, evaluasi visual yang telah dilakukan, dan lengkap pada jalur Android ke GPU nyata.
+P507 [Heading 3]: Pembahasan Integrasi BMKG
+P508 [Normal]: Integrasi cuaca menjawab kebutuhan agar informasi BMKG tidak hanya ditampilkan, tetapi diproses sebagai input sistem. Pendekatan ini mempunyai keterkaitan dengan penelitian aplikasi cuaca berbasis Android untuk pertanian[3] dan pemanfaatan data BMKG[14]. Perbedaan implementasi TaniAdaptif adalah penambahan normalisasi cakupan curah hujan, cache dengan status freshness, serta penerusan kategori ke rule-based engine.
+P509 [Normal]: Horizon BMKG yang singkat menjadi keterbatasan metodologis. Sistem tidak mempunyai dasar untuk menyatakan prakiraan bulanan resmi. Oleh karena itu, proyeksi empat minggu menggunakan rata-rata horizon dan diberi tingkat keyakinan rendah untuk minggu 2-4. Keputusan ini membuat asumsi sistem eksplisit dan mencegah data yang tidak tersedia dipresentasikan sebagai fakta. Kalender harus dipahami sebagai simulasi aktivitas berdasarkan kondisi saat permintaan, bukan prediksi iklim jangka panjang.
+P510 [Heading 3]: Pembahasan Rule-Based Recommendation
+P511 [Normal]: Rule-based engine memisahkan fungsi keputusan dari model generatif. Pemisahan ini mendukung keterlacakan karena setiap rekomendasi mempunyai kunci, alasan, dan rule ID. Pendekatan tersebut berada dalam konteks sistem pendukung keputusan pertanian yang dibahas pada penelitian kesesuaian lahan[4] dan pemilihan tanaman, tetapi TaniAdaptif menggunakan aturan deterministik yang dirancang untuk empat komoditas, bukan AHP, SAW, atau Fuzzy Weighted Product.
+P512 [Normal]: Pengujian 30 kunci membuktikan kelengkapan kontrak perangkat lunak, bukan kebenaran agronomi universal. Aturan hanya menggunakan variabel yang dibatasi dalam BAB I: kategori cuaca, ketersediaan air, tanaman sebelumnya, dan jenis lahan. Sistem tidak memakai hasil laboratorium tanah, varietas, hama, harga pasar, atau prediksi hasil panen. Karena itu, rekomendasi harus dipahami sebagai keluaran prototipe simulasi rotasi tanam dalam ruang lingkup penelitian.
+P513 [Heading 3]: Pembahasan Implementasi Aplikasi
+P514 [Normal]: Implementasi Flutter memperlihatkan bahwa alur cuaca, input, rekomendasi, kalender, dan visual dapat ditempatkan dalam satu aplikasi. Hal ini sejalan secara tematik dengan penggunaan Android pada sistem pertanian[13] serta landasan pengembangan mobile dengan Flutter[19]. TaniAdaptif menambahkan isolasi kegagalan visual, cache berbasis signature, dan proxy backend agar aplikasi tidak menyimpan token inference privat.
+P515 [Normal]: Hasil test menunjukkan jaringan dan visual telah ditangani tanpa menghilangkan rekomendasi. Aspek ini penting karena layanan BMKG dan GPU merupakan dependensi eksternal. Hasil tersebut belum mengukur pengalaman pengguna atau penerimaan masyarakat. Penelitian ini tidak melakukan UAT, wawancara, kuesioner pengguna, atau studi responden petani, sehingga tidak ada klaim kemudahan penggunaan maupun efektivitas pada pengguna akhir. Penyimpanan riwayat telah teruji pada service, dan layar riwayat  tersedia.
+P516 [Heading 3]: Pembahasan Fine-Tuning dan Evaluasi LoRA
+P517 [Normal]: Fine-tuning LoRA menerapkan konsep penyesuaian model generatif yang juga dibahas pada penelitian Stable Diffusion untuk karakter visual khusus[5], penerapan LoRA pada Stable Diffusion[6], dan landasan latent diffusion[21]. Perbandingan terhadap penelitian tersebut bersifat konseptual karena dataset, domain, prompt, dan metriknya berbeda.
+P518 [Normal]: Training sukses dan loss finite membuktikan pipeline optimisasi berjalan sampai output final, loss yang fluktuatif menunjukkan kualitas visual secara langsung. Penilaian gambar berpasangan memberikan bukti yang lebih relevan untuk identitas komoditas, konteks, dan realisme pada dataset evaluasi penelitian.
+P519 [Normal]: LoRA meningkatkan kesesuaian komoditas dari 86,11% menjadi 94,44% secara deskriptif. Exact McNemar menghasilkan p=0,25, sehingga selisih tersebut tidak signifikan pada taraf 0,05. Median konteks dan realisme keseluruhan justru turun dari 4,5 menjadi 4,0, dengan exact sign test p=0,6072387695. Temuan ini menunjukkan LoRA membantu masalah identitas kacang tanah pada beberapa pasangan, tetapi tidak menghasilkan peningkatan seragam pada semua dimensi atau kelas.
+P520 [Normal]: Kelas jagung dan kacang tanah mempunyai arah hasil ordinal yang berlawanan. Jagung lebih sering memperoleh skor konteks/realisme lebih tinggi pada Base, sedangkan kacang tanah lebih sering lebih tinggi pada LoRA. Dengan hanya sembilan pasangan per kelas dan beberapa uji eksploratif, hasil ini memerlukan kehati-hatian dan tidak cukup untuk klaim generalisasi di luar prompt, seed, serta empat kelas penelitian.
+P521 [Heading 3]: Pembahasan Pengujian dan Keandalan Bukti
+P522 [Normal]: Black Box Testing digunakan sesuai landasan pada BAB II[25] dengan memeriksa kontrak input-output, status, dan error. Suite otomatis memberi cakupan berulang untuk parser BMKG, cache, 30 aturan, validasi inference, retry, proxy, storage, serta widget Flutter. Validator artefak menambah pemeriksaan yang tidak dicakup test aplikasi, seperti CRC ZIP, hash model, struktur SafeTensors, manifest, dan keterbacaan PNG.
+P523 [Normal]: Pemisahan label Lulus, Lulus (mock), dan Belum diuji mencegah bukti kontrak disamakan dengan bukti model nyata. Provider mock berguna untuk menguji jalur jaringan tanpa membebani laptop, menghasilkan data kualitas LoRA, keberhasilan build APK membuktikan aplikasi sudah terhubung ke GPU.
+P524 [Heading 3]: Keterbatasan Penelitian
+P525 [Normal]: Keterbatasan penelitian yang masih berlaku adalah sebagai berikut.
+P526 [List Number]: BMKG menyediakan horizon prakiraan jangka pendek; proyeksi empat minggu mempunyai ketidakpastian dan bukan prakiraan bulanan resmi.
+P527 [List Number]: Rule-based engine dibatasi pada empat komoditas dan empat kelompok variabel; hasilnya bukan prediksi hasil panen atau validasi agronomi lapangan.
+P528 [List Number]: Dataset berjumlah 389 gambar dan sumber lokal Aikmel hanya terdapat pada sebagian kelas padi; tiga kelas lain berasal dari sumber publik.
+P529 [List Number]: Evaluasi visual dilakukan oleh peneliti pada 36 pasangan. Identitas penilai tidak diverifikasi independen dan tidak ada penilai ahli atau responden pengguna yang diklaim.
+P530 [List Number]: Beberapa hasil per kelas menggunakan sampel sembilan pasangan dan beberapa uji eksploratif, sehingga tidak mendukung generalisasi luas.
+P531 [List Number]: Metrik brightness, contrast, dan entropy hanya proxy teknis dan tidak mengukur ketepatan komoditas atau agronomi.
+P533 [HEADING1]: 
+PENUTUP
+P534 [Heading 2]:   [TAB] Kesimpulan
+P535 [Normal]: Berdasarkan proses perancangan, implementasi, pengujian, serta pembahasan yang telah dilakukan, diperoleh beberapa kesimpulan sebagai berikut:
+P536 [List Paragraph]: Aplikasi mobile TaniAdaptif berhasil dirancang dan dibangun untuk mendukung simulasi rotasi tanam adaptif iklim di wilayah Aikmel. Aplikasi dikembangkan menggunakan Flutter pada perangkat Android dan terhubung dengan backend Express untuk mengambil serta mengolah data cuaca BMKG. Informasi cuaca tersebut digabungkan dengan input kondisi lahan berupa jenis lahan, ketersediaan air, dan tanaman sebelumnya. Selanjutnya, rule-based engine berbasis decision table digunakan untuk menghasilkan rekomendasi tanaman padi, jagung, cabai, atau kacang tanah. Proses rekomendasi dibuat terpisah dari modul generatif sehingga tanaman yang direkomendasikan tetap ditentukan oleh aturan yang telah dirancang, bukan oleh Stable Diffusion. Pengujian terhadap 30 kombinasi aturan menunjukkan bahwa setiap kombinasi dapat menghasilkan keluaran dalam empat kelas komoditas yang telah ditetapkan.
+P537 [List Paragraph]: Fine-tuning Stable Diffusion menggunakan Low-Rank Adaptation (LoRA) berhasil diterapkan sebagai modul pembangkit simulasi visual dari tanaman yang telah direkomendasikan oleh sistem. Proses pelatihan dilakukan menggunakan dataset visual empat komoditas dan menghasilkan bobot LoRA yang dapat digunakan bersama Stable Diffusion pada tahap inference. Model kemudian diintegrasikan melalui layanan FastAPI pada lingkungan GPU sehingga gambar hasil pembangkitan dapat dikirim melalui backend Express dan ditampilkan pada aplikasi Android. Evaluasi visual menunjukkan tingkat kesesuaian komoditas sebesar 86,11% pada model dasar dan 94,44% setelah menggunakan LoRA. Meskipun terdapat peningkatan secara deskriptif sebesar 8,33 poin persentase, hasil Exact McNemar sebesar p=0,25 menunjukkan bahwa perbedaan tersebut belum signifikan pada taraf 0,05. Dengan demikian, LoRA dapat digunakan untuk membantu penyesuaian identitas visual komoditas dalam ruang lingkup penelitian ini, tetapi belum dapat dinyatakan meningkatkan seluruh aspek kualitas gambar secara konsisten.
+P538 [List Paragraph]: Hasil pengujian menunjukkan bahwa fungsi utama aplikasi dan integrasi antar komponen dapat berjalan sesuai dengan rancangan. Pengujian mencakup proses pengambilan data BMKG, validasi masukan, pemrosesan rule-based engine, pembentukan kalender rekomendasi, penyimpanan dan pemanggilan riwayat, komunikasi dengan layanan inference, pengiriman gambar melalui backend, serta pengujian end-to-end pada lingkungan GPU dan perangkat Android. Pengujian otomatis yang dilakukan meliputi 125 test Python, 23 test backend, 13 test Flutter, dan 18 test UI review, disertai pemeriksaan artefak model dan evaluasi visual terhadap 36 pasangan gambar. Hasil tersebut menunjukkan bahwa sistem telah memenuhi kebutuhan fungsional dan teknis yang ditetapkan dalam ruang lingkup penelitian. Pengujian ini tidak mencakup UAT, validasi agronomi lapangan, maupun penilaian efektivitas aplikasi oleh petani sehingga hasil penelitian tidak digunakan untuk menyatakan penerimaan pengguna atau ketepatan agronomi secara umum.
+P539 [Heading 2]:   [TAB] Saran
+P540 [Normal]: Berdasarkan hasil penelitian dan keterbatasan yang masih ditemukan, beberapa saran yang dapat diberikan untuk pengembangan selanjutnya adalah sebagai berikut:
+P541 [List Paragraph]: Rule-based engine dapat dikembangkan dengan menambahkan komoditas dan variabel pertimbangan lain, seperti pH tanah, unsur hara, varietas tanaman, kondisi hama, atau faktor lingkungan lainnya. Penyusunan aturan pada penelitian berikutnya juga dapat melibatkan ahli pertanian dan pengujian lapangan agar rekomendasi yang dihasilkan mempunyai dasar agronomi yang lebih kuat.
+P542 [List Paragraph]: Pengembangan berikutnya dapat menggunakan sumber data cuaca yang memiliki cakupan waktu lebih panjang atau mengombinasikan beberapa sumber data resmi. Hal ini diperlukan karena data BMKG yang digunakan dalam penelitian memiliki horizon prakiraan jangka pendek, sehingga kalender empat minggu pada sistem tetap harus dipahami sebagai simulasi berdasarkan kondisi yang tersedia dan bukan sebagai prakiraan iklim bulanan resmi.
+P543 [List Paragraph]: Dataset fine-tuning dapat diperluas dengan menambah jumlah dan variasi gambar dari wilayah Aikmel untuk seluruh kelas komoditas. Pada penelitian ini dataset yang digunakan berjumlah 389 gambar dan data lokal Aikmel hanya terdapat pada sebagian kelas padi, sedangkan kelas lainnya menggunakan sumber publik. Penambahan data lokal yang lebih merata diharapkan dapat memperkuat karakteristik visual yang sesuai dengan kondisi pertanian setempat.
+P544 [List Paragraph]: Penelitian selanjutnya dapat melibatkan pengguna aplikasi, petani, dan ahli pertanian dalam proses evaluasi. User Acceptance Test dapat digunakan untuk mengukur kemudahan penggunaan dan penerimaan aplikasi, sedangkan evaluasi visual dapat melibatkan lebih banyak penilai dan jumlah sampel yang lebih besar agar hasil evaluasi model memiliki dasar yang lebih luas dan tidak hanya bergantung pada penilaian teknis oleh peneliti.
+P547 [HEADING1]: DAFTAR PUSTAKA
+P548 [Normal]: [1] [TAB] R. H. Moh. Wahyudi Priyanto, Hery Toiba, “Strategi Adaptasi Perubahan Iklim: Faktor Yang Mempengaruhi dan Manfaat Penerapannya,” vol. 5, pp. 1169–1178, 2021, doi: 10.21776/ub.jepa.2021.005.04.19.
+P549 [Normal]: [2] [TAB] S. Defiyanti, B. Nurina Sari, and T. Nur Padilah, “Optimasi Pertanian Padi: Peramalan Curah Hujan Berbasis Arima Untuk Penentuan Waktu Tanam Yang Tepat,” J. Teknol. Inf. dan Ilmu Komput., vol. 11, no. 6, pp. 1377–1384, 2024, doi: 10.25126/jtiik.2024118682.
+P550 [Normal]: [3] [TAB] M. I. Muslimin Idris, M. S. Said, and B. Rahman, “Sistem Informasi Pemantauan Data Cuaca Berbasis Android Untuk Mendukung Pertanian Di Kabupaten Konawe Selatan,” Simtek  J. Sist. Inf. dan Tek. Komput., vol. 10, no. 2, pp. 528–533, 2025, doi: 10.51876/simtek.v10i2.1682.
+P551 [Normal]: [4] [TAB] S. R. Wulandari, H. Hamdani, and A. Septiarini, “Sistem Pendukung Keputusan Kesesuaian Lahan Tanaman Padi Menggunakan Metode AHP dan SAW,” JISKA (Jurnal Inform. Sunan Kalijaga), vol. 7, no. 3, pp. 226–236, 2022, doi: 10.14421/jiska.2022.7.3.226-236.
+P552 [Normal]: [5] [TAB] N. L. W. S. R. Ginantra, T. Hendrawati, and D. A. P. Wulandari, “Penerapan Metode Stable Diffusion Dengan Fine Tuning Untuk Pola Endek Bali,” Tematik, vol. 11, no. 2, pp. 141–147, 2024, doi: 10.38204/tematik.v11i2.2069.
+P553 [Normal]: [6] [TAB] N. Mukaromah, S. Mulyono, U. Islam, and S. Agung, “Implementasi Stable Diffusion Dan Fine-Tuning Low Rank Adaptation Untuk Pembuatan Logo,” J. Rekayasa Sist. Inf. dan Teknol., vol. 2, no. 3, pp. 973–984, 2025, doi: 10.70248/jrsit.v2i3.1885.
+P554 [Normal]: [7] [TAB] L. K. wijaya Suhartini, Putra Hadian Mandala, Muhammad Saiful, “Sistem Informasi Berbasis Web Untuk Pemetaan Geografis Lahan Pertanian ( Studi Kasus : Desa Darmasari Kecamatan Sikur Lombok Timur ) Kehadiran teknologi infomasi saat ini sudah sangat berkembang pesat , sehingga informasi mudah untuk diakses baik melalui,” J. Inform. dan Teknol., vol. 6, no. 1, pp. 127–137, 2023, doi: 10.29408/jit.v6i1.7521.
+P555 [Normal]: [8] [TAB] S. S. Amri Muliawan Nur, Aris Sudianto, Salmiah Salmiah, “Pemetaan Lokasi Penjualan Pupuk Dan Obat-Obatan Pertanian Di Kabupaten Sumbawa Berbasis GIS ( Geographic Information System ) Sumbawa merupakan salah satu kabupaten yang berada di provinsi Nusa Tenggara Barat , beriklim tropis yang dipengaruhi oleh musim,” vol. 5, no. 2, 2022, doi: 10.29408/jit.v5i2.5891.
+P556 [Normal]: [9] [TAB] M. H. Fajar and A. F. Waluyo, “Sistem Monitoring dan Penyiraman Otomatis Pada Bibit Sawit Berbasis Android,” Infotek J. Inform. dan Teknol., vol. 7, no. 1, pp. 123–132, 2024, doi: 10.29408/jit.v7i1.24026.
+P557 [Normal]: [10] [TAB] S. E. Indra Gunawan, Muhammad Sadali, Lalu Kerta Wijaya, “Implementasi Internet Of Things (IOT) Untuk Monitoring Kualitas Tanah Tanaman Herbal Dengan Integrasi QR Code,” vol. 2, no. 2, pp. 306–312, 2024, doi: 10.29408/jit.v8i2.31101.
+P558 [Normal]: [11] [TAB] S. Indra Gunawan, M. Nurul Wathani, Zulkipli, “Infotek : Jurnal Informatika dan Teknologi Pengembangan Web Dashboard Monitoring Kadar Nitrogen , Fosfat , Kalium ( NPK ), PH Tanah Berbasis Artificial Intelegence ( AI ) dan Internet Of Things ( IoT ) Indonesia adalah negara yang terkenal dengan sebutan,” vol. 9, no. 2, pp. 491–501, 2026, doi: 10.29408/jit.v9i2.34982.
+P559 [Normal]: [12] [TAB] A. Naisali, Y. P. K. Kelen, R. Syarifuddin, and D. Grace Ludji, “Sistem pendukung keputusan pemilihan tanaman pangan berbasis web dengan Fuzzy Weighted Product,” J. Simantec, vol. 14, no. 1, pp. 21–36, 2025, doi: 10.21107/simantec.v14i1.29958.
+P560 [Normal]: [13] [TAB] A. Muzakki, A. M. Amri, M. I. Alhari, and F. Sadam, “Implementasi Aplikasi Smart Farm Berbasis Android Menggunakan Metode Waterfall,” J. Algoritm., vol. 22, no. 1, pp. 801–807, 2025, doi: 10.33364/algoritma/v.22-1.2286.
+P561 [Normal]: [14] [TAB] Benny Hartanto, Ningrum Astriawati, Supartini, and Damar Kuncoro Yekti, “Pencarian dan Pemanfaatan Informasi Data Badan Meteorologi, Klimatologi, dan Geofisika (BMKG),” INSOLOGI J. Sains dan Teknol., vol. 1, no. 5, pp. 553–564, 2022, doi: 10.55123/insologi.v1i5.906.
+P562 [Normal]: [15] [TAB] F. F. Diny Syarifah Sani, Finsa Nurpandi, “REKOMPOS : ANDROID-BASED RECOMMENDATION SYSTEM FOR EDIBLE,” vol. 15, no. 1, 2025, doi: 10.35194/agsci.v15i1.5258.
+P563 [Normal]: [16] [TAB] N. A. Pratama, D. Afriyantari, and P. Putri, “EMITOR : Jurnal Teknik Elektro Perancangan Aplikasi Bercocok Tanam”, doi: 10.23917/emitor.v22i1.15136.
+P564 [Normal]: [17] [TAB] T. Yu, L. Mahe, Y. Li, X. Wei, X. Deng, and D. Zhang, “Benefits of Crop Rotation on Climate Resilience and Its Prospects in China,” Agronomy, vol. 12, no. 2, pp. 1–18, 2022, doi: 10.3390/agronomy12020436.
+P565 [Normal]: [18] [TAB] R. Sahrial and B. Muslim, “Aplikasi Informasi Gempa Menggunakan Data Terbuka BMKG,” Media J. Inform., vol. 15, no. 1, p. 49, 2023, doi: 10.35194/mji.v15i1.3212.
+P566 [Normal]: [19] [TAB] H. Diansyah and S. Syafrinal, “Design and Development of a Mobile Application Using Android Studio and Flutter,” J. Mob. Technol., vol. 3, no. 2, pp. 69–76, 2025, doi: 10.59431/jms.v3i2.646.
+P567 [Normal]: [20] [TAB] H. F. Herdiyatmoko, “Desain Sistem Backend Berbasis Rest Api Menggunakan Framework Laravel 7,” Skanika, vol. 5, no. 2, pp. 136–144, 2022, doi: 10.36080/skanika.v5i2.2947.
+P568 [Normal]: [21] [TAB] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, and B. Ommer, “High-Resolution Image Synthesis with Latent Diffusion Models,” Proc. IEEE Comput. Soc. Conf. Comput. Vis. Pattern Recognit., vol. 2022-June, pp. 10674–10685, 2022, doi: 10.1109/CVPR52688.2022.01042.
+P569 [Normal]: [22] [TAB] L. Mu et al., “DenseLoRA: Dense Low-Rank Adaptation of Large Language Models,” Proc. Annu. Meet. Assoc. Comput. Linguist., vol. 1, pp. 10198–10211, 2025, doi: 10.18653/v1/2025.acl-long.503.
+P570 [Normal]: [23] [TAB] Scott Tilley, Systems Analysis and Design, 12th ed. Cengage Learning, 2020.
+P571 [Normal]: [24] [TAB] P. P. S. Chen, “The Entity-Relationship Model—toward a Unified View of Data,” ACM Trans. Database Syst., vol. 1, no. 1, pp. 9–36, 1976, doi: 10.1145/320434.320440.
+P572 [Normal]: [25] [TAB] H. R. I. Fikri and A. Voutama, “Pengujian Black Box Pada Aplikasi Database Perguruan Tinggi dengan Teknik Equivalence Partitions,” ANTIVIRUS J. Ilm. Tek. Inf., vol. 17, no. 1, pp. 1–18, 2023, doi: 10.35457/antivirus.v17i1.2501.
+P573 [Normal]: [26] [TAB] M. Y. Loso Judijanto, Mas’ud Muhammadiah, Rahmawati Ning Utami, Lalu Suhirman, Laurensius Laka, Yoseb Boari, Suri Toding Lembang, Fegie Yoanti Wattimena, Ningrum Astriawati, Rudy Dwi Laksono, Metodologi Research and Development: Teori dan Penerapan Metodologi RnD. PT Sonpedia Publishing Indonesia, 2024.
+P574 [Normal]: [27] [TAB] A. Perdana, S. Dewi, N. A. Farhana, and D. Febrian, “Comparative Analysis of SDLC and R&D Methods in System Development: A Case Study of Integrity Zone Management System,” Sinkron, vol. 9, no. 4, pp. 3197–3209, 2025, doi: 10.33395/sinkron.v9i4.15337.
+P576 [HEADING1]: LAMPIRAN
+P577 [Caption]: Lampiran 1.1 Ringkasan Hasil Pengujian Perangkat Lunak
+P579 [Normal]: Ringkasan verifikasi mencatat 125 test Python, 23 test backend, dan 13 test Flutter lulus. Pengujian UI terdiri atas 11 test dataset review dan 7 test LoRA review. Flutter static analysis juga mencatat No issues found.
+P580 [Caption]: Lampiran 1.2 Ringkasan Respon Live BMKG Wilayah Aikmel
+P582 [Normal]: Respons live yang disimpan menunjukkan data BMKG Aikmel berhasil dinormalisasi dan diproses tanpa membuat nilai curah hujan fiktif. Kalender empat minggu merupakan proyeksi aplikasi berdasarkan horizon yang tersedia, bukan prakiraan iklim bulanan resmi BMKG.
+P583 [Caption]: Lampiran 1.3 Ringkasan Kontrak Decision Table
+P585 [Normal]: Contoh skenario yang tersimpan menggunakan kategori hujan rendah, air cukup, tanaman sebelumnya padi, dan lahan sawah. Sistem memberikan prioritas cabai dengan rule ID ROT-RENDAH-CUKUP-PADI-SAWAH. Seluruh 30 kunci telah diuji secara otomatis. Hasil ini membuktikan kontrak perangkat lunak, bukan kebenaran agronomi universal. Validasi ahli agronomi tidak diklaim.
+P586 [Caption]: Lampiran 1.4 Distribusi Dataset Final
+P588 [Normal]: Seluruh gambar final mempunyai keputusan kurasi manusia accepted=yes. Dataset digunakan untuk fine-tuning LoRA sebagai visualisasi empat komoditas dan tidak digunakan untuk menentukan rekomendasi tanaman.
+P589 [Caption]: Lampiran 1.5 Ringkasan Training Lokal
+P592 [Caption]: Lampiran 1.6 Integrasi dan Normalisasi Data BMKG
+P593 [Normal]: Nama file sumber: backend-nodejs/src/services/bmkgService.js
+P594 [Code Block]: function prosesDataCuaca(dataBmkg, waktuAmbil = new Date()) {
+P595 [Code Block]:   const lokasi = dataBmkg.lokasi || {};
+P596 [Code Block]:   const rawCuaca = dataBmkg.data?.[0]?.cuaca;
+P597 [Code Block]:   const titikPrakiraan = Array.isArray(rawCuaca)
+P598 [Code Block]:     ? rawCuaca.flat(Infinity).filter((item) => item && typeof item === 'object')
+P599 [Code Block]:     : [];
+P601 [Code Block]:   const semuaPrakiraan = titikPrakiraan.map((point) => ({
+P602 [Code Block]:     waktu: point.local_datetime || null,
+P603 [Code Block]:     suhu: angkaAtauNull(point.t),
+P604 [Code Block]:     kelembaban: angkaAtauNull(point.hu),
+P605 [Code Block]:     kondisi: point.weather_desc || 'Tidak diketahui',
+P606 [Code Block]:     kecepatanAngin: angkaAtauNull(point.ws),
+P607 [Code Block]:     arahAngin: point.wd || '',
+P608 [Code Block]:     tutupanAwan: angkaAtauNull(point.tcc),
+P609 [Code Block]:     curahHujan: angkaAtauNull(point.tp),
+P610 [Code Block]:     jarakPandang: point.vs_text || '',
+P611 [Code Block]:   }));
+P613 [Code Block]:   const cuacaSaatIni = semuaPrakiraan[0] || {};
+P614 [Code Block]:   const dataCurahHujan = semuaPrakiraan
+P615 [Code Block]:     .map((point) => point.curahHujan)
+P616 [Code Block]:     .filter((value) => Number.isFinite(value));
+P617 [Code Block]:   const tanggalPrakiraan = new Set(
+P618 [Code Block]:     semuaPrakiraan.map((point) => tanggalLokal(point.waktu)).filter(Boolean)
+P619 [Code Block]:   );
+P620 [Code Block]:   const jumlahHariPrakiraan = tanggalPrakiraan.size;
+P621 [Code Block]:   const cakupanLengkap =
+P622 [Code Block]:     semuaPrakiraan.length > 0 && dataCurahHujan.length === semuaPrakiraan.length;
+P623 [Code Block]:   const totalCurahHujanPrakiraan = cakupanLengkap
+P624 [Code Block]:     ? bulatkan(dataCurahHujan.reduce((total, value) => total + value, 0))
+P625 [Code Block]:     : null;
+P626 [Code Block]:   const estimasiCurahHujanBulanan =
+P627 [Code Block]:     cakupanLengkap && jumlahHariPrakiraan > 0
+P628 [Code Block]:       ? Math.round((totalCurahHujanPrakiraan / jumlahHariPrakiraan) * 30)
+P629 [Normal]:       : null;
+P630 [Normal]:  [TAB] Potongan ini meratakan struktur prakiraan BMKG, menormalisasi setiap field cuaca, dan mempertahankan nilai numerik yang tidak tersedia sebagai `null`. Estimasi setara 30 hari hanya dihitung apabila seluruh titik prakiraan memiliki data curah hujan sehingga sistem tidak membuat nilai hujan fiktif.
+P631 [Caption]: Lampiran 1.7 Rule-Based Engine Rekomendasi Tanaman
+P632 [Normal]: Nama file sumber: backend-nodejs/src/services/rekomendasiService.js
+P633 [Code Block]: function dapatkanRekomendasi(input) {
+P634 [Code Block]:   try {
+P635 [Code Block]:     const {
+P636 [Code Block]:       curahHujan,
+P637 [Code Block]:       ketersediaanAir,
+P638 [Code Block]:       tanamanSebelumnya,
+P639 [Code Block]:       jenisLahan,
+P640 [Code Block]:     } = input;
+P642 [Code Block]:     logger.info(
+P643 [Code Block]:       `Memproses rekomendasi: hujan=${curahHujan}, air=${ketersediaanAir}, sebelumnya=${tanamanSebelumnya}`
+P644 [Code Block]:     );
+P646 [Code Block]:     // Validasi
+P647 [Code Block]:     const errors = validasiInput(curahHujan, ketersediaanAir, tanamanSebelumnya, jenisLahan);
+P648 [Code Block]:     if (errors.length > 0) {
+P649 [Code Block]:       return { status: 'gagal', errors };
+P650 [Code Block]:     }
+P652 [Code Block]:     // Perlakuan khusus: jika air "kurang", anggap seperti "terbatas" untuk pencarian aturan
+P653 [Code Block]:     const airUntukAturan = ketersediaanAir === 'kurang' ? 'terbatas' : ketersediaanAir;
+P655 [Code Block]:     // Bentuk kunci untuk cari di decision table
+P656 [Code Block]:     const kunci = `${curahHujan}_${airUntukAturan}_${tanamanSebelumnya}`;
+P657 [Code Block]:     logger.info(`Mencari aturan dengan kunci: ${kunci}`);
+P659 [Code Block]:     const hasilPencarian = cariAturan(kunci);
+P660 [Code Block]:     const aturan = hasilPencarian.aturan;
+P661 [Code Block]:     const penyesuaianLahan = sesuaikanUrutanDenganLahan(
+P662 [Code Block]:       aturan.rekomendasi,
+P663 [Code Block]:       jenisLahan
+P664 [Code Block]:     );
+P665 [Code Block]:     const ruleId = buatRuleId(kunci, jenisLahan, hasilPencarian.menggunakanDefault);
+P666 [Code Block]:     const tanamanTidakValid = penyesuaianLahan.rekomendasi.filter(
+P667 [Code Block]:       (kode) => !KODE_TANAMAN_VALID.has(kode)
+P668 [Code Block]:     );
+P669 [Code Block]:     if (tanamanTidakValid.length > 0) {
+P670 [Code Block]:       throw new Error(`Konfigurasi aturan memuat tanaman tidak valid: ${tanamanTidakValid.join(', ')}`);
+P671 [Normal]:     }
+P672 [Normal]:  [TAB] Fungsi ini memvalidasi masukan, membentuk kunci decision table dari kategori hujan, ketersediaan air, dan tanaman sebelumnya, lalu menyesuaikan urutan rekomendasi terhadap jenis lahan. Setiap keputusan memperoleh rule ID sehingga keluaran dapat ditelusuri dan diaudit.
+P673 [Caption]: Lampiran 1.8 Endpoint dan Proxy Inference pada Express
+P674 [Normal]: Nama file sumber: backend-nodejs/src/routes/visualRoutes.js
+P675 [Code Block]: router.post('/generate', limitVisualRequests, async (req, res) => {
+P676 [Code Block]:   const requestId = req.visualRequestId;
+P677 [Code Block]:   try {
+P678 [Code Block]:     const selectedCrop = selectedCropFor(req.body);
+P679 [Code Block]:     const payload = { ...req.body, crop: selectedCrop, request_id: requestId };
+P680 [Code Block]:     delete payload.selected_crop;
+P681 [Code Block]:     logger.info(`EXPRESS_SELECTED_CROP=${selectedCrop} request_id=${requestId}`);
+P682 [Code Block]:     const result = await inferenceService.generate(payload, requestId);
+P683 [Code Block]:     assertUpstreamCrop(result, selectedCrop);
+P684 [Code Block]:     const fileName = generatedFileName(result.image_url);
+P685 [Code Block]:     return res.json({
+P686 [Code Block]:       ...result,
+P687 [Code Block]:       request_id: requestId,
+P688 [Code Block]:       crop: selectedCrop,
+P689 [Code Block]:       selected_crop: selectedCrop,
+P690 [Code Block]:       image_url: `${publicBaseUrl(req)}/api/visual/images/${encodeURIComponent(fileName)}`,
+P691 [Code Block]:       metadata: {
+P692 [Code Block]:         ...(result.metadata || {}),
+P693 [Code Block]:         crop: selectedCrop,
+P694 [Code Block]:         selected_crop: selectedCrop,
+P695 [Code Block]:         delivery_path: 'backend_proxy',
+P696 [Code Block]:         upstream_image_url_exposed: false,
+P697 [Code Block]:       },
+P698 [Code Block]:     });
+P699 [Code Block]:   } catch (error) {
+P700 [Code Block]:     return handleError(res, error, requestId);
+P701 [Code Block]:   }
+P702 [Normal]: });
+P703 [Normal]:  [TAB] Route ini menormalisasi komoditas terpilih, meneruskan request ke layanan inference, memverifikasi bahwa komoditas respons sesuai dengan pilihan pengguna, dan mengganti alamat gambar upstream dengan endpoint proxy Express. Dengan demikian, aplikasi Flutter tidak menerima URL internal layanan GPU.
+P704 [Caption]: Lampiran 1.9 Request Flutter ke Backend Express
+P705 [Normal]: Nama file sumber: 
+P706 [Normal]: mobile-flutter/tani_adaptif/lib/services/stable_diffusion_service.dart
+P707 [Code Block]: Future<GenerateVisualResponse> generate(GenerateVisualRequest request) async {
+P708 [Code Block]:   try {
+P709 [Code Block]:     debugPrint('FLUTTER_REQUEST_CROP=${request.selectedCrop}');
+P710 [Code Block]:     final response = await _dio.post(
+P711 [Code Block]:       'visual/generate',
+P712 [Code Block]:       data: request.toJson(),
+P713 [Code Block]:       options: Options(
+P714 [Code Block]:         headers: {
+P715 [Code Block]:           'X-Request-ID': request.requestId,
+P716 [Code Block]:           // Header autentikasi tidak ditampilkan dalam lampiran.
+P717 [Code Block]:         },
+P718 [Code Block]:       ),
+P719 [Code Block]:     );
+P720 [Code Block]:     final result = GenerateVisualResponse.fromJson(_asMap(response.data));
+P721 [Code Block]:     if (result.crop != request.selectedCrop) {
+P722 [Code Block]:       throw const StableDiffusionException(
+P723 [Code Block]:         'Komoditas gambar tidak sesuai dengan tanaman yang dipilih.',
+P724 [Code Block]:         technicalMessage: 'INFERENCE_CROP_MISMATCH',
+P725 [Code Block]:       );
+P726 [Code Block]:     }
+P727 [Code Block]:     return result;
+P728 [Code Block]:   } on StableDiffusionException {
+P729 [Code Block]:     rethrow;
+P730 [Code Block]:   }
+P731 [Code Block]: }
+P733 [Code Block]: // Bagian lain pada file tidak ditampilkan.
+P735 [Code Block]: GenerateVisualRequest buildRequest({
+P736 [Code Block]:   required TanamanRekomendasi tanaman,
+P737 [Code Block]:   required CuacaModel cuaca,
+P738 [Code Block]:   required String jenisLahan,
+P739 [Code Block]:   required String ketersediaanAir,
+P740 [Code Block]:   required String tanamanSebelumnya,
+P741 [Code Block]:   int? seed,
+P742 [Code Block]:   String? requestId,
+P743 [Code Block]: }) {
+P744 [Code Block]:   final resolvedRequestId = requestId ?? _nextRequestId(tanaman.kode);
+P745 [Code Block]:   return GenerateVisualRequest(
+P746 [Code Block]:     selectedCrop: tanaman.kode,
+P747 [Code Block]:     landType: jenisLahan,
+P748 [Code Block]:     waterAvailability: ketersediaanAir,
+P749 [Code Block]:     previousCrop: tanamanSebelumnya,
+P750 [Code Block]:     weatherSummary: _weatherSummary(cuaca),
+P751 [Code Block]:     requestId: resolvedRequestId,
+P752 [Code Block]:     seed: seed,
+P753 [Code Block]:   );
+P754 [Code Block]: }
+P756 [Code Block]: String _nextRequestId(String crop) {
+P757 [Code Block]:   _requestSequence += 1;
+P758 [Code Block]:   return 'flutter-$crop-${DateTime.now().microsecondsSinceEpoch}-$_requestSequence';
+P759 [Normal]: }
+P760 [Normal]:  [TAB] Service Flutter menyusun payload dari tanaman rekomendasi, kondisi lahan, ringkasan cuaca, seed, dan request ID, lalu mengirimkannya ke endpoint proxy Express. Respons diperiksa kembali agar komoditas gambar sama dengan tanaman yang dipilih sebelum ditampilkan kepada pengguna.
+
+--- TABLE 0 rows=4 cols=2 ---
+R0: Pembimbing 1 || Pembimbing 2
+R1:  /  /  || 
+R2: JUMAWAL, M.Kom. || LALU KERTA WIJAYA, M.Pd
+R3: NUPTK. 9546775676130142  || NUPTK. 6563759660130473
+
+--- TABLE 1 rows=4 cols=3 ---
+R0: Penguji || Tanggal || Tanda Tangan
+R1: Baiq Andriska Candra Permana, M.Kom /  / NUPTK. 4141763664230240 || 9 September 2026 || 
+R2: Muhammad Wasil, SE,M.Kom /  / NUPTK. 0253750651130123 || 9 September 2026 || 
+R3: Jumawal, M.Kom /  / NUPTK. 9546775676130142 || 9 September 2026 || 
+
+--- TABLE 2 rows=7 cols=3 ---
+R0: Simbol || Nama || Fungsi
+R1:  || Terminator || Menunjukkan awal atau akhir suatu proses.
+R2:  || Process || Menunjukkan suatu proses atau aktivitas yang dilakukan oleh sistem.
+R3:  || Input/Output || Menunjukkan proses masukan atau keluaran data.
+R4:  || Decision || Menunjukkan proses pengambilan keputusan berdasarkan kondisi tertentu.
+R5:  || Flowline || Menunjukkan arah aliran proses dari satu langkah ke langkah berikutnya
+R6:  || Connector  || Menghubungkan aliran proses yang terpisah pada halaman atau bagian diagram yang berbeda.
+
+--- TABLE 3 rows=6 cols=3 ---
+R0: Simbol  || Nama  || Fungsi 
+R1:  || Actor || Menunjukkan pihak yang berinteraksi dengan sistem.
+R2:  || Use Case || Menunjukkan fungsi atau layanan yang disediakan sistem.
+R3:  || Association || Menunjukkan hubungan antara antara actor dan use case.
+R4:  || Include || Menunjukkan bahwa suatu use case selalu menggunakan use case lainnya.
+R5:  || Extend || Menunjukkan fungsi tambahan yang dapat memperluas use case utama pada kondisi tertentu.
+
+--- TABLE 4 rows=7 cols=3 ---
+R0: Simbol || Nama || Keterangan
+R1:  || Initial Node/Status Awal || Menunjukkan titik awal atau titik dimulainya suatu proses pada sistem
+R2:  || Final Node/Status Akhir || Menunjukkan tiitk akhir atau berakhirnya suatu proses pada sistem.
+R3:  || Activity/Aktivitas || Menujukkan aktivitas atau tindakan yang dilakukan oleh pengguna maupun sistem selama proses berlangsung.
+R4:  || Decision Node/Percabangan || Simbol yang digunakan untuk menunjukkan proses pengambilan keputusan atau percabangan berdasarkan suatu kondisi tertentu.
+R5:  || Join/Penggabungan || Menggabungkan beberapa alur paralel menjadi satu jalur.
+R6:  || Swimlame || Digunakan untuk memisahkan aktivitas berdasarkan pelaku atau komponen sistem yang menjalankan aktivitas tersebut.
+
+--- TABLE 5 rows=8 cols=3 ---
+R0: Simbol || Nama || Keterangan
+R1:  || Generalization || Hubungan dimana objek anak (descendent)  / Berbagi prilaku dan struktur data dari objek  / Yang ada di atasnya objek induk (ancestor).
+R2:  || Nary Assocation || Upaya untuk menghindari asosiasi dengan lebih dari 2 objek.
+R3:  || Class || Himpunan dari objek-objek yang berbagi atribut serta operasi yang sama.
+R4:  || Collaboration || Deskripsi dari urutan aksi-aksi yang ditampilkan sistem yang menghasilkan suatu hasil yang terukur bagi suatu actor.
+R5:  /  || Realization || Menunjukkan bahwa suatu use case seluruhnya merupakan fungsionalitas dari use case lainnya
+R6:  /  || Dependency || Menunjukkan bahwa suatu use case merupakan tambahan fungsional dari use case lainnya jika suatu kondisi terpenuhi
+R7:  || Association || Relasi Antar kelas dengan makna umum, asosiasi biasanya juga disertai multiplicity
+
+--- TABLE 6 rows=7 cols=3 ---
+R0: Simbol  || Nama  || Fungsi 
+R1:  || Entitas  || Mengambarkan objek atau kelompok data yang disimpan dalam sistem.
+R2:  || Atribut  || Menggambarkan karakteristik atau informasi yang dimiliki oleh suatu entitas.
+R3:  || Relasi  || Menggambarkan hubungan antara satu entitas dengan entitas lainnya.
+R4:  || Primary Key || Menunjukkan atribut yang digunakan sebagai identitas unik suatu entitas.
+R5:  || Foreign Key || Menunjukkan atribut yang digunakan untuk menghubungkan suatu entitas dengan entitas lainnya.
+R6:  || Cardinality || Menunjukkan jumlah atau banyaknya hubungan antarentitas, seperti one-to-one, one-to-many, dan many-to-many.
+
+--- TABLE 7 rows=10 cols=4 ---
+R0: No. || Jenis Data || Sumber Data || Kegunaan
+R1: 1 || Data cuaca || Layanan data BMKG || Menyediakan informasi kondisi cuaca dan menjadi input proses rekomendasi
+R2: 2 || Jenis lahan || Input pada aplikasi || Variabel pada rule-based engine
+R3: 3 || Ketersediaan air || Input pada aplikasi || Variabel pada rule-based engine
+R4: 4 || Tanaman sebelumnya || Input pada aplikasi || Variabel untuk menentukan alternatif rotasi tanaman
+R5: 5 || Dataset visual padi, jagung, cabai, dan kacang tanah || Dataset yang dikumpulkan dan dikurasi || Bahan fine-tuning dan validasi LoRA
+R6: 6 || Referensi ilmiah || Artikel, buku, dan sumber resmi || Dasar teori dan penyusunan aturan rekomendasi
+R7: 7 || Data proses pelatihan || Hasil fine-tuning LoRA || Evaluasi proses pelatihan
+R8: 8 || Gambar hasil inference || Stable Diffusion dasar dan Stable Diffusion LoRA || Evaluasi teknis hasil simulasi visual
+R9: 9 || Data pengujian sistem || Hasil pengujian aplikasi dan integrasi || Menilai kesesuaian fungsi sistem dengan rancangan
+
+--- TABLE 8 rows=6 cols=3 ---
+R0: No. || Permasalahan || Dampak
+R1: 1 || Data cuaca BMKG masih digunakan sebatas sebagai informasi cuaca dan belum terintegrasi dengan kondisi lahan serta tanaman sebelumnya. || Informasi cuaca belum dapat digunakan secara langsung bersama kondisi lahan dan tanaman sebelumnya dalam satu proses.
+R2: 2 || Jenis lahan, ketersediaan air, dan tanaman sebelumnya masih dipertimbangkan secara terpisah. || Proses pertimbangan kondisi lahan belum menghasilkan pengambilan keputusan yang terintegrasi.
+R3: 3 || Belum terdapat proses otomatis menggunakan rule-based engine untuk mengolah kondisi cuaca dan kondisi lahan. || Penentuan tanaman masih belum dilakukan berdasarkan aturan yang terstruktur dan otomatis.
+R4: 4 || Belum terdapat proses yang menghasilkan rekomendasi rotasi tanaman secara terintegrasi berdasarkan kondisi yang tersedia. || Rekomendasi rotasi tanaman belum dapat diperoleh secara otomatis dan terintegrasi.
+R5: 5 || Proses visualisasi tanaman masih dilakukan secara terpisah dari proses penentuan rekomendasi. || Hasil visualisasi belum terhubung langsung dengan hasil rekomendasi tanaman.
+
+--- TABLE 9 rows=8 cols=3 ---
+R0: Aspek || Sistem Berjalan || Sistem yang Diusulkan
+R1: Informasi cuaca || Berdiri sebagai informasi terpisah || Diambil dan diproses dalam aplikasi
+R2: Kondisi lahan || Belum terintegrasi || Menjadi input sistem
+R3: Penentuan tanaman || Belum diproses dalam satu mekanisme || Menggunakan rule-based engine
+R4: Komoditas || Tidak dibatasi dalam sistem || Padi, jagung, cabai, kacang tanah
+R5: Simulasi visual || Terpisah dari rekomendasi || Terintegrasi melalui Stable Diffusion LoRA
+R6: Riwayat rekomendasi || Tidak berada pada satu sistem || Disimpan dan dapat diakses melalui aplikasi
+R7: Integrasi || Komponen terpisah || Terhubung dalam satu alur aplikasi
+
+--- TABLE 10 rows=5 cols=4 ---
+R0: No. || Perangkat || Spesifikasi || Kegunaan
+R1: 1. || Laptop pengembangan || AMD Ryzen 3 5300U, AMD Radeon Graphics || Pengembangan aplikasi Flutter, pengelolaan dataset, implementasi rule-based engine, integrasi dan pengujian sistem
+R2: 2. || Komputasi cloud || GPU NVIDIA Tesla T4 || Fine-tuning Stable Diffusion dengan LoRA dan proses inference
+R3: 3. || Perangkat Android || Smartphone berbasis Android || Menjalankan dan menguji aplikasi mobile
+R4: 4. || Koneksi internet || Jaringan internet || Mengakses data BMKG, lingkungan cloud, dependensi perangkat lunak, serta komunikasi dengan layanan inference
+
+--- TABLE 11 rows=18 cols=3 ---
+R0: No. || Perangkat Lunak || Kegunaan
+R1: 1 || Windows || Sistem operasi pada perangkat pengembangan
+R2: 2 || Visual Studio Code || Lingkungan pengembangan dan pengelolaan kode program
+R3: 3 || Flutter || Framework pengembangan aplikasi mobile
+R4: 4 || Dart || Bahasa pemrograman aplikasi Flutter
+R5: 5 || Android SDK || Kompilasi, pembangunan APK, dan pengujian aplikasi Android
+R6: 6 || Node.js || Menjalankan layanan backend dan integrasi data
+R7: 7 || Python || Pengolahan dataset, fine-tuning, dan inference model
+R8: 8 || Stable Diffusion 1.5 || Model dasar pembangkitan simulasi visual
+R9: 9 || PyTorch || Framework komputasi dan pelatihan model
+R10: 10 || Diffusers || Implementasi pipeline Stable Diffusion dan LoRA
+R11: 11 || Transformers || Komponen pemrosesan model berbasis teks
+R12: 12 || Accelerate || Pengaturan dan eksekusi proses pelatihan pada GPU
+R13: 13 || PEFT || Implementasi teknik parameter-efficient fine-tuning
+R14: 14 || bitsandbytes || Mendukung optimasi penggunaan memori pada proses pelatihan
+R15: 15 || safetensors || Format penyimpanan bobot model LoRA
+R16: 16 || Kaggle Notebook || Lingkungan cloud untuk fine-tuning dan inference berbasis GPU
+R17: 17 || Git || Pengelolaan versi kode sumber
+
+--- TABLE 12 rows=3 cols=3 ---
+R0: No || Pihak || Peran
+R1: 1 || Peneliti/Pengembang || Menganalisis kebutuhan, merancang dan membangun aplikasi, menyusun rule-based engine, menyiapkan dataset, melakukan fine-tuning LoRA, integrasi, pengujian, dan dokumentasi sistem.
+R2: 2 || Pengguna  || Mengakses informasi cuaca, memasukkan kondisi lahan, memperoleh rekomendasi, meminta simulasi visual, dan melihat riwayat rekomendasi.
+
+--- TABLE 13 rows=13 cols=6 ---
+R0: No. || Kondisi Cuaca || Air || Tanaman Sebelumnya || Jenis Lahan || Rekomendasi
+R1: 1 || Basah || Cukup || Jagung || Sawah || Padi
+R2: 2 || Basah || Cukup || Kacang tanah || Sawah || Padi
+R3: 3 || Sedang || Terbatas || Padi || Tegalan/Ladang || Jagung
+R4: 4 || Kering || Kurang || Padi || Tegalan/Ladang || Kacang tanah
+R5: 5 || Sedang || Cukup || Jagung || Kebun campur || Cabai
+R6: 6 || Kering || Terbatas || Cabai || Tegalan/Ladang || Kacang tanah
+R7: 7 || Basah || Terbatas || Cabai || Sawah || Padi
+R8: 8 || Sedang || Terbatas || Kacang tanah || Tegalan/Ladang || Jagung
+R9: 9 || Sedang || Cukup || Kosong || Kebun campur || Cabai
+R10: 10 || Kering || Cukup || Jagung || Kebun campur || Cabai
+R11: 11 || Sedang || Kurang || Kosong || Tegalan/Ladang || Kacang tanah
+R12: 12 || Basah || Cukup || Padi || Kebun campur || Cabai
+
+--- TABLE 14 rows=15 cols=2 ---
+R0: Parameter || Konfigurasi
+R1: Model dasar || Stable Diffusion 1.5
+R2: Resolusi || 512 × 512 piksel
+R3: LoRA rank || 8
+R4: Train batch size || 1
+R5: Gradient accumulation || 4
+R6: Learning rate || 0,0001
+R7: Main training || 1.600 langkah
+R8: Smoke test || 100 langkah
+R9: Checkpoint interval || 200 langkah
+R10: Mixed precision || FP16
+R11: Optimizer || 8-bit Adam
+R12: Gradient checkpointing || Aktif
+R13: Seed || 42
+R14: Lingkungan komputasi || Kaggle GPU NVIDIA Tesla T4
+
+--- TABLE 15 rows=7 cols=3 ---
+R0: Komponen || Hasil implementasi || Status bukti
+R1: Aplikasi mobile || Flutter Android memuat dashboard cuaca, form lahan, hasil rekomendasi, kalender empat minggu, dan permintaan simulasi visual || Terimplementasi dan diuji otomatis
+R2: Data cuaca || Express mengambil dan menormalkan API BMKG untuk ADM4 Aikmel dengan timeout dan cache || Kontrak dan respons live tercatat
+R3: Rekomendasi || Rule-based engine mempunyai 30 kunci utama, empat kelas keluaran, alasan, dan rule ID || 30/30 kunci diuji deterministik
+R4: Simulasi visual || Flutter ke Express proxy ke FastAPI ke provider Diffusers pada GPU || Kontrak mock lulus; E2E GPU tersedia
+R5: Model visual || Stable Diffusion 1.5 dengan LoRA final dari run 20260820T143551Z || Training, export, sanity, dan evaluasi selesai
+R6: Penyimpanan lokal || Cache cuaca, cache rekomendasi berbasis signature, dan riwayat visual maksimal 20 entri || Penyimpanan diuji; layar riwayat khusus belum tersedia
+
+--- TABLE 16 rows=23 cols=7 ---
+R0: No. || Fitur || Skenario Pengujian || Input || Hasil yang Diharapkan || Hasil Aktual || Status
+R1: 1 || Health backend || Memanggil endpoint kesehatan || GET /api/kesehatan || HTTP 200 dan status layanan || Kontrak kesehatan terpenuhi || Lulus
+R2: 2 || Validasi rekomendasi || Mengirim input valid dan tidak lengkap || POST /api/rekomendasi || Input valid diproses; input salah ditolak || Rule ID dikembalikan dan payload salah ditolak || Lulus
+R3: 3 || Parser BMKG || Field curah hujan tidak tersedia || Fixture tanpa tp || Nilai dipertahankan null || Tidak dibuat nilai hujan fiktif || Lulus
+R4: 4 || Cache BMKG || Network, cache segar, lalu timeout || Tiga permintaan berurutan || network ke fresh-cache ke stale-cache || Urutan fallback teramati || Lulus
+R5: 5 || Decision table || Menjalankan seluruh kunci aturan || 30 kombinasi hujan-air-tanaman || Keluaran valid dan dapat diaudit || 30/30 kunci menghasilkan empat kelas terbatas || Lulus
+R6: 6 || Penyesuaian lahan || Membandingkan sawah dan non-sawah || Input cuaca, air, dan tanaman sama || Jenis lahan memengaruhi prioritas || Prioritas berubah deterministik dan rule ID berbeda || Lulus
+R7: 7 || Kalender rekomendasi || Membentuk rencana satu bulan || Kondisi valid dan tanggal acuan || Empat rentang mingguan stabil || Empat minggu dengan tanggal stabil || Lulus
+R8: 8 || Integrasi BMKG live || Mengambil cuaca ADM4 Aikmel || 52.03.09.2002 || Respons lokasi dan horizon dapat diproses || Uji 5 Agustus 2026: 18 titik/3 hari; 18 tp lengkap || Lulus
+R9: 9 || FastAPI health/ready || Menjalankan provider lokal aman || GET /health dan /ready || Status provider eksplisit || HTTP 200, provider mock dan CPU terlabel jelas || Lulus (mock)
+R10: 10 || Validasi inference || Crop, dimensi, atau prompt tidak valid || Payload di luar kontrak || HTTP 422 terstruktur || VALIDATION_ERROR dikembalikan || Lulus
+R11: 11 || Timeout inference || Provider gagal atau lambat || Fixture error dan timeout || Retry terbatas; HTTP 503/504 || Satu retry untuk error; timeout tidak diulang || Lulus
+R12: 12 || Akses visual backend || Token kosong/placeholder dan rate limit || Route /api/visual || Akses ditolak atau dibatasi || Token salah ditolak dan rate limit aktif || Lulus
+R13: 13 || Proxy pembangkitan || Meneruskan konteks rekomendasi || POST /api/visual/generate || Request ID tetap dan URL upstream tersembunyi || Kontrak terpenuhi pada provider mock || Lulus (mock)
+R14: 14 || Pengiriman PNG || Mengambil gambar melalui Express || GET /api/visual/images/*.png || PNG valid dari domain backend || PNG mock valid dan URL upstream tidak terbuka || Lulus (mock)
+R15: 15 || Cache cuaca Flutter || Jaringan gagal setelah data tersimpan || Simulasi offline || Cache lokal ditampilkan || Data cache termuat dengan notice || Lulus
+R16: 16 || Cache rekomendasi Flutter || Mencari cache dengan signature input || Signature sama dan berbeda || Hanya signature sama dimuat || Perilaku sesuai kontrak || Lulus
+R17: 17 || Isolasi kegagalan visual || Provider visual gagal || Rekomendasi Jagung dan error visual || Rekomendasi tetap terlihat || Widget tetap menampilkan Jagung || Lulus
+R18: 18 || Riwayat visual || Menyimpan 25 entri || 25 fixture riwayat || Maksimal 20 entri terbaru || request-24 sampai request-5 tersimpan || Lulus
+R19: 19 || Artefak LoRA || Memvalidasi model dan export || ZIP run 20260820T143551Z || Hash, tensor, manifest, PNG, dan loss valid || 100 file; 256 tensor; 76 PNG; error 0 || Lulus
+R20: 20 || Human review analyzer || Menganalisis review final || 72 penilaian/36 pasangan || Pair identik, tidak kosong, tanpa skor otomatis || Seluruh pemeriksaan true; JSON/CSV/Markdown terbentuk || Lulus
+R21: 21 || Inference E2E GPU || Flutter-backend-FastAPI-CUDA-LoRA-PNG || Host GPU nyata || Diffusers CUDA, hash final, PNG 512 x 512 ||  E2E GPU tersedia || Sudah di uji
+R22: 22 || Tampilan Android nyata || Menampilkan PNG E2E pada perangkat || APK dan backend GPU nyata || Gambar LoRA termuat dan terdokumentasi || Android tersedia || Sudah di uji
+
+--- TABLE 17 rows=9 cols=3 ---
+R0: Bukti || Hasil penting || Sumber artefak
+R1: Health backend || Endpoint kesehatan memenuhi kontrak dasar || artifacts/test_reports/node_backend_tests.txt
+R2: Validasi rekomendasi || Input valid menghasilkan rekomendasi dan rule ID; input salah ditolak || artifacts/test_reports/node_backend_tests.txt
+R3: Decision table || Seluruh 30 kunci menghasilkan keluaran valid, dapat diaudit, dan mencakup empat kelas || artifacts/test_reports/node_backend_tests.txt
+R4: Parser BMKG || Nilai curah hujan yang tidak tersedia dipertahankan sebagai null || artifacts/test_reports/node_backend_tests.txt
+R5: Cache BMKG || Urutan network, fresh-cache, dan stale-cache telah diuji || artifacts/test_reports/node_backend_tests.txt
+R6: Inference API || 29 test Python inference lulus pada verifikasi 21 Agustus 2026 || thesis_output/evidence/software_verification_20260821.json
+R7: Proxy visual || Kontrak Express ke provider mock dan pengiriman PNG melalui backend lulus || artifacts/test_reports/backend_inference_proxy_live_contract.json
+R8: Riwayat Flutter || Penyimpanan, pembacaan, dan batas jumlah riwayat diuji pada suite Flutter || artifacts/test_reports/flutter_tests.txt
+
+--- TABLE 18 rows=12 cols=2 ---
+R0: Item || Hasil aktual
+R1: Kode wilayah ADM4 || 52.03.09.2002
+R2: Desa/Kecamatan || Aikmel/Aikmel
+R3: Kabupaten || Lombok Timur
+R4: Provinsi || Nusa Tenggara Barat
+R5: Status cuaca || Berhasil
+R6: Jumlah titik prakiraan || 18
+R7: Horizon || 3 hari
+R8: Titik curah hujan tersedia || 18 dari 18
+R9: Kalender rekomendasi || 4 minggu
+R10: Contoh rekomendasi || cabai
+R11: Rule ID || ROT-RENDAH-CUKUP-PADI-SAWAH
+
+--- TABLE 19 rows=8 cols=2 ---
+R0: Unsur || Nilai
+R1: Kategori hujan || tinggi, sedang, rendah
+R2: Ketersediaan air untuk kunci utama || cukup, terbatas
+R3: Tanaman sebelumnya || padi, jagung, cabai, kacang tanah, kosong
+R4: Jenis lahan || sawah, tegalan, kebun campur
+R5: Jumlah kunci utama || 30
+R6: Kelas keluaran || padi, jagung, cabai, kacang tanah
+R7: Bidang audit || tanaman prioritas, daftar rekomendasi, alasan, input summary, rule ID
+
+--- TABLE 20 rows=6 cols=4 ---
+R0: Komoditas || Total final || Train || Validation
+R1: padi || 95 || 76 || 19
+R2: jagung || 100 || 80 || 20
+R3: cabai || 97 || 78 || 19
+R4: kacang tanah || 97 || 78 || 19
+R5: Total || 389 || 312 || 77
+
+--- TABLE 21 rows=10 cols=2 ---
+R0: Tahap || Hasil
+R1: Run final || 20260820T143551Z
+R2: GPU || 2 x Tesla T4
+R3: Smoke test || Lulus, 100 steps, 4 menit 10,79 detik
+R4: Main training || Selesai, 1.600 steps, 55 menit 46,29 detik
+R5: File LoRA || multisource_multicrop_lora.safetensors
+R6: Ukuran || 6.414.992 byte
+R7: Tensor || 256
+R8: SHA-256 || 0bda8908d577513110c22cf5ec1b8a7e008d2b26dd90525732a5c4e4b1bdd43a
+R9: Sanity images || 4 dari 4 valid
+
+--- HEADERS/FOOTERS ---
+SECTION 0 HEADER: 
+SECTION 0 FOOTER: 
+SECTION 1 HEADER: 
+SECTION 1 FOOTER: 
+SECTION 2 HEADER: 
+SECTION 2 FOOTER: 
+
+--- STYLES USED ---
+Caption
+Code Block
+HEADING1
+Heading 2
+Heading 3
+List Number
+List Paragraph
+No Spacing
+Normal
+table of figures
+toc 1
+toc 2
+toc 3
+
+
+====================================================================================================
+

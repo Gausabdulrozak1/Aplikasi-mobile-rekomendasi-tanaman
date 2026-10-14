@@ -7,12 +7,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tani_adaptif/models/cuaca_model.dart';
 import 'package:tani_adaptif/models/generate_visual_model.dart';
 import 'package:tani_adaptif/models/rekomendasi_model.dart';
+import 'package:tani_adaptif/services/demo_visual_fallback_service.dart';
 import 'package:tani_adaptif/services/stable_diffusion_service.dart';
 
 void main() {
   test('GenerateVisualRequest serializes structured API payload', () {
     const request = GenerateVisualRequest(
-      crop: 'padi',
+      selectedCrop: 'padi',
       landType: 'sawah',
       waterAvailability: 'cukup',
       previousCrop: 'jagung',
@@ -20,11 +21,27 @@ void main() {
       requestId: 'flutter-test-1',
     );
 
-    expect(request.toJson()['crop'], 'padi');
+    expect(request.toJson()['selected_crop'], 'padi');
+    expect(request.toJson(), isNot(contains('crop')));
     expect(request.toJson()['land_type'], 'sawah');
     expect(request.toJson()['previous_crop'], 'jagung');
     expect(request.toJson()['request_id'], 'flutter-test-1');
+    expect(request.toJson(), isNot(contains('seed')));
     expect(request.toJson(), isNot(contains('prompt')));
+  });
+
+  test('GenerateVisualRequest preserves an explicit reproducible seed', () {
+    const request = GenerateVisualRequest(
+      selectedCrop: 'cabai',
+      landType: 'tegalan',
+      waterAvailability: 'cukup',
+      previousCrop: 'padi',
+      weatherSummary: 'Cerah',
+      requestId: 'flutter-seed-42',
+      seed: 42,
+    );
+
+    expect(request.toJson()['seed'], 42);
   });
 
   test('GenerateVisualResponse parses request and model provenance', () {
@@ -46,6 +63,35 @@ void main() {
     expect(response.metadata['trigger_token'], 'taniadaptif_padi');
   });
 
+  test('demo visual fallback preserves the four crop trigger mappings', () {
+    const crops = {
+      'padi': 'taniadaptif_padi',
+      'jagung': 'taniadaptif_jagung',
+      'cabai': 'taniadaptif_cabai',
+      'kacang_tanah': 'taniadaptif_kacang_tanah',
+    };
+
+    for (final entry in crops.entries) {
+      final response = DemoVisualFallbackService.responseFor(
+        GenerateVisualRequest(
+          selectedCrop: entry.key,
+          landType: 'sawah',
+          waterAvailability: 'cukup',
+          previousCrop: 'padi',
+          weatherSummary: 'Cerah',
+          requestId: 'fallback-${entry.key}',
+        ),
+        fallbackReason: 'offline',
+      );
+
+      expect(response, isNotNull);
+      expect(response!.crop, entry.key);
+      expect(response.metadata['trigger_token'], entry.value);
+      expect(response.metadata['visual_source'], 'cached_inference_artifact');
+      expect(response.metadata['asset_path'], startsWith('assets/demo_visual/'));
+    }
+  });
+
   test('StableDiffusionService builds request from recommendation context', () {
     final service = StableDiffusionService();
     final request = service.buildRequest(
@@ -57,12 +103,40 @@ void main() {
       requestId: 'fixed-request',
     );
 
-    expect(request.crop, 'padi');
+    expect(request.selectedCrop, 'padi');
     expect(request.previousCrop, 'jagung');
     expect(request.weatherSummary, contains('Berawan'));
     expect(request.weatherSummary, contains('kelembaban 80 persen'));
     expect(request.weatherSummary, isNot(contains('Aikmel')));
+    expect(request.seed, isNull);
   });
+
+  test(
+    'StableDiffusionService creates a new request ID for every simulation',
+    () {
+      final service = StableDiffusionService();
+      final first = service.buildRequest(
+        tanaman: _tanamanPadi,
+        cuaca: _cuaca,
+        jenisLahan: 'sawah',
+        ketersediaanAir: 'cukup',
+        tanamanSebelumnya: 'jagung',
+      );
+      final second = service.buildRequest(
+        tanaman: _tanamanPadi,
+        cuaca: _cuaca,
+        jenisLahan: 'sawah',
+        ketersediaanAir: 'cukup',
+        tanamanSebelumnya: 'jagung',
+      );
+
+      expect(first.selectedCrop, 'padi');
+      expect(second.selectedCrop, 'padi');
+      expect(first.seed, isNull);
+      expect(second.seed, isNull);
+      expect(first.requestId, isNot(second.requestId));
+    },
+  );
 
   test('StableDiffusionService parses structured connection error clearly', () {
     final service = StableDiffusionService();
@@ -102,9 +176,38 @@ void main() {
       expect(response.imageUrl, endsWith('/api/visual/images/mock.png'));
       expect(adapter.lastRequestId, 'flutter-fixed-42');
       expect(adapter.lastClientToken, 'temporary-client-token');
-      expect(adapter.lastPayload?['crop'], 'padi');
+      expect(adapter.lastPayload?['selected_crop'], 'padi');
+      expect(adapter.lastPayload, isNot(contains('seed')));
     },
   );
+
+  test('StableDiffusionService rejects a mismatched response crop', () async {
+    final dio = Dio(BaseOptions(baseUrl: 'http://mock.test/api/'));
+    dio.httpClientAdapter = _FakeInferenceAdapter(responseCrop: 'cabai');
+    final service = StableDiffusionService(
+      dio: dio,
+      clientToken: 'temporary-client-token',
+    );
+    final request = service.buildRequest(
+      tanaman: _tanamanPadi,
+      cuaca: _cuaca,
+      jenisLahan: 'sawah',
+      ketersediaanAir: 'cukup',
+      tanamanSebelumnya: 'jagung',
+      requestId: 'flutter-mismatch-42',
+    );
+
+    await expectLater(
+      service.generate(request),
+      throwsA(
+        isA<StableDiffusionException>().having(
+          (error) => error.technicalMessage,
+          'technicalMessage',
+          'INFERENCE_CROP_MISMATCH',
+        ),
+      ),
+    );
+  });
 }
 
 final _tanamanPadi = TanamanRekomendasi(
@@ -133,9 +236,12 @@ const _cuaca = CuacaModel(
 );
 
 class _FakeInferenceAdapter implements HttpClientAdapter {
+  final String responseCrop;
   String? lastRequestId;
   String? lastClientToken;
   Map<String, dynamic>? lastPayload;
+
+  _FakeInferenceAdapter({this.responseCrop = 'padi'});
 
   @override
   void close({bool force = false}) {}
@@ -155,7 +261,8 @@ class _FakeInferenceAdapter implements HttpClientAdapter {
       jsonEncode({
         'success': true,
         'request_id': lastRequestId,
-        'crop': 'padi',
+        'selected_crop': responseCrop,
+        'crop': responseCrop,
         'image_url': 'http://mock.test/api/visual/images/mock.png',
         'image_id': 'mock',
         'seed': 42,

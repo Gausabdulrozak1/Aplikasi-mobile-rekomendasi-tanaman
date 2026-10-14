@@ -1,0 +1,2 @@
+experiment_id,date,base_model,lora_path,dataset_id,dataset_license,trigger_token,seed,resolution,rank,max_train_steps,checkpointing_steps,output_path,notes
+multisource_multicrop_lora_sd15,,,,stable-diffusion-v1-5/stable-diffusion-v1-5,,"taniadaptif_padi|taniadaptif_jagung|taniadaptif_cabai|taniadaptif_kacang_tanah",42,512,8,1600,200,,

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "run_id": "20260820T143551Z",
+  "status": "complete",
+  "completed_at": "2026-08-20T18:04:05.070Z",
+  "validation": {
+    "valid": true,
+    "schema_valid": true,
+    "complete": true,
+    "errors": [],
+    "total_rows": 72,
+    "completed_rows": 72,
+    "pending_rows": 0,
+    "partial_rows": 0,
+    "valid_image_rows": 72,
+    "total_conditions": 36,
+    "completed_conditions": 36
+  },
+  "summary": [
+    {
+      "variant": "base",
+      "class_id": "all",
+      "reviewed": 36,
+      "crop_correct_count": 31,
+      "crop_correct_percent": 86.11,
+      "field_context_quality_median": 4.5,
+      "visual_realism_score_median": 4.5,
+      "confusion_count": 36
+    },
+    {
+      "variant": "base",
+      "class_id": "cabai",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 5,
+      "visual_realism_score_median": 5,
+      "confusion_count": 9
+    },
+    {
+      "variant": "base",
+      "class_id": "jagung",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 5,
+      "visual_realism_score_median": 5,
+      "confusion_count": 9
+    },
+    {
+      "variant": "base",
+      "class_id": "kacang_tanah",
+      "reviewed": 9,
+      "crop_correct_count": 4,
+      "crop_correct_percent": 44.44,
+      "field_context_quality_median": 2,
+      "visual_realism_score_median": 2,
+      "confusion_count": 9
+    },
+    {
+      "variant": "base",
+      "class_id": "padi",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 4,
+      "visual_realism_score_median": 4,
+      "confusion_count": 9
+    },
+    {
+      "variant": "lora",
+      "class_id": "all",
+      "reviewed": 36,
+      "crop_correct_count": 34,
+      "crop_correct_percent": 94.44,
+      "field_context_quality_median": 4,
+      "visual_realism_score_median": 4,
+      "confusion_count": 36
+    },
+    {
+      "variant": "lora",
+      "class_id": "cabai",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 5,
+      "visual_realism_score_median": 5,
+      "confusion_count": 9
+    },
+    {
+      "variant": "lora",
+      "class_id": "jagung",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 4,
+      "visual_realism_score_median": 4,
+      "confusion_count": 9
+    },
+    {
+      "variant": "lora",
+      "class_id": "kacang_tanah",
+      "reviewed": 9,
+      "crop_correct_count": 7,
+      "crop_correct_percent": 77.78,
+      "field_context_quality_median": 4,
+      "visual_realism_score_median": 4,
+      "confusion_count": 9
+    },
+    {
+      "variant": "lora",
+      "class_id": "padi",
+      "reviewed": 9,
+      "crop_correct_count": 9,
+      "crop_correct_percent": 100,
+      "field_context_quality_median": 4,
+      "visual_realism_score_median": 4,
+      "confusion_count": 9
+    }
+  ],
+  "automated_metrics_are_proxy": true,
+  "automated_scores_inserted": false,
+  "human_review_source": "reviewer_entered_local_ui",
+  "reviewer_roles": [
+    "Peneliti"
+  ]
+}

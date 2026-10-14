@@ -1,0 +1,28 @@
+{
+  "status": "not_run",
+  "audit_date": "2026-08-13",
+  "target_steps": 100,
+  "checkpointing_steps": 50,
+  "dataset_package_available": true,
+  "dataset_package_sha256": "f6aa060658cf95e48996f10f0ffde200938d340dd15e6b60adace5bb5cecfb33",
+  "metadata_valid": true,
+  "manual_review_complete": true,
+  "class_minimum_met": true,
+  "training_allowed_by_dataset_gate": true,
+  "google_drive_authenticated": true,
+  "google_drive_structure_created": true,
+  "checksum_uploaded": true,
+  "notebooks_uploaded": 3,
+  "dataset_zip_uploaded": false,
+  "dataset_zip_upload_attempts": 2,
+  "dataset_zip_upload_error": "Connector file-blob handoff timed out after 60 seconds for the 188356224-byte ZIP.",
+  "authenticated_remote_gpu_available": false,
+  "checkpoint_available": false,
+  "lora_available": false,
+  "loss_log_available": false,
+  "validation_images_available": false,
+  "reason": [
+    "authenticated_remote_gpu_runtime_unavailable",
+    "dataset_zip_upload_to_drive_pending"
+  ]
+}

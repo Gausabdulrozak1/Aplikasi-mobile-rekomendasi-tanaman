@@ -1,0 +1,68 @@
+﻿[
+    {
+        "seed":  7,
+        "request_id":  "padi-v17-seed-7",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\7.png",
+        "bytes":  578403
+    },
+    {
+        "seed":  11,
+        "request_id":  "padi-v17-seed-11",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\11.png",
+        "bytes":  490878
+    },
+    {
+        "seed":  21,
+        "request_id":  "padi-v17-seed-21",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\21.png",
+        "bytes":  557057
+    },
+    {
+        "seed":  84,
+        "request_id":  "padi-v17-seed-84",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\84.png",
+        "bytes":  571760
+    },
+    {
+        "seed":  123,
+        "request_id":  "padi-v17-seed-123",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\123.png",
+        "bytes":  607869
+    },
+    {
+        "seed":  2026,
+        "request_id":  "padi-v17-seed-2026",
+        "crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "prompt":  "taniadaptif_padi, close-up photograph of ripe golden rice grain panicles attached to green rice stalks in a cultivated paddy field, realistic natural daylight",
+        "provider":  "diffusers",
+        "device":  "cuda",
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\padi_v17_seed_probe\\2026.png",
+        "bytes":  582488
+    }
+]

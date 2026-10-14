@@ -128,6 +128,23 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                 ),
               ),
             ],
+            if (_value(entry, 'image_asset').isNotEmpty) ...[
+              const SizedBox(height: 16),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.asset(
+                    _value(entry, 'image_asset'),
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => const ColoredBox(
+                      color: AppColors.greyLight,
+                      child: Center(child: Icon(Icons.broken_image_outlined)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 20),
             _detailRow('Jenis lahan', _label(_value(entry, 'land_type'))),
             _detailRow(
@@ -143,6 +160,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
             _detailRow('Rule ID', _value(entry, 'rule_id')),
             _detailRow('Model', _value(entry, 'model')),
             _detailRow('Request ID', _value(entry, 'request_id')),
+            _detailRow('Sumber visual', _visualSource(entry)),
           ],
         ),
       ),
@@ -226,6 +244,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
 
   Widget _historyCard(Map<String, dynamic> entry) {
     final imageUrl = _value(entry, 'image_url');
+    final imageAsset = _value(entry, 'image_asset');
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -243,7 +262,17 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 clipBehavior: Clip.antiAlias,
-                child: imageUrl.isEmpty
+                child: imageAsset.isNotEmpty
+                    ? Image.asset(
+                        imageAsset,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) => const Icon(
+                          Icons.eco,
+                          color: AppColors.primary,
+                          size: 32,
+                        ),
+                      )
+                    : imageUrl.isEmpty
                     ? const Icon(Icons.eco, color: AppColors.primary, size: 32)
                     : Image.network(
                         imageUrl,
@@ -333,6 +362,17 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
 
   String _value(Map<String, dynamic> entry, String key) {
     return entry[key]?.toString() ?? '';
+  }
+
+  String _visualSource(Map<String, dynamic> entry) {
+    switch (_value(entry, 'visual_source')) {
+      case 'cached_inference_artifact':
+        return 'Hasil simulasi tersimpan';
+      case 'live_inference':
+        return 'Inference live';
+      default:
+        return '';
+    }
   }
 
   String _label(String value) {

@@ -1,0 +1,116 @@
+{
+  "run_date": "2026-08-05",
+  "timezone": "Asia/Makassar",
+  "status": "ready_for_local_mock_and_debug_apk_testing_with_research_gates",
+  "dataset": {
+    "raw_total": 499,
+    "raw_public_total": 469,
+    "raw_local_aikmel_total": 30,
+    "raw_by_class": {
+      "padi": {"public": 219, "local_aikmel": 30, "total": 249},
+      "jagung": {"public": 80, "local_aikmel": 0, "total": 80},
+      "cabai": {"public": 80, "local_aikmel": 0, "total": 80},
+      "kacang_tanah": {"public": 90, "local_aikmel": 0, "total": 90}
+    },
+    "technical": {
+      "valid": 499,
+      "invalid": 0,
+      "exact_duplicate_pairs": 0,
+      "near_duplicate_pairs": 0,
+      "cross_class_duplicate_pairs": 0,
+      "cross_source_padi_duplicate_pairs": 0
+    },
+    "candidates": {
+      "padi": {"total": 100, "public": 70, "local_aikmel": 30},
+      "jagung": {"total": 80, "public": 80, "local_aikmel": 0},
+      "cabai": {"total": 80, "public": 80, "local_aikmel": 0},
+      "kacang_tanah": {"total": 90, "public": 90, "local_aikmel": 0}
+    },
+    "semantic_proxy": {"screened": 350, "proxy_pass": 322, "proxy_review": 28},
+    "manual_review": {"accepted": 0, "rejected": 0, "pending": 350, "complete": false},
+    "provenance_incomplete_rows": 499,
+    "license_incomplete_rows": 499,
+    "final_counts": {"padi": null, "jagung": null, "cabai": null, "kacang_tanah": null},
+    "train_counts": {"padi": null, "jagung": null, "cabai": null, "kacang_tanah": null},
+    "validation_counts": {"padi": null, "jagung": null, "cabai": null, "kacang_tanah": null},
+    "final_dataset_created": false,
+    "package_created": false,
+    "raw_aggregate_sha256": "a863279be5df0a9c3a146bbb2912ffb06eaecbe5bc94cf9c08681fa8e5ee1939"
+  },
+  "ml": {
+    "notebooks_json_valid": 6,
+    "notebooks_python_syntax_valid": 6,
+    "notebook_code_cells_compiled": 57,
+    "pilot": {
+      "crop": "padi",
+      "trigger_token": "gaus_padi_public",
+      "processed_dataset_drive_persistence_configured": true,
+      "colab_cuda_guard": true,
+      "diffusers_ref": "v0.35.1",
+      "external_artifact_validator": true,
+      "safetensors_structural_validation": true
+    },
+    "authenticated_remote_gpu_available": false,
+    "smoke_test": "not_run",
+    "main_training": "not_run",
+    "lora_available": false,
+    "model_location": null,
+    "automated_evaluation": "not_run"
+  },
+  "tests": {
+    "dataset_pytest_passed": 38,
+    "inference_pytest_passed": 16,
+    "node_passed": 16,
+    "flutter_passed": 13,
+    "flutter_analyze": "no_issues",
+    "flutter_doctor_android": "passed",
+    "flutter_doctor_windows_desktop": "visual_studio_not_installed_not_required_for_apk",
+    "ruff_check": "passed",
+    "ruff_format_files": 54,
+    "npm_audit_vulnerabilities": 0,
+    "pip_audit": "no_known_vulnerabilities",
+    "pip_check": "passed",
+    "security_scan": "passed",
+    "preflight": "passed"
+  },
+  "live_integration": {
+    "node_health": "passed",
+    "bmkg_aikmel": {"status": "passed", "forecast_points": 18, "rain_coverage_complete": true},
+    "calendar_weeks": 4,
+    "fastapi_mock_health": "passed",
+    "fastapi_mock_generate": "passed",
+    "fastapi_structured_generate": "passed",
+    "fastapi_direct_pilot_generate": "passed",
+    "generated_png_http": 200
+  },
+  "apk": {
+    "status": "debug_built_and_verified",
+    "path": "artifacts/apk/taniadaptif-debug.apk",
+    "size_bytes": 152840310,
+    "sha256": "ffb15a9f38c4242d2482976d71e101f1564eab2cbbd48eda78b59b37409d2996",
+    "package": "com.hamzanwadi.tani_adaptif",
+    "version": "1.0.0",
+    "min_sdk": 24,
+    "target_sdk": 36,
+    "signature_v2_verified": true,
+    "physical_device_test": "pending-device-test",
+    "release_apk": null
+  },
+  "services": {
+    "node_url": "http://localhost:3000",
+    "inference_mock_url": "http://127.0.0.1:5000"
+  },
+  "remaining_gates": [
+    "human_dataset_review",
+    "verifiable_provenance_and_license",
+    "authenticated_gpu",
+    "real_model_training_and_evaluation",
+    "physical_device_and_human_research",
+    "authorized_release_signing"
+  ],
+  "next_step": "Verify and record the public-padi source identity, URL, and license in ml_pipeline/data/dataset_source_manifest.csv before pilot review or Colab training.",
+  "git": {
+    "commit_created": false,
+    "reason": "major repository paths were already untracked before the run"
+  }
+}

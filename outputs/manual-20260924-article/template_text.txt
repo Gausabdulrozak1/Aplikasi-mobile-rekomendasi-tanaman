@@ -1,0 +1,83 @@
+FILE: D:\TaniAdaptif\outputs\manual-20260924-article\template_normalized.docx
+PARAGRAPHS: 94 TABLES: 2 SECTIONS: 6
+SECTION 0: page=7569200x10693400 margins=939800,812800,177800,812800
+SECTION 1: page=7569200x10693400 margins=939800,812800,177800,812800
+SECTION 2: page=7569200x10693400 margins=939800,812800,177800,812800
+SECTION 3: page=7569200x10693400 margins=939800,812800,177800,812800
+SECTION 4: page=7569200x10693400 margins=1422400,800100,177800,800100
+SECTION 5: page=7569200x10693400 margins=1422400,800100,177800,800100
+
+--- BODY ---
+P1 [Normal]:                                                                                                                                          e-ISSN 2614-8773
+P2 [Normal]: DOI : 10.29408/jit.v4i1.2999       Link : https://dx.doi.org/10.29408/jit.v4i1.2999
+P4 [Normal]: Judul Ditulis Menggunakan 12pt, Tulisan Tebal, Rata Tengah, Huruf Besar Setiap Kata
+P8 [Normal]: Aris Sudianto1 *, Hariman Bahtiar2, M. Fauzi Zulkarnaen3  12pt, bold
+P9 [Normal]: 1Program Studi Teknik Informatika, Universitas Hamzanwadi  11pt
+P10 [Normal]: 2Program Studi Sistem Informasi, Universitas Hamzanwadi  11pt
+P11 [Normal]: 3Program Studi Teknik Informatika, STMIK Lombok  11pt
+P12 [Normal]: *sudianto166@gmail.com  11pt
+P16 [Normal]: Abstrak  11pt, bold
+P17 [Normal]: Abstrak bahasa Indonesia ditulis antara 150-300 kata, 1 spasi, 11pt, Arial Narrow Abstrak harus jelas dan deskriptif yang minimal memuat tujuan, metodologi, dan hasil penelitian.
+P18 [Normal]: Kata kunci: Kata kunci terdiri dari 3-7 kata atau frase yang dipisah menggunakan tanda koma (,).
+P19 [Normal]: Kata kunci ditulis berurutan sesuai alfabet
+P21 [Normal]: Abstract  11pt, bold
+P22 [Normal]: Abstrak bahasa Inggris ditulis mengikuti abstrak yang berbahasa Indonesia. Format penulisan sama seperti abstrak Bahasa Indonesia, tidak diketik miring.
+P23 [Normal]: Keywords: Keywords terdiri dari 3-7 kata atau frase yang dipisah menggunakan tanda koma (,).
+P24 [Normal]: Kata kunci ditulis berurutan sesuai alfabet
+P27 [Normal]: ( Received: January 20, 2020 / Accepted: April 20, 2020 / Published Online: July 31, 2020 ) (Perubahan Logo dan Kop Artikel : 28 Agustus 2022)
+P32 [Normal]: Pendahuluan  12pt, Tulisan Tebal, Huruf Besar Setiap Kata.
+P34 [Normal]: Pendahuluan harus jelas dan ditulis deskriptif, Pendahuluan paling tidak memuat lima hal yaitu (1) isu yang terkait dengan penelitiannya, baik itu isu yang bersifat internasional maupun nasional Usahakan ada sumber terkait dengan isu tersebut, tidak diperkenankan menampilkan isu yang tidak memiliki sumber yang jelas; (2) bagaimana respon peneliti terkait dengan isu tersebut. Usahakan ada pendapat expert terkait dengan isu tersebut untuk memperkuat argumen peneliti; (3) bagaimana penelitian sebelumnya terkait dengan isu yang disampaikan, kemudian dimana letak gap penelitian yang dilakukan dengan penelitian-penelitian sebelumnya. Hasil penelitian sebelumnya harus relevan dengan topik penelitian yang dilakukan; (4) bagaimana kebaruan atau celah penelitian yang dilakukan didukung dengan teori yang relevan dan bersumber dari dari sumber primer; dan (5) bagaimana fokus penelitian yang dilakukan.
+P38 [Normal]: Tinjauan Pustaka  12pt, Tulisan Tebal, Huruf Besar Setiap Kata.
+P42 [Normal]: DOI : 10.29408/jit.v4i1.2999       Link : https://dx.doi.org/10.29408/jit.v4i1.2999
+P43 [Normal]: e-ISSN 2614-8773
+P45 [Normal]: Tinjauan pustaka paling tidak memuat beberapa sub, diantaranya (1) berisikan penelitian terkait dari peneliti sebelumnya yang sesuai dengan yang diteliti oleh penulis, minimal menampilkan 5 penelitian terkait  yang relevan yang diambil dari penelitian yang dilakukan paling  lama 5 tahun terakhir. (2) Landasan Teori yang berisikan teori – teori yang relevan dengan penelitian yang diangkat oleh peneliti. (3) Tahapan penelitian yang berisikan tahapan dari penelitian yang dilakukan, pada tahapan penelitian bisa ditambahkan dengan menggunakan bagan/flowchar yang disertai dengan penjelasan rinci dari tahapan tersebut.
+P48 [Normal]: Metode Penelitian  12pt, Tulisan Tebal, Huruf Besar Setiap Kata.
+P50 [Normal]: Metode penelitian harus dijelaskan secara jelas. Pada bagian ini paling tidak menjelaskan desain penelitian yang digunakan, alasannya menggunakan desain itu, prosedur penelitian yang dilakukan, populasi dan sampel penelitian atau partisipan penelitian, instrumen penelitian, teknik pengumpulan data, teknik analisis data, dan lokasi penelitian.
+P53 [Normal]: Hasil dan Pembahasan  12pt, Tulisan Tebal, Huruf Besar Setiap Kata.
+P55 [Normal]: Pada bagian ini dipaparkan hasil penelitian secara jelas dan detail. Hasil penelitian bisa disajikan berdasarkan hasil penelitian tiap tahapan penelitian atau hasil penelitian yang menjawab tiap rumusan masalah atau yang lainnya asalkan terlihat jelas hasil penelitian yang telah dilakukan. Hasil penelitian sebaiknya didukung oleh bukti empiris, baik dalam bentuk screenshoot produk yang dihasilkan maupun yang lainnya dan diberikan penjelasan dari setiap hasil yang ditampilkan.
+P58 [Normal]: Kesimpulan  12pt, Tulisan Tebal, Huruf Besar Setiap Kata.
+P60 [Normal]: Pada kesimpulan harus mampu menjawab rumusan masalah atau pertanyaan penelitian yang diajukan. Penulisan kesimpulan tidak mengambil kalimat pada hasil penelitian atau pembahasan secara utuh, namun peneliti harus mampu mengabstraksi isi artikel yang terkait dengan jawaban rumusan masalah atau pertanyaan penelitian. Pada kesimpulan ini juga sebaiknya dijelaskan kontribusi penelitian serta keterbatasan penelitian yang sudah dilakukan.
+P67 [Normal]: Daftar Pustaka  12pt, Tulisan Tebal, Huruf  Besar Setiap Kata.
+P69 [Normal]: Pada bagian referensi memuat semua referensi yang digunakan dalam penulisan artikel yang diurutkan berdasarkan alfabet dan diketik 1 spasi. Referensi yang ditulis harus ada pada badan artikel, begitu juga sebaliknya sumber yang diacu pada badan artikel harus ada pada bagian referensi. Referensi yang digunakan minimal 15 pustaka yang terdiri dari minimal 80% dari artikel jurnal dan sisanya dari pustaka lain. Penulis juga harus menginput semua referensi yang digunakan pada OJS. Penulisan referensi dan pengutipan mengikuti aturan IEEE Style, seperti contoh berikut:
+P70 [Normal]: [1]      I. Rohman and M.Taufiqurrohman, “Monitoring Ketinggian Air Pada Bengawan Solo Berbasis
+P71 [Normal]: Mikrokontroller Dan Komunikasi Wifi,” J. Semin. Nas. Kelaut. XII, pp. 102–107, 2017.
+P75 [Normal]: Penulisan Tabel dan Gambar
+P77 [Normal]: Nomor tabel harus berurutan mulai dari nomor 1. Tabel usahakan pada satu halaman, jika tabel lebih dari satu halaman maka baris pertama tabel harus diulang sebagai header tabel tiap halaman. Gunakan 1 spasi pada tabel. Sedangkan, gambar yang digunakan pada artikel harus memiliki resolusi yang tinggi sehingga gambar terlihat jelas dan tidak pecah. Gambar yang dimuat pada artikel harus memiliki makna pada artikel, tidak hanya sekedar mencantumkan gambar semata. Penulisan nomor gambar harus berurutan dimulai dari nomor 1. Nomor gambar tidak mengikuti urutan nomor tabel, begitu juga sebaliknya, urutan nomor harus independen.
+P79 [Normal]:         Tabel 1. Hasil nilai akhir Mahasiswa 	
+P85 [Normal]: Gambar 1  MCU ESP8266
+P89 [Normal]: Format Penulisan
+P93 [Normal]: Semua sesuatu yang terkait dengan perizinan pengutipan atau yang lainnya yang terkait dengan HaKI yang dilakukan oleh penulis, termasuk konsekuensi hukum yang mungkin muncul karenanya, adalah menjadi tanggung jawab penuh penulis.
+
+--- TABLE 0 rows=4 cols=0 ---
+R0:   No.   ||         Nama Mahasiswa ||  	 ||          Nilai Akhir 	
+R1:     1 	 ||   Aris Sudianto 	 ||  ||                 90 	
+R2:     2 	 ||   Hariman Bahtiar 	 ||  ||                 60 	
+R3: 3 || Baiq Andriska Candra ||  || 57
+
+--- TABLE 1 rows=9 cols=0 ---
+R0: ❖ / ❖ || Ukuran kertas        : Font                       : || A4 / Arial Narrow
+R1: ❖ || Font Size               : || 12pt
+R2: ❖ || Spacing                  : || 1.5 spasi (Mulai dari Pendahuluan sampai Kesimpulan)
+R3: ❖ || Margin || 
+R4:  || -   Top                   : || 2.5 cm
+R5:  /  /  /  /  / ❖ || -   Bottom              : / -   Left                   : / -   Right                 : Header                   : || 2.5 cm / 2.5  cm / 2.5  cm / 1 cm
+R6: ❖ || Footer                    : || 1 cm
+R7: ❖ || Pendahuluan sampai || dengan Daftar Pustaka dibuat menggunakan model 2 kolom dengan lebar
+R8:  || kolom 0.8 pt || 
+
+--- HEADERS/FOOTERS ---
+SECTION 0 HEADER: 
+SECTION 0 FOOTER: 
+SECTION 1 HEADER: 
+SECTION 1 FOOTER: 
+SECTION 2 HEADER: 
+SECTION 2 FOOTER: 
+SECTION 3 HEADER: 
+SECTION 3 FOOTER: 
+SECTION 4 HEADER: 
+SECTION 4 FOOTER: 
+SECTION 5 HEADER: 
+SECTION 5 FOOTER: 
+
+--- STYLES USED ---
+Normal

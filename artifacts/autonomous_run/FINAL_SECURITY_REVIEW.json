@@ -1,0 +1,34 @@
+{
+  "review_date": "2026-08-05",
+  "unresolved_high": 0,
+  "unresolved_medium": 0,
+  "checks": {
+    "secret_scan": "passed",
+    "npm_audit": "0 vulnerabilities",
+    "pip_audit": "no known vulnerabilities found",
+    "pip_check": "passed",
+    "api_input_validation": "passed",
+    "bounded_retry_timeout": "passed",
+    "generated_path_validation": "passed",
+    "dataset_leakage_gate": "passed",
+    "apk_inspection": "passed"
+  },
+  "dependency_versions": {
+    "fastapi": "0.141.1",
+    "starlette": "1.3.1",
+    "pillow": "12.3.0",
+    "pytest": "9.1.1",
+    "pydantic": "2.13.4",
+    "uvicorn": "0.52.1",
+    "tar": "7.5.22",
+    "undici": "6.28.0"
+  },
+  "residual_risks": [
+    "real_gpu_provider_not_executed",
+    "physical_android_device_not_tested",
+    "release_signing_and_https_not_configured",
+    "dataset_human_review_and_provenance_incomplete",
+    "legacy_backend_python_not_in_active_runtime",
+    "production_rate_limiting_delegated_to_reverse_proxy"
+  ]
+}

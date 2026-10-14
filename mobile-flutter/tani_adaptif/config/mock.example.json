@@ -1,4 +1,5 @@
 {
   "APP_ENV": "development",
-  "MOCK_MODE": "true"
+  "MOCK_MODE": "true",
+  "DEMO_FALLBACK_ENABLED": "true"
 }

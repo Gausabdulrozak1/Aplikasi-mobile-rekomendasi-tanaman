@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-08-21T03:44:50.152079+08:00",
+  "scope": "CPU-only software and artifact verification; no local Stable Diffusion execution",
+  "commands_executed_in_current_session": [
+    {
+      "layer": "Python dataset/LoRA",
+      "command": ".venv Python -m pytest ml_pipeline/tests",
+      "result": "96 passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Python inference API",
+      "command": ".venv Python -m pytest inference_api/tests",
+      "result": "29 passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Python total",
+      "command": ".venv Python -m pytest ml_pipeline/tests inference_api/tests -q",
+      "result": "125 passed in 70.13s",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Express backend",
+      "command": "npm test",
+      "result": "23 passed; 0 failed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Flutter",
+      "command": "flutter test",
+      "result": "13 passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Dataset review UI",
+      "command": "npm run dataset-review:test",
+      "result": "11 passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "LoRA review UI",
+      "command": "npm run lora-review:test",
+      "result": "7 passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Flutter static analysis",
+      "command": "flutter analyze",
+      "result": "No issues found",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Ruff lint",
+      "command": "python -m ruff check ml_pipeline inference_api",
+      "result": "All checks passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Notebook validation",
+      "command": "node ml_pipeline/scripts/validate_notebooks.mjs",
+      "result": "8 notebook valid; Kaggle notebook 52 cells",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Repository preflight",
+      "command": "node ml_pipeline/scripts/preflight_check.mjs",
+      "result": "All checks passed",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Secret scan",
+      "command": "node ml_pipeline/scripts/security_scan.mjs",
+      "result": "No obvious secrets found",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Python dependency audit",
+      "command": "python -m pip_audit",
+      "result": "No known vulnerabilities found",
+      "status": "Lulus"
+    },
+    {
+      "layer": "Node dependency audit",
+      "command": "npm audit --omit=dev",
+      "result": "0 vulnerabilities",
+      "status": "Lulus"
+    }
+  ],
+  "existing_apk_verified": {
+    "layer": "Debug APK artifact",
+    "command": "Get-FileHash SHA256",
+    "result": "152,840,310 bytes; SHA-256 417604f6...cedb5",
+    "status": "Terverifikasi"
+  },
+  "real_gpu_e2e": "pending",
+  "android_screenshot": "pending"
+}

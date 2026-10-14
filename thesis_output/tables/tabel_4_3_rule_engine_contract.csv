@@ -1,0 +1,7 @@
+﻿aspect,actual,handling
+Kategori hujan,"tinggi, sedang, rendah",Dari proyeksi setara 30 hari jika cakupan horizon lengkap
+Ketersediaan air,"cukup, terbatas, kurang","kurang dinormalisasi ke terbatas untuk pencarian aturan, dengan peringatan"
+Tanaman sebelumnya,"padi, jagung, cabai, kacang_tanah, kosong",Menjadi bagian kunci aturan
+Jenis lahan,"sawah, tegalan, kebun_campur",Memengaruhi urutan prioritas dan rule ID
+Jumlah kunci utama,30,3 kategori hujan x 2 kategori air pencarian x 5 tanaman sebelumnya
+Keluaran,"padi, jagung, cabai, kacang_tanah","Urutan prioritas, alasan, dan rule ID dapat diaudit"

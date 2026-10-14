@@ -1,0 +1,46 @@
+[
+  {
+    "requested_crop": "padi",
+    "response_crop": "padi",
+    "metadata_crop": "padi",
+    "trigger_token": "taniadaptif_padi",
+    "prompt": "a realistic agricultural photograph of taniadaptif_padi, rice plants growing in an agricultural environment, natural lighting, in a cultivated rice-field landscape, with sufficient water availability, following rice, weather context: Cerah; suhu 22 C; kelembaban 80 persen; kategori hujan rendah",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 645265,
+    "request_id": "semantic-before-padi"
+  },
+  {
+    "requested_crop": "jagung",
+    "response_crop": "jagung",
+    "metadata_crop": "jagung",
+    "trigger_token": "taniadaptif_jagung",
+    "prompt": "a realistic agricultural photograph of taniadaptif_jagung, maize plants growing in an agricultural environment, natural lighting, in a cultivated rice-field landscape, with sufficient water availability, following rice, weather context: Cerah; suhu 22 C; kelembaban 80 persen; kategori hujan rendah",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 685572,
+    "request_id": "semantic-before-jagung"
+  },
+  {
+    "requested_crop": "cabai",
+    "response_crop": "cabai",
+    "metadata_crop": "cabai",
+    "trigger_token": "taniadaptif_cabai",
+    "prompt": "a realistic agricultural photograph of taniadaptif_cabai, chili plants growing in an agricultural environment, natural lighting, in a cultivated rice-field landscape, with sufficient water availability, following rice, weather context: Cerah; suhu 22 C; kelembaban 80 persen; kategori hujan rendah",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 706516,
+    "request_id": "semantic-before-cabai"
+  },
+  {
+    "requested_crop": "kacang_tanah",
+    "response_crop": "kacang_tanah",
+    "metadata_crop": "kacang_tanah",
+    "trigger_token": "taniadaptif_kacang_tanah",
+    "prompt": "a realistic agricultural photograph of taniadaptif_kacang_tanah, peanut plants growing in an agricultural environment, natural lighting, in a cultivated rice-field landscape, with sufficient water availability, following rice, weather context: Cerah; suhu 22 C; kelembaban 80 persen; kategori hujan rendah",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 677606,
+    "request_id": "semantic-before-kacang-tanah"
+  }
+]

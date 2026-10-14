@@ -13,9 +13,14 @@ cd D:\TaniAdaptif
 ```
 
 Endpoints: `/health`, `/ready`, `/v1/model-info`, `/v1/generate`, and `/docs`.
-Generate accepts structured crop/land/water/previous-crop/weather context. The
-server builds prompts with final `taniadaptif_*` triggers and returns request ID,
-seed, model, provider, and output provenance.
+Generate accepts one explicitly selected crop plus validated
+land/water/previous-crop/weather context. The server builds a crop-isolated
+prompt with the matching final `taniadaptif_*` trigger and returns request ID,
+seed, model, provider, and output provenance. Historical crop labels remain
+audit context and are not inserted into the image prompt, where they could
+compete with the selected commodity. Padi uses an explicit rice-harvest scene
+with visible grains and panicles to avoid ambiguity with grass while preserving
+the same final LoRA trigger.
 
 For the one-class public-padi pilot, `/v1/generate` also accepts a bounded
 direct prompt using `gaus_padi_public`. This compatibility mode is marked

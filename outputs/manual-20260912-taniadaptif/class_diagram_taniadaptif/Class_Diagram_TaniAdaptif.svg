@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1800" viewBox="0 0 2400 1800">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="dashArrow" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="2400" height="1800" fill="#ffffff"/>
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 42px; font-weight: 700; fill: #1e293b; }
+    .subtitle { font-family: Arial, sans-serif; font-size: 22px; fill: #64748b; }
+    .class-box { fill: #ffffff; stroke: #64748b; stroke-width: 2.5; }
+    .class-head { fill: #1e3a5f; }
+    .class-name { font-family: Arial, sans-serif; font-size: 24px; font-weight: 700; fill: #ffffff; }
+    .section { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #64748b; letter-spacing: 1px; }
+    .member { font-family: Arial, sans-serif; font-size: 18px; fill: #1e293b; }
+    .separator { stroke: #cbd5e1; stroke-width: 1.5; }
+    .association { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    .dependency { stroke: #64748b; stroke-width: 2.5; stroke-dasharray: 10 8; fill: none; marker-end: url(#dashArrow); }
+    .rel-label { font-family: Arial, sans-serif; font-size: 17px; font-style: italic; fill: #64748b; }
+    .note { font-family: Arial, sans-serif; font-size: 17px; fill: #64748b; }
+  </style>
+
+  <text x="80" y="78" class="title">CLASS DIAGRAM SISTEM TANIADAPTIF</text>
+  <text x="80" y="118" class="subtitle">Struktur kelas utama dan aliran proses aplikasi mobile untuk rekomendasi rotasi tanam</text>
+  <line x1="80" y1="150" x2="2320" y2="150" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- Main process flow connectors, placed behind class boxes -->
+  <path d="M 1200 400 L 330 500" class="dependency"/>
+  <path d="M 1200 400 L 900 500" class="dependency"/>
+  <path d="M 1200 400 L 1470 500" class="dependency"/>
+  <path d="M 1200 400 L 2040 500" class="dependency"/>
+  <path d="M 580 650 L 650 650" class="association"/>
+  <path d="M 1150 650 L 1220 650" class="association"/>
+  <path d="M 1720 650 L 1790 650" class="association"/>
+  <path d="M 2040 810 C 2040 940 920 900 920 1050" class="association"/>
+  <path d="M 1170 1200 L 1220 1200" class="association"/>
+  <path d="M 1740 1200 L 1790 1200" class="association"/>
+
+  <text x="260" y="480" class="rel-label">mengambil data</text>
+  <text x="620" y="628" class="rel-label">mengirim konteks</text>
+  <text x="1170" y="628" class="rel-label">memproses aturan</text>
+  <text x="1740" y="628" class="rel-label">menghasilkan</text>
+  <text x="1360" y="930" class="rel-label">meminta visual</text>
+  <text x="1175" y="1178" class="rel-label">menghasilkan gambar</text>
+  <text x="1750" y="1178" class="rel-label">menyimpan</text>
+
+  <!-- AplikasiMobile -->
+  <g transform="translate(800,205)">
+    <rect width="800" height="230" rx="4" class="class-box"/>
+    <rect width="800" height="56" rx="4" class="class-head"/>
+    <text x="24" y="36" class="class-name">AplikasiMobile</text>
+    <text x="24" y="84" class="section">ATRIBUT</text>
+    <text x="24" y="114" class="member">- dataCuaca: DataCuaca</text>
+    <text x="310" y="114" class="member">- kondisiLahan: KondisiLahan</text>
+    <text x="24" y="142" class="member">- rekomendasi: Rekomendasi</text>
+    <line x1="0" y1="158" x2="800" y2="158" class="separator"/>
+    <text x="24" y="186" class="section">OPERASI</text>
+    <text x="24" y="216" class="member">+ lihatCuaca()</text>
+    <text x="205" y="216" class="member">+ inputLahan()</text>
+    <text x="380" y="216" class="member">+ lihatRekomendasi()</text>
+    <text x="620" y="216" class="member">+ mintaSimulasi()</text>
+  </g>
+
+  <!-- DataCuaca -->
+  <g transform="translate(80,500)">
+    <rect width="500" height="300" rx="4" class="class-box"/>
+    <rect width="500" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">DataCuaca</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- idCuaca</text>
+    <text x="22" y="146" class="member">- kondisiHujan</text>
+    <text x="22" y="176" class="member">- tanggal</text>
+    <text x="22" y="206" class="member">- nilaiCuaca</text>
+    <line x1="0" y1="222" x2="500" y2="222" class="separator"/>
+    <text x="22" y="252" class="section">OPERASI</text>
+    <text x="22" y="282" class="member">+ ambilData()</text>
+    <text x="230" y="282" class="member">+ normalisasi()</text>
+  </g>
+
+  <!-- KondisiLahan -->
+  <g transform="translate(650,500)">
+    <rect width="500" height="300" rx="4" class="class-box"/>
+    <rect width="500" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">KondisiLahan</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- jenisLahan</text>
+    <text x="22" y="146" class="member">- ketersediaanAir</text>
+    <text x="22" y="176" class="member">- tanamanSebelumnya</text>
+    <line x1="0" y1="192" x2="500" y2="192" class="separator"/>
+    <text x="22" y="222" class="section">OPERASI</text>
+    <text x="22" y="252" class="member">+ validasiInput()</text>
+  </g>
+
+  <!-- RuleEngine -->
+  <g transform="translate(1220,500)">
+    <rect width="500" height="300" rx="4" class="class-box"/>
+    <rect width="500" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">RuleEngine</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- decisionTable</text>
+    <line x1="0" y1="140" x2="500" y2="140" class="separator"/>
+    <text x="22" y="170" class="section">OPERASI</text>
+    <text x="22" y="202" class="member">+ prosesRule()</text>
+    <text x="22" y="232" class="member">+ cekKondisi()</text>
+    <text x="22" y="262" class="member">+ buatRekomendasi()</text>
+  </g>
+
+  <!-- Rekomendasi -->
+  <g transform="translate(1790,500)">
+    <rect width="500" height="300" rx="4" class="class-box"/>
+    <rect width="500" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">Rekomendasi</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- tanaman</text>
+    <text x="22" y="146" class="member">- alasan</text>
+    <text x="22" y="176" class="member">- waktu</text>
+    <line x1="0" y1="192" x2="500" y2="192" class="separator"/>
+    <text x="22" y="222" class="section">OPERASI</text>
+    <text x="22" y="252" class="member">+ tampilkan()</text>
+  </g>
+
+  <!-- LayananInference -->
+  <g transform="translate(650,1050)">
+    <rect width="520" height="300" rx="4" class="class-box"/>
+    <rect width="520" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">LayananInference</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- prompt</text>
+    <text x="22" y="146" class="member">- modelLoRA</text>
+    <line x1="0" y1="170" x2="520" y2="170" class="separator"/>
+    <text x="22" y="200" class="section">OPERASI</text>
+    <text x="22" y="232" class="member">+ buatPrompt()</text>
+    <text x="22" y="262" class="member">+ generateVisual()</text>
+  </g>
+
+  <!-- SimulasiVisual -->
+  <g transform="translate(1220,1050)">
+    <rect width="520" height="300" rx="4" class="class-box"/>
+    <rect width="520" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">SimulasiVisual</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- idSimulasi</text>
+    <text x="22" y="146" class="member">- tanaman</text>
+    <text x="22" y="176" class="member">- prompt</text>
+    <text x="22" y="206" class="member">- gambar</text>
+    <line x1="0" y1="222" x2="520" y2="222" class="separator"/>
+    <text x="22" y="252" class="section">OPERASI</text>
+    <text x="22" y="282" class="member">+ tampilkanGambar()</text>
+  </g>
+
+  <!-- Riwayat -->
+  <g transform="translate(1790,1050)">
+    <rect width="500" height="300" rx="4" class="class-box"/>
+    <rect width="500" height="56" rx="4" class="class-head"/>
+    <text x="22" y="36" class="class-name">Riwayat</text>
+    <text x="22" y="84" class="section">ATRIBUT</text>
+    <text x="22" y="116" class="member">- idRiwayat</text>
+    <text x="22" y="146" class="member">- rekomendasi</text>
+    <text x="22" y="176" class="member">- simulasiVisual</text>
+    <line x1="0" y1="192" x2="500" y2="192" class="separator"/>
+    <text x="22" y="222" class="section">OPERASI</text>
+    <text x="22" y="252" class="member">+ simpan()</text>
+    <text x="220" y="252" class="member">+ tampilkan()</text>
+  </g>
+
+  <line x1="80" y1="1450" x2="2320" y2="1450" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="80" y="1490" class="note">Keterangan:</text>
+  <text x="80" y="1525" class="note">- atribut privat</text>
+  <text x="300" y="1525" class="note">+ operasi publik</text>
+  <text x="560" y="1525" class="note">Garis penuh = alur proses utama</text>
+  <text x="980" y="1525" class="note">Garis putus-putus = dependensi aplikasi</text>
+  <text x="80" y="1580" class="note">Sumber: rancangan kelas utama aplikasi TaniAdaptif, 2026.</text>
+</svg>

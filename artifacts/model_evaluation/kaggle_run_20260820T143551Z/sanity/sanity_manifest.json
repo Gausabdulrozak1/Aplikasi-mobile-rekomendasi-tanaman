@@ -1,0 +1,30 @@
+[
+  {
+    "class_id": "padi",
+    "prompt": "a realistic agricultural photograph of taniadaptif_padi, healthy rice plants growing in a field, natural lighting",
+    "seed": 4201,
+    "path": "/kaggle/working/taniadaptif_lora/sanity/sanity_padi.png",
+    "sha256": "204c9e4101906c699969acdc710dc445adedd61422a8141c80d3988ee0b30801"
+  },
+  {
+    "class_id": "jagung",
+    "prompt": "a realistic agricultural photograph of taniadaptif_jagung, healthy maize plants growing in a field, natural lighting",
+    "seed": 4202,
+    "path": "/kaggle/working/taniadaptif_lora/sanity/sanity_jagung.png",
+    "sha256": "3e49f09a75f8b70734b450a4ba9edb476390fb30e254e4e2218c6664a2578312"
+  },
+  {
+    "class_id": "cabai",
+    "prompt": "a realistic agricultural photograph of taniadaptif_cabai, healthy chili plants growing in a field, natural lighting",
+    "seed": 4203,
+    "path": "/kaggle/working/taniadaptif_lora/sanity/sanity_cabai.png",
+    "sha256": "0fb65d55e57bd018f9b566f5331cc1cef941f1a15cbec306568347aa192cb95d"
+  },
+  {
+    "class_id": "kacang_tanah",
+    "prompt": "a realistic agricultural photograph of taniadaptif_kacang_tanah, healthy peanut plants growing in a field, natural lighting",
+    "seed": 4204,
+    "path": "/kaggle/working/taniadaptif_lora/sanity/sanity_kacang_tanah.png",
+    "sha256": "8e258110f58bff49db0ed06d08f5a7c8c4d20e9418351a5f6b72a79ca301a195"
+  }
+]

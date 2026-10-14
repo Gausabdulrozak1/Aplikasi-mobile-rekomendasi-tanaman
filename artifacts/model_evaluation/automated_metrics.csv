@@ -1,0 +1,1 @@
+expected_class,variant,prompt,seed,output_path,clip_model,clip_predicted_class,clip_expected_class_score,clip_top_confidence,clip_top_margin,class_correct_proxy,brightness_mean,contrast_stddev,edge_stddev_proxy

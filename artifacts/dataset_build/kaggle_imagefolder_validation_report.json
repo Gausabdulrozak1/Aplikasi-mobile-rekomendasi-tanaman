@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "valid",
+  "python_executable": "D:\\TaniAdaptif\\artifacts\\dataset_build\\kaggle_imagefolder_validation_env\\Scripts\\python.exe",
+  "python_version": "3.11.9",
+  "versions": {
+    "datasets": "4.8.5",
+    "pillow": "12.3.0",
+    "pyarrow": "25.0.1"
+  },
+  "staging_root": "D:\\TaniAdaptif\\artifacts\\dataset_build\\kaggle_fixed_v1",
+  "cache_root": "D:\\TaniAdaptif\\artifacts\\dataset_build\\kaggle_imagefolder_cache",
+  "train_columns": [
+    "image",
+    "text",
+    "class_id",
+    "trigger_token",
+    "source_type",
+    "is_local_aikmel",
+    "location_general",
+    "duplicate_group",
+    "source_original_name",
+    "manual_review_status"
+  ],
+  "train_decoded": 312,
+  "imagefolder_train_full_decode": "pass",
+  "validation_columns": [
+    "image",
+    "text",
+    "class_id",
+    "trigger_token",
+    "source_type",
+    "is_local_aikmel",
+    "location_general",
+    "duplicate_group",
+    "source_original_name",
+    "manual_review_status"
+  ],
+  "validation_decoded": 77,
+  "imagefolder_validation_full_decode": "pass",
+  "diffusers_loader_probe": "pass",
+  "diffusers_loader_probe_details": {
+    "status": "pass",
+    "decoded": 312,
+    "batches": 78,
+    "batch_size": 4
+  }
+}

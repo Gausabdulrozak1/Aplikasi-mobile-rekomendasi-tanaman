@@ -1,0 +1,21 @@
+{
+  "id": "gausabdul/taniadaptif-live-inference-sidang",
+  "id_no": 131800095,
+  "title": "TaniAdaptif Live Inference Sidang",
+  "code_file": "taniadaptif-live-inference-sidang.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "keywords": [],
+  "dataset_sources": [
+    "gausabdul/taniadaptif-final-lora-sidang"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "",
+  "machine_shape": "NvidiaTeslaT4"
+}

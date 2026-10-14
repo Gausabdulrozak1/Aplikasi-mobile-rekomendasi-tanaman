@@ -1,0 +1,22 @@
+{
+  "status": "not_run",
+  "audit_date": "2026-08-13",
+  "target_steps": 1600,
+  "checkpointing_steps": 200,
+  "dataset_package_available": true,
+  "dataset_package_sha256": "f6aa060658cf95e48996f10f0ffde200938d340dd15e6b60adace5bb5cecfb33",
+  "metadata_valid": true,
+  "class_minimum_met": true,
+  "smoke_test_passed": false,
+  "authenticated_remote_gpu_available": false,
+  "actual_steps": 0,
+  "checkpoint_available": false,
+  "lora_available": false,
+  "lora_size_bytes": null,
+  "loss_log_available": false,
+  "validation_images_available": false,
+  "reason": [
+    "smoke_test_not_run",
+    "authenticated_remote_gpu_runtime_unavailable"
+  ]
+}

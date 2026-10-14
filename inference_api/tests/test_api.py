@@ -1,15 +1,21 @@
 from __future__ import annotations
 
+import logging
+import sys
 import time
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
+from PIL import Image
 
 from inference_api.app.core.config import Settings
 from inference_api.app.main import create_app
 from inference_api.app.models.schemas import GenerateRequest, PromptGenerateRequest
 from inference_api.app.providers.base import GenerationResult, ImageGenerator
+from inference_api.app.providers.diffusers_provider import DiffusersImageGenerator
+from inference_api.app.providers.lora_validation import LoraArtifactInfo
 from inference_api.app.services.generation_service import GenerationService
 from inference_api.app.services.prompt_builder import (
     TRIGGER_TOKENS,
@@ -105,7 +111,74 @@ def test_model_info_has_four_final_triggers(client: TestClient) -> None:
     assert data["pilot_trigger_tokens"] == {"padi": "gaus_padi_public"}
     assert data["supported_request_modes"] == ["structured_context", "direct_prompt"]
     assert 512 in data["supported_width"]
+    assert data["default_parameters"]["seed"] is None
+    assert data["default_parameters"]["seed_behavior"] == "random_when_omitted"
+    assert data["default_parameters"]["reproducible_seed_example"] == 42
     assert data["default_parameters"]["max_retries"] == 1
+
+
+def test_explicit_seed_42_is_reproducible(client: TestClient) -> None:
+    payload = valid_payload(crop="cabai", seed=42, request_id="repeatable-cabai")
+
+    first = client.post("/v1/generate", json=payload)
+    second = client.post("/v1/generate", json=payload)
+
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert first.json()["seed"] == 42
+    assert second.json()["seed"] == 42
+    assert first.json()["metadata"]["seed"] == 42
+    assert first.json()["image_url"] == second.json()["image_url"]
+
+
+def test_missing_or_null_seed_is_generated_automatically(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    generated_seeds = iter([3_847_291, 3_847_292])
+    monkeypatch.setattr(
+        "inference_api.app.services.generation_service.secrets.randbelow",
+        lambda upper: next(generated_seeds),
+    )
+    missing_payload = valid_payload(request_id="automatic-seed-missing")
+    missing_payload.pop("seed")
+    null_payload = valid_payload(request_id="automatic-seed-null", seed=None)
+
+    missing_response = client.post("/v1/generate", json=missing_payload)
+    null_response = client.post("/v1/generate", json=null_payload)
+
+    assert missing_response.status_code == 200
+    assert null_response.status_code == 200
+    assert missing_response.json()["seed"] == 3_847_291
+    assert null_response.json()["seed"] == 3_847_292
+    assert missing_response.json()["metadata"]["seed"] == 3_847_291
+    assert null_response.json()["metadata"]["seed"] == 3_847_292
+
+
+def test_two_seedless_cabai_requests_keep_mapping_but_use_different_seeds(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    generated_seeds = iter([1_001_001, 1_001_002])
+    monkeypatch.setattr(
+        "inference_api.app.services.generation_service.secrets.randbelow",
+        lambda upper: next(generated_seeds),
+    )
+    first_payload = valid_payload(crop="cabai", request_id="cabai-auto-1")
+    second_payload = valid_payload(crop="cabai", request_id="cabai-auto-2")
+    first_payload.pop("seed")
+    second_payload.pop("seed")
+
+    first = client.post("/v1/generate", json=first_payload)
+    second = client.post("/v1/generate", json=second_payload)
+
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert first.json()["crop"] == second.json()["crop"] == "cabai"
+    assert first.json()["metadata"]["trigger_token"] == "taniadaptif_cabai"
+    assert second.json()["metadata"]["trigger_token"] == "taniadaptif_cabai"
+    assert first.json()["seed"] != second.json()["seed"]
+    assert first.json()["image_url"] != second.json()["image_url"]
 
 
 @pytest.mark.parametrize("crop", list(TRIGGER_TOKENS))
@@ -129,15 +202,131 @@ def test_generate_mock_image_for_each_crop(client: TestClient, crop: str, tmp_pa
     assert (tmp_path / "generated" / image_name).is_file()
 
 
-def test_prompt_is_generated_from_structured_context() -> None:
-    request = GenerateRequest.model_validate(valid_payload(crop="kacang_tanah"))
+@pytest.mark.parametrize(
+    ("crop", "visual_prompt"),
+    [
+        (
+            "padi",
+            "commercial agricultural photograph of a wooden bowl overflowing with uncooked "
+            "white rice grains beside bundles of golden rice panicles, unmistakable rice "
+            "harvest, paddy field background, realistic natural daylight",
+        ),
+        (
+            "jagung",
+            "maize plants in an agricultural environment, natural lighting, clear crop view",
+        ),
+        (
+            "cabai",
+            "chili plants in an agricultural environment, natural lighting, clear crop view",
+        ),
+        (
+            "kacang_tanah",
+            "peanut plants in an agricultural environment, natural lighting, clear crop view",
+        ),
+    ],
+)
+def test_prompt_keeps_selected_crop_semantically_isolated(crop: str, visual_prompt: str) -> None:
+    request = GenerateRequest.model_validate(
+        valid_payload(
+            crop=crop,
+            land_type="sawah",
+            previous_crop="padi",
+            weather_summary="Cerah di Aikmel",
+        )
+    )
     prepared = build_generation_prompt(request, default_seed=7)
 
-    assert "taniadaptif_kacang_tanah" in prepared.prompt
-    assert "peanut plants" in prepared.prompt
-    assert "following maize" in prepared.prompt
+    assert prepared.crop == crop
+    assert prepared.trigger_token == TRIGGER_TOKENS[crop]
+    assert prepared.prompt == f"{TRIGGER_TOKENS[crop]}, {visual_prompt}"
+    assert "rice-field" not in prepared.prompt
+    assert "following" not in prepared.prompt
     assert "Aikmel" not in prepared.prompt
-    assert "market stall" in prepared.negative_prompt
+    assert "harvested produce" not in prepared.prompt
+    if crop != "padi":
+        assert "paddy field" not in prepared.prompt
+
+
+def test_semantic_audit_logs_selected_crop_trigger_and_prompt(
+    client: TestClient,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    caplog.set_level(logging.INFO, logger="taniadaptif.inference.service")
+    response = client.post(
+        "/v1/generate",
+        json=valid_payload(crop="cabai", request_id="semantic-log-cabai"),
+    )
+
+    assert response.status_code == 200
+    messages = "\n".join(record.getMessage() for record in caplog.records)
+    assert "FASTAPI_SELECTED_CROP=cabai" in messages
+    assert "TRIGGER_TOKEN=taniadaptif_cabai" in messages
+    assert "FINAL_PROMPT=taniadaptif_cabai, chili plants" in messages
+
+
+def test_diffusers_provider_saves_with_explicit_png_format(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FakeGenerator:
+        seen_seeds: list[int] = []
+
+        def __init__(self, *, device: str) -> None:
+            self.device = device
+
+        def manual_seed(self, seed: int) -> FakeGenerator:
+            self.seed = seed
+            self.seen_seeds.append(seed)
+            return self
+
+    class RecordingImage:
+        def save(self, path: Path, *, format: str | None = None) -> None:
+            assert format == "PNG"
+            Image.new("RGB", (16, 16), "green").save(path, format=format)
+
+    class FakePipeline:
+        def __call__(self, **_: object) -> SimpleNamespace:
+            return SimpleNamespace(images=[RecordingImage()])
+
+    monkeypatch.setitem(sys.modules, "torch", SimpleNamespace(Generator=FakeGenerator))
+    settings = make_settings(
+        tmp_path,
+        provider="diffusers",
+        base_model="stable-diffusion-fixture",
+    )
+    provider = object.__new__(DiffusersImageGenerator)
+    provider.settings = settings
+    provider.output_dir = settings.generated_dir
+    provider.output_dir.mkdir(parents=True, exist_ok=True)
+    provider.pipe = FakePipeline()
+    provider.device = "cuda"
+    provider.lora_artifact = LoraArtifactInfo(
+        path="fixture.safetensors",
+        size_bytes=16,
+        sha256="a" * 64,
+        tensor_count=1,
+        data_bytes=8,
+    )
+    prepared = build_generation_prompt(
+        GenerateRequest.model_validate(valid_payload(crop="cabai")),
+        default_seed=42,
+    )
+
+    result = provider.generate(prepared, "explicit-png")
+    second_prepared = build_generation_prompt(
+        GenerateRequest.model_validate(valid_payload(crop="cabai", seed=43)),
+        default_seed=42,
+    )
+    second_result = provider.generate(second_prepared, "explicit-png")
+
+    assert Path(result.image_path).is_file()
+    assert Path(second_result.image_path).is_file()
+    assert Path(result.image_path).name == "sd15_cabai_42_explicit-png.png"
+    assert Path(second_result.image_path).name == "sd15_cabai_43_explicit-png.png"
+    assert result.image_path != second_result.image_path
+    assert FakeGenerator.seen_seeds == [42, 43]
+    with Image.open(result.image_path) as generated:
+        assert generated.format == "PNG"
 
 
 def test_direct_prompt_mode_supports_the_public_padi_pilot(client: TestClient) -> None:
@@ -224,7 +413,7 @@ def test_request_id_header_is_preserved(client: TestClient) -> None:
     response = client.post(
         "/v1/generate",
         headers={"X-Request-ID": "flutter-request-123"},
-        json=valid_payload(seed=None),
+        json=valid_payload(seed=42),
     )
 
     assert response.status_code == 200

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1400" viewBox="0 0 2400 1400">
+  <rect width="2400" height="1400" fill="#ffffff"/>
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 40px; font-weight: 700; fill: #1e293b; }
+    .subtitle { font-family: Arial, sans-serif; font-size: 21px; fill: #64748b; }
+    .table { fill: #ffffff; stroke: #64748b; stroke-width: 2; }
+    .header { fill: #1e3a5f; }
+    .head-text { font-family: Arial, sans-serif; font-size: 23px; font-weight: 700; fill: #ffffff; letter-spacing: 0.4px; }
+    .column-head { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #475569; }
+    .field { font-family: Arial, sans-serif; font-size: 17px; fill: #1e293b; }
+    .type { font-family: Arial, sans-serif; font-size: 16px; fill: #475569; }
+    .key { font-family: Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #1e3a5f; }
+    .row-line { stroke: #cbd5e1; stroke-width: 1.5; }
+    .rel { stroke: #475569; stroke-width: 3; fill: none; }
+    .rel-label { font-family: Arial, sans-serif; font-size: 21px; font-weight: 700; fill: #334155; }
+    .rel-name { font-family: Arial, sans-serif; font-size: 17px; font-style: italic; fill: #64748b; }
+    .footer { font-family: Arial, sans-serif; font-size: 16px; fill: #64748b; }
+    .legend { font-family: Arial, sans-serif; font-size: 16px; fill: #475569; }
+  </style>
+
+  <text x="80" y="78" class="title">ERD BASIS DATA SISTEM TANIADAPTIF</text>
+  <text x="80" y="116" class="subtitle">Struktur entitas dan relasi data pada backend aplikasi</text>
+  <line x1="80" y1="148" x2="2320" y2="148" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- Relationships -->
+  <path d="M 530 465 L 650 465" class="rel"/>
+  <path d="M 1190 465 L 1320 465" class="rel"/>
+  <path d="M 920 730 L 920 850" class="rel"/>
+  <path d="M 1190 1025 L 1320 1025" class="rel"/>
+
+  <!-- Cardinality and relationship names -->
+  <text x="556" y="448" class="rel-label">1</text><text x="620" y="448" class="rel-label">N</text>
+  <text x="570" y="492" class="rel-name">memiliki</text>
+  <text x="1210" y="448" class="rel-label">1</text><text x="1284" y="448" class="rel-label">N</text>
+  <text x="1220" y="492" class="rel-name">mencatat</text>
+  <text x="940" y="760" class="rel-label">1</text><text x="940" y="830" class="rel-label">N</text>
+  <text x="950" y="800" class="rel-name">menghasilkan</text>
+  <text x="1210" y="1008" class="rel-label">1</text><text x="1284" y="1008" class="rel-label">N</text>
+  <text x="1216" y="1052" class="rel-name">memiliki</text>
+
+  <!-- PETANI -->
+  <g transform="translate(70,285)">
+    <rect width="460" height="400" rx="4" class="table"/>
+    <rect width="460" height="56" rx="4" class="header"/>
+    <text x="20" y="36" class="head-text">PETANI</text>
+    <line x1="0" y1="92" x2="460" y2="92" class="row-line"/>
+    <text x="20" y="78" class="column-head">ATRIBUT</text><text x="300" y="78" class="column-head">TIPE DATA</text><text x="400" y="78" class="column-head">KET.</text>
+    <text x="20" y="126" class="field">id</text><text x="300" y="126" class="type">INTEGER</text><text x="400" y="126" class="key">PK</text><line x1="0" y1="145" x2="460" y2="145" class="row-line"/>
+    <text x="20" y="174" class="field">nama</text><text x="300" y="174" class="type">TEXT</text><line x1="0" y1="193" x2="460" y2="193" class="row-line"/>
+    <text x="20" y="222" class="field">email</text><text x="300" y="222" class="type">TEXT</text><line x1="0" y1="241" x2="460" y2="241" class="row-line"/>
+    <text x="20" y="270" class="field">nomor_hp</text><text x="300" y="270" class="type">TEXT</text><line x1="0" y1="289" x2="460" y2="289" class="row-line"/>
+    <text x="20" y="318" class="field">latitude</text><text x="300" y="318" class="type">REAL</text><line x1="0" y1="337" x2="460" y2="337" class="row-line"/>
+    <text x="20" y="366" class="field">longitude</text><text x="300" y="366" class="type">REAL</text>
+  </g>
+
+  <!-- LAHAN -->
+  <g transform="translate(650,235)">
+    <rect width="540" height="540" rx="4" class="table"/>
+    <rect width="540" height="56" rx="4" class="header"/>
+    <text x="20" y="36" class="head-text">LAHAN</text>
+    <line x1="0" y1="92" x2="540" y2="92" class="row-line"/>
+    <text x="20" y="78" class="column-head">ATRIBUT</text><text x="360" y="78" class="column-head">TIPE DATA</text><text x="480" y="78" class="column-head">KET.</text>
+    <text x="20" y="126" class="field">id</text><text x="360" y="126" class="type">INTEGER</text><text x="480" y="126" class="key">PK</text><line x1="0" y1="145" x2="540" y2="145" class="row-line"/>
+    <text x="20" y="174" class="field">petani_id</text><text x="360" y="174" class="type">INTEGER</text><text x="480" y="174" class="key">FK</text><line x1="0" y1="193" x2="540" y2="193" class="row-line"/>
+    <text x="20" y="222" class="field">nama_lahan</text><text x="360" y="222" class="type">TEXT</text><line x1="0" y1="241" x2="540" y2="241" class="row-line"/>
+    <text x="20" y="270" class="field">jenis_lahan</text><text x="360" y="270" class="type">TEXT</text><line x1="0" y1="289" x2="540" y2="289" class="row-line"/>
+    <text x="20" y="318" class="field">ketersediaan_air</text><text x="360" y="318" class="type">TEXT</text><line x1="0" y1="337" x2="540" y2="337" class="row-line"/>
+    <text x="20" y="366" class="field">tanaman_sebelumnya</text><text x="360" y="366" class="type">TEXT</text><line x1="0" y1="385" x2="540" y2="385" class="row-line"/>
+    <text x="20" y="414" class="field">latitude</text><text x="360" y="414" class="type">REAL</text><line x1="0" y1="433" x2="540" y2="433" class="row-line"/>
+    <text x="20" y="462" class="field">longitude</text><text x="360" y="462" class="type">REAL</text><line x1="0" y1="481" x2="540" y2="481" class="row-line"/>
+    <text x="20" y="510" class="field">dibuat_pada</text><text x="360" y="510" class="type">DATETIME</text>
+  </g>
+
+  <!-- CUACA -->
+  <g transform="translate(1320,185)">
+    <rect width="520" height="540" rx="4" class="table"/>
+    <rect width="520" height="56" rx="4" class="header"/>
+    <text x="20" y="36" class="head-text">CUACA</text>
+    <line x1="0" y1="92" x2="520" y2="92" class="row-line"/>
+    <text x="20" y="78" class="column-head">ATRIBUT</text><text x="350" y="78" class="column-head">TIPE DATA</text><text x="470" y="78" class="column-head">KET.</text>
+    <text x="20" y="126" class="field">id</text><text x="350" y="126" class="type">INTEGER</text><text x="470" y="126" class="key">PK</text><line x1="0" y1="145" x2="520" y2="145" class="row-line"/>
+    <text x="20" y="174" class="field">lahan_id</text><text x="350" y="174" class="type">INTEGER</text><text x="470" y="174" class="key">FK</text><line x1="0" y1="193" x2="520" y2="193" class="row-line"/>
+    <text x="20" y="222" class="field">tanggal</text><text x="350" y="222" class="type">DATE</text><line x1="0" y1="241" x2="520" y2="241" class="row-line"/>
+    <text x="20" y="270" class="field">suhu</text><text x="350" y="270" class="type">REAL</text><line x1="0" y1="289" x2="520" y2="289" class="row-line"/>
+    <text x="20" y="318" class="field">curah_hujan</text><text x="350" y="318" class="type">REAL</text><line x1="0" y1="337" x2="520" y2="337" class="row-line"/>
+    <text x="20" y="366" class="field">kategori_curah_hujan</text><text x="350" y="366" class="type">TEXT</text><line x1="0" y1="385" x2="520" y2="385" class="row-line"/>
+    <text x="20" y="414" class="field">kelembaban</text><text x="350" y="414" class="type">REAL</text><line x1="0" y1="433" x2="520" y2="433" class="row-line"/>
+    <text x="20" y="462" class="field">kondisi</text><text x="350" y="462" class="type">TEXT</text><line x1="0" y1="481" x2="520" y2="481" class="row-line"/>
+    <text x="20" y="510" class="field">dibuat_pada</text><text x="350" y="510" class="type">DATETIME</text>
+  </g>
+
+  <!-- REKOMENDASI -->
+  <g transform="translate(650,850)">
+    <rect width="540" height="400" rx="4" class="table"/>
+    <rect width="540" height="56" rx="4" class="header"/>
+    <text x="20" y="36" class="head-text">REKOMENDASI</text>
+    <line x1="0" y1="92" x2="540" y2="92" class="row-line"/>
+    <text x="20" y="78" class="column-head">ATRIBUT</text><text x="360" y="78" class="column-head">TIPE DATA</text><text x="480" y="78" class="column-head">KET.</text>
+    <text x="20" y="126" class="field">id</text><text x="360" y="126" class="type">INTEGER</text><text x="480" y="126" class="key">PK</text><line x1="0" y1="145" x2="540" y2="145" class="row-line"/>
+    <text x="20" y="174" class="field">lahan_id</text><text x="360" y="174" class="type">INTEGER</text><text x="480" y="174" class="key">FK</text><line x1="0" y1="193" x2="540" y2="193" class="row-line"/>
+    <text x="20" y="222" class="field">tanaman_sebelumnya</text><text x="360" y="222" class="type">TEXT</text><line x1="0" y1="241" x2="540" y2="241" class="row-line"/>
+    <text x="20" y="270" class="field">tanaman_direkomendasikan</text><text x="360" y="270" class="type">TEXT</text><line x1="0" y1="289" x2="540" y2="289" class="row-line"/>
+    <text x="20" y="318" class="field">alasan</text><text x="360" y="318" class="type">TEXT</text><line x1="0" y1="337" x2="540" y2="337" class="row-line"/>
+    <text x="20" y="366" class="field">dibuat_pada</text><text x="360" y="366" class="type">DATETIME</text>
+  </g>
+
+  <!-- SIMULASI_VISUAL -->
+  <g transform="translate(1320,850)">
+    <rect width="520" height="440" rx="4" class="table"/>
+    <rect width="520" height="56" rx="4" class="header"/>
+    <text x="20" y="36" class="head-text">SIMULASI_VISUAL</text>
+    <line x1="0" y1="92" x2="520" y2="92" class="row-line"/>
+    <text x="20" y="78" class="column-head">ATRIBUT</text><text x="350" y="78" class="column-head">TIPE DATA</text><text x="470" y="78" class="column-head">KET.</text>
+    <text x="20" y="126" class="field">id</text><text x="350" y="126" class="type">INTEGER</text><text x="470" y="126" class="key">PK</text><line x1="0" y1="145" x2="520" y2="145" class="row-line"/>
+    <text x="20" y="174" class="field">rekomendasi_id</text><text x="350" y="174" class="type">INTEGER</text><text x="470" y="174" class="key">FK</text><line x1="0" y1="193" x2="520" y2="193" class="row-line"/>
+    <text x="20" y="222" class="field">prompt</text><text x="350" y="222" class="type">TEXT</text><line x1="0" y1="241" x2="520" y2="241" class="row-line"/>
+    <text x="20" y="270" class="field">negative_prompt</text><text x="350" y="270" class="type">TEXT</text><line x1="0" y1="289" x2="520" y2="289" class="row-line"/>
+    <text x="20" y="318" class="field">seed</text><text x="350" y="318" class="type">INTEGER</text><line x1="0" y1="337" x2="520" y2="337" class="row-line"/>
+    <text x="20" y="366" class="field">url_gambar</text><text x="350" y="366" class="type">TEXT</text><line x1="0" y1="385" x2="520" y2="385" class="row-line"/>
+    <text x="20" y="414" class="field">dibuat_pada</text><text x="350" y="414" class="type">DATETIME</text>
+  </g>
+
+  <line x1="80" y1="1305" x2="2320" y2="1305" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="80" y="1340" class="legend">PK = Primary Key</text>
+  <text x="310" y="1340" class="legend">FK = Foreign Key</text>
+  <text x="650" y="1340" class="legend">Kardinalitas: 1 = satu, N = banyak</text>
+  <text x="80" y="1380" class="footer">Sumber: backend-nodejs/src/config/database.js | TaniAdaptif, 2026</text>
+</svg>

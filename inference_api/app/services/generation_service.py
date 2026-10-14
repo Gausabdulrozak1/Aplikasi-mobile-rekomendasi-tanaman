@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import secrets
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from inference_api.app.providers.mock import MockImageGenerator
 from inference_api.app.services.prompt_builder import prepare_generation_request
 
 logger = logging.getLogger("taniadaptif.inference.service")
+MAX_SEED = 2_147_483_647
 
 
 def build_provider(settings: Settings) -> ImageGenerator:
@@ -54,7 +56,14 @@ class GenerationService:
     ) -> GenerationResult:
         if self._blocked_after_timeout:
             raise RuntimeError("Provider is blocked after a timeout and requires restart.")
-        prepared = prepare_generation_request(request, default_seed=self.settings.default_seed)
+        resolved_seed = (
+            request.seed if request.seed is not None else secrets.randbelow(MAX_SEED + 1)
+        )
+        prepared = prepare_generation_request(request, default_seed=resolved_seed)
+        logger.info("FASTAPI_SELECTED_CROP=%s request_id=%s", prepared.crop, request_id)
+        logger.info("TRIGGER_TOKEN=%s request_id=%s", prepared.trigger_token, request_id)
+        logger.info("GENERATION_SEED=%s request_id=%s", prepared.seed, request_id)
+        logger.info("FINAL_PROMPT=%s request_id=%s", prepared.prompt, request_id)
         attempts = self.settings.generation_max_retries + 1
         last_error: RuntimeError | None = None
 

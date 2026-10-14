@@ -1,0 +1,58 @@
+[
+    {
+        "request_id":  "semantic-after-padi",
+        "selected_crop":  "padi",
+        "response_crop":  "padi",
+        "metadata_crop":  "padi",
+        "trigger_token":  "taniadaptif_padi",
+        "final_prompt":  "taniadaptif_padi, rice plants in an agricultural environment, natural lighting, clear crop view",
+        "provider":  "diffusers",
+        "is_mock":  false,
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\after_fix\\padi.png",
+        "image_bytes":  607200,
+        "duration_seconds":  4.69
+    },
+    {
+        "request_id":  "semantic-after-jagung",
+        "selected_crop":  "jagung",
+        "response_crop":  "jagung",
+        "metadata_crop":  "jagung",
+        "trigger_token":  "taniadaptif_jagung",
+        "final_prompt":  "taniadaptif_jagung, maize plants in an agricultural environment, natural lighting, clear crop view",
+        "provider":  "diffusers",
+        "is_mock":  false,
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\after_fix\\jagung.png",
+        "image_bytes":  682777,
+        "duration_seconds":  4.33
+    },
+    {
+        "request_id":  "semantic-after-cabai",
+        "selected_crop":  "cabai",
+        "response_crop":  "cabai",
+        "metadata_crop":  "cabai",
+        "trigger_token":  "taniadaptif_cabai",
+        "final_prompt":  "taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, clear crop view",
+        "provider":  "diffusers",
+        "is_mock":  false,
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\after_fix\\cabai.png",
+        "image_bytes":  608831,
+        "duration_seconds":  4.35
+    },
+    {
+        "request_id":  "semantic-after-kacang_tanah",
+        "selected_crop":  "kacang_tanah",
+        "response_crop":  "kacang_tanah",
+        "metadata_crop":  "kacang_tanah",
+        "trigger_token":  "taniadaptif_kacang_tanah",
+        "final_prompt":  "taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, clear crop view",
+        "provider":  "diffusers",
+        "is_mock":  false,
+        "seed":  42,
+        "image_path":  "D:\\TaniAdaptif\\artifacts\\semantic_audit\\after_fix\\kacang_tanah.png",
+        "image_bytes":  676012,
+        "duration_seconds":  4.38
+    }
+]

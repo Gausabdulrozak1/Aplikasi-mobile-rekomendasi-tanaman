@@ -1,0 +1,3 @@
+﻿variant,images,brightness_proxy_mean,contrast_proxy_mean,entropy_proxy_mean
+base,36,90.883615,60.44408,9.008533
+lora,36,97.651167,62.275424,9.104648

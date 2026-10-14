@@ -1,0 +1,17 @@
+{
+  "note": "Prompt examples are neutral and do not invent weather, water, growth stage, or location.",
+  "prompts": [
+    {"class_id": "padi", "prompt": "a realistic agricultural photograph of taniadaptif_padi, rice plants growing in an agricultural environment, natural lighting", "seed": 42},
+    {"class_id": "padi", "prompt": "taniadaptif_padi, rice plants in an agricultural environment, natural lighting, field-level view", "seed": 42},
+    {"class_id": "padi", "prompt": "taniadaptif_padi, rice plants in an agricultural environment, natural lighting, clear crop view", "seed": 42},
+    {"class_id": "jagung", "prompt": "a realistic agricultural photograph of taniadaptif_jagung, maize plants growing in an agricultural environment, natural lighting", "seed": 42},
+    {"class_id": "jagung", "prompt": "taniadaptif_jagung, maize plants in an agricultural environment, natural lighting, field-level view", "seed": 42},
+    {"class_id": "jagung", "prompt": "taniadaptif_jagung, maize plants in an agricultural environment, natural lighting, clear crop view", "seed": 42},
+    {"class_id": "cabai", "prompt": "a realistic agricultural photograph of taniadaptif_cabai, chili plants growing in an agricultural environment, natural lighting", "seed": 42},
+    {"class_id": "cabai", "prompt": "taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, field-level view", "seed": 42},
+    {"class_id": "cabai", "prompt": "taniadaptif_cabai, chili plants in an agricultural environment, natural lighting, clear crop view", "seed": 42},
+    {"class_id": "kacang_tanah", "prompt": "a realistic agricultural photograph of taniadaptif_kacang_tanah, peanut plants growing in an agricultural environment, natural lighting", "seed": 42},
+    {"class_id": "kacang_tanah", "prompt": "taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, field-level view", "seed": 42},
+    {"class_id": "kacang_tanah", "prompt": "taniadaptif_kacang_tanah, peanut plants in an agricultural environment, natural lighting, clear crop view", "seed": 42}
+  ]
+}

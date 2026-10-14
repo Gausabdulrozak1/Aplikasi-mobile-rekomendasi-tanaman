@@ -1,0 +1,3 @@
+﻿run,status,steps,elapsed_seconds,checkpoint,loss_observations,output
+Smoke,PASS,100,250.79,checkpoint-50 dan checkpoint-100 valid,501,multisource_multicrop_smoke_lora.safetensors
+Main,SUCCESS,1600,3346.29,checkpoint-1600 valid,8001,multisource_multicrop_lora.safetensors

@@ -1,0 +1,38 @@
+[
+  {
+    "crop": "padi",
+    "response_crop": "padi",
+    "trigger_token": "taniadaptif_padi",
+    "prompt": "a realistic agricultural photograph of taniadaptif_padi, rice plants growing in an agricultural environment, natural lighting",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 583212
+  },
+  {
+    "crop": "jagung",
+    "response_crop": "jagung",
+    "trigger_token": "taniadaptif_jagung",
+    "prompt": "a realistic agricultural photograph of taniadaptif_jagung, maize plants growing in an agricultural environment, natural lighting",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 526154
+  },
+  {
+    "crop": "cabai",
+    "response_crop": "cabai",
+    "trigger_token": "taniadaptif_cabai",
+    "prompt": "a realistic agricultural photograph of taniadaptif_cabai, chili plants growing in an agricultural environment, natural lighting",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 560222
+  },
+  {
+    "crop": "kacang_tanah",
+    "response_crop": "kacang_tanah",
+    "trigger_token": "taniadaptif_kacang_tanah",
+    "prompt": "a realistic agricultural photograph of taniadaptif_kacang_tanah, peanut plants growing in an agricultural environment, natural lighting",
+    "provider": "diffusers",
+    "is_mock": false,
+    "image_bytes": 752446
+  }
+]

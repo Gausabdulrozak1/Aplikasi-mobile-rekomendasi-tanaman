@@ -1,0 +1,101 @@
+{
+  "audit_date": "2026-08-04",
+  "timezone": "Asia/Makassar",
+  "repository": "D:\\TaniAdaptif",
+  "preservation": {
+    "pre_work_git_status_saved": true,
+    "destructive_commands_used": false,
+    "raw_dataset_modified": false,
+    "initial_worktree_primarily_untracked": true
+  },
+  "inventory": {
+    "files": 1268,
+    "bytes": 467002852,
+    "excluded_from_aggregate": [".git", ".venv", "node_modules", ".dart_tool"]
+  },
+  "toolchain": {
+    "python": "3.11.9",
+    "pip": "26.1.2",
+    "node": "24.14.0",
+    "npm": "11.9.0",
+    "flutter": "3.41.4",
+    "dart": "3.11.1",
+    "android_sdk": "36.1.0",
+    "android_platform": "36.1",
+    "java": "21 (Android Studio runtime)",
+    "android_licenses_accepted": true,
+    "android_device_connected": false,
+    "local_nvidia_gpu": false
+  },
+  "dataset": {
+    "raw_images": 499,
+    "raw_bytes": 186141724,
+    "raw_sha256": "a863279be5df0a9c3a146bbb2912ffb06eaecbe5bc94cf9c08681fa8e5ee1939",
+    "raw_distribution": {
+      "padi_public": 219,
+      "padi_local_aikmel": 30,
+      "jagung_public": 80,
+      "cabai_public": 80,
+      "kacang_tanah_public": 90
+    },
+    "technical_candidates": {
+      "padi": 100,
+      "jagung": 80,
+      "cabai": 80,
+      "kacang_tanah": 90,
+      "total": 350
+    },
+    "manual_review": {"accepted": 0, "rejected": 0, "pending": 350},
+    "provenance_rows": 499,
+    "provenance_warning_rows": 499,
+    "processed_split_available": false,
+    "package_available": false
+  },
+  "baseline_tests": {
+    "dataset_pytest": {"passed": 33, "failed": 0},
+    "ruff_check": "passed",
+    "flutter_analyze": "passed",
+    "flutter_test": {"passed": 6, "failed": 0},
+    "node_syntax_files": 10,
+    "node_syntax_failed": 0
+  },
+  "bmkg": {
+    "live_request_succeeded": true,
+    "adm4": "52.03.09.2002",
+    "location": "Aikmel",
+    "forecast_points_observed": 17,
+    "precipitation_field_observed": true,
+    "timeout_seconds": 15,
+    "cache_minutes": 30,
+    "last_known_fallback": true
+  },
+  "rule_engine": {
+    "decision_table_rules": 30,
+    "allowed_outputs": ["padi", "jagung", "cabai", "kacang_tanah"],
+    "recommendation_source": "rule_based"
+  },
+  "remote_compute": {
+    "authenticated_gpu_available": false,
+    "local_training_allowed": false,
+    "credential_values_accessed": false,
+    "presence_checks": {
+      "kaggle": false,
+      "hugging_face": false,
+      "google_cloud": false,
+      "synced_google_drive": false,
+      "ssh_gpu": false,
+      "other_configured_cloud": false
+    }
+  },
+  "network": {
+    "bmkg": true,
+    "hugging_face": true,
+    "pub_dev": true,
+    "google_android": true
+  },
+  "blockers": [
+    "manual dataset review and unresolved source provenance",
+    "authenticated remote GPU unavailable",
+    "physical-device tests and human research activities unavailable"
+  ]
+}

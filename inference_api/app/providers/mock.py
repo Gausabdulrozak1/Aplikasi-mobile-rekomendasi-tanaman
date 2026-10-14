@@ -94,4 +94,4 @@ class MockImageGenerator(ImageGenerator):
             f"seed={request.seed} id={image_id}",
             fill=foreground,
         )
-        image.save(image_path)
+        image.save(image_path, format="PNG")

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "measured_at_local": "2026-08-13T23:43:56.0961007+08:00",
+  "measured_at_utc": "2026-08-13T15:43:56.1080278Z",
+  "computer": {
+    "manufacturer": "HP",
+    "model": "HP Laptop 14s-fq1xxx",
+    "bios_version": "F.31"
+  },
+  "operating_system": {
+    "caption": "Microsoft Windows 11 Home Single Language",
+    "version": "10.0.26200",
+    "build_number": "26200",
+    "architecture": "64-bit",
+    "directx_version": "DirectX 12"
+  },
+  "cpu": {
+    "name": "AMD Ryzen 3 5300U with Radeon Graphics",
+    "physical_cores": 4,
+    "logical_processors": 8
+  },
+  "memory": {
+    "installed_label_from_dxdiag": "8192 MB RAM",
+    "total_visible_bytes": 7866884096,
+    "total_visible_gib": 7.327,
+    "available_bytes_at_measurement": 883789824,
+    "available_gib_at_measurement": 0.823,
+    "memory_pressure_at_measurement": "high"
+  },
+  "gpu": {
+    "name": "AMD Radeon(TM) Graphics",
+    "vendor": "Advanced Micro Devices, Inc.",
+    "video_processor": "AMD Radeon Graphics Processor (0x164C)",
+    "pnp_device_id": "PCI\\VEN_1002&DEV_164C&SUBSYS_887C103C&REV_C3\\4&2FEAE042&0&0041",
+    "display_memory_mib_dxdiag": 4246,
+    "dedicated_memory_mib_dxdiag": 495,
+    "shared_memory_mib_dxdiag": 3751,
+    "adapter_ram_bytes_wmi": 536870912,
+    "driver_version": "31.0.12044.3",
+    "driver_date": "2022-10-25",
+    "display_resolution": "1920x1080"
+  },
+  "storage": {
+    "volume": "D:",
+    "total_bytes": 90056945664,
+    "total_gib": 83.872,
+    "free_bytes": 76101218304,
+    "free_gib": 70.875
+  },
+  "python": {
+    "version": "3.11.9",
+    "executable": "C:\\Users\\azulf\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "main_project_venv": "D:\\TaniAdaptif\\.venv",
+    "main_project_venv_unchanged": true
+  },
+  "rocm": {
+    "ROCM_SUPPORTED": false,
+    "reason": "AMD Ryzen 3 5300U / Radeon device 0x164C is not listed in AMD's official Windows-supported GPU/APU table.",
+    "installation_attempted": false,
+    "source": "https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/shared/hipsdk/reference/system-requirements.html"
+  },
+  "directml": {
+    "directx_12_requirement_met": true,
+    "actual_backend_test_status": "not_run",
+    "maintenance_mode": true,
+    "source": "https://github.com/microsoft/DirectML"
+  }
+}

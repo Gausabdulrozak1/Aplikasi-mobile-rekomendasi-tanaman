@@ -1,0 +1,11 @@
+variant,class_id,images,brightness_proxy_mean,contrast_proxy_mean,entropy_proxy_mean
+base,all,36,90.883615,60.44408,9.008533
+base,cabai,9,86.21631,57.283649,8.95496
+base,jagung,9,95.177227,64.14582,9.157352
+base,kacang_tanah,9,88.729201,63.121285,9.003191
+base,padi,9,93.411722,57.225564,8.918629
+lora,all,36,97.651167,62.275424,9.104648
+lora,cabai,9,90.609732,72.087538,9.02357
+lora,jagung,9,101.362485,56.47459,9.04045
+lora,kacang_tanah,9,95.787634,55.278026,9.127264
+lora,padi,9,102.844818,65.261542,9.227308

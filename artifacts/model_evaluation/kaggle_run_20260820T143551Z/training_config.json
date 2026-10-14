@@ -1,0 +1,19 @@
+{
+  "run_mode": "main",
+  "dataset_package_sha256": "e232f79d2f8ae20b4fb765efb38435ce05e929406e88faba6b02aaaafd1ad42d",
+  "base_model": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+  "resolution": 512,
+  "rank": 8,
+  "seed": 42,
+  "learning_rate": 0.0001,
+  "optimizer": "adamw_8bit",
+  "train_count": 312,
+  "max_train_steps": 1600,
+  "checkpointing_steps": 200,
+  "checkpoints_total_limit": 3,
+  "gradient_accumulation_steps": 4,
+  "mixed_precision": "fp16",
+  "diffusers_commit": "0f252be0ed42006c125ef4429156cb13ae6c1d60",
+  "resume_from_checkpoint": null,
+  "output_dir": "/kaggle/working/taniadaptif_lora/outputs/multicrop_v1"
+}
